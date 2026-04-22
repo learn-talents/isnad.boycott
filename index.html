@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المقاطعة جبهة إسناد</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0efeb;
+  --surface: #fff;
+  --black: #111;
+  --muted: #888;
+  --border: #e2e0d8;
+  --red: #cc2318;
+  --red-dark: #a01b10;
+  --red-light: #fdecea;
+  --yellow: #b87d0a;
+  --yellow-light: #fef6e4;
+  --yellow-dark: #7a5200;
+  --green: #1a7040;
+  --green-light: #e8f5ee;
+  --green-dark: #0f4f2b;
+  --blue: #1567c4;
+  --blue-light: #e6f0fc;
+  --local: #b87d0a;
+  --local-light: #fef6e4;
+  --navy: #1a2740;
+  --gold: #c9a84c;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);min-height:100vh;}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:300;
+  background:var(--red);height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1rem;box-shadow:0 2px 10px rgba(0,0,0,.25);
+}
+.nav-logo{
+  display:flex;align-items:center;gap:10px;cursor:pointer;
+}
+.nav-logo-img{
+  width:40px;height:40px;border-radius:50%;
+  background:#fff;display:flex;align-items:center;justify-content:center;
+  border:2px solid rgba(255,255,255,.5);overflow:hidden;flex-shrink:0;
+}
+.nav-logo-img svg{width:28px;height:28px;}
+.nav-logo-text{
+  font-size:19px;font-weight:900;color:#fff;
+  font-family:'Tajawal',sans-serif;letter-spacing:-.3px;
+  text-shadow:1px 1px 0 rgba(0,0,0,.2);line-height:1.1;
+}
+.nav-logo-text small{display:block;font-size:11px;font-weight:400;opacity:.8;}
+.burger{
+  width:38px;height:38px;border-radius:8px;
+  background:rgba(255,255,255,.18);border:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  cursor:pointer;transition:background .2s;
+}
+.burger:hover{background:rgba(255,255,255,.28);}
+.burger span{display:block;width:20px;height:2px;background:#fff;border-radius:2px;}
+
+/* DRAWER */
+.drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;}
+.drawer-overlay.open{display:block;}
+.drawer{
+  position:fixed;top:0;right:-290px;width:290px;height:100vh;
+  background:var(--navy);z-index:500;
+  transition:right .28s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;
+}
+.drawer.open{right:0;}
+.drawer-head{
+  background:var(--red);padding:1rem 1.1rem;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.drawer-head-logo{display:flex;align-items:center;gap:8px;}
+.drawer-head-logo img{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.4);}
+.drawer-head-name{font-size:15px;font-weight:900;color:#fff;}
+.drawer-close{
+  width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.2);
+  border:none;color:#fff;font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.dl{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 1.3rem;color:#9aa3b5;font-size:14px;font-weight:500;
+  cursor:pointer;transition:all .15s;
+  border:none;background:none;width:100%;
+  font-family:'Tajawal',sans-serif;text-align:right;
+  border-right:3px solid transparent;
+}
+.dl:hover,.dl.on{color:#fff;background:rgba(255,255,255,.06);border-right-color:var(--gold);}
+.dl-icon{font-size:17px;width:22px;text-align:center;}
+.drawer-divider{height:1px;background:rgba(255,255,255,.07);margin:6px 0;}
+.drawer-footer{margin-top:auto;padding:1rem;font-size:11px;color:#3a4560;text-align:center;}
+
+/* PAGES */
+.page{display:none;}
+.page.active{display:block;}
+
+/* HERO */
+.hero{
+  background:var(--red);
+  padding:2rem 1.2rem 1.8rem;
+  text-align:center;position:relative;overflow:hidden;
+}
+.hero-pattern{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:repeating-linear-gradient(
+    -45deg,transparent,transparent 20px,
+    rgba(0,0,0,.03) 20px,rgba(0,0,0,.03) 21px
+  );
+}
+.hero-logo-wrap{
+  position:relative;z-index:1;
+  width:100px;height:100px;margin:0 auto 1rem;
+}
+.hero-logo-wrap img{
+  width:100px;height:100px;border-radius:50%;
+  border:3px solid rgba(255,255,255,.4);
+  object-fit:cover;display:block;
+}
+.hero-logo-fallback{
+  width:100px;height:100px;border-radius:50%;
+  background:rgba(0,0,0,.2);
+  border:3px solid rgba(255,255,255,.4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:42px;
+}
+.hero h1{
+  position:relative;z-index:1;
+  font-size:clamp(1.6rem,6vw,2.4rem);font-weight:900;color:#fff;
+  line-height:1.2;margin-bottom:.4rem;
+}
+.hero p{
+  position:relative;z-index:1;
+  font-size:13px;color:rgba(255,255,255,.8);
+  margin:0 auto 1.3rem;max-width:320px;line-height:1.6;
+}
+.search-wrap{position:relative;z-index:1;max-width:460px;margin:0 auto;}
+.search-wrap input{
+  width:100%;padding:12px 16px 12px 46px;
+  font-size:15px;font-family:'Tajawal',sans-serif;
+  border:none;border-radius:12px;
+  background:#fff;color:var(--black);
+  outline:none;box-shadow:0 4px 20px rgba(0,0,0,.2);
+}
+.search-wrap input::placeholder{color:#aaa;}
+.s-icon{
+  position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  color:#aaa;font-size:17px;pointer-events:none;
+}
+.results-count{
+  position:relative;z-index:1;
+  font-size:12px;color:rgba(255,255,255,.7);
+  text-align:center;margin-top:.5rem;min-height:16px;
+}
+.browse-btn{
+  position:relative;z-index:1;
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:1.1rem;
+  background:#111;color:#fff;
+  border:none;border-radius:12px;
+  padding:11px 22px;font-size:14px;font-weight:700;
+  font-family:'Tajawal',sans-serif;cursor:pointer;
+  box-shadow:0 4px 16px rgba(0,0,0,.3);
+  transition:transform .15s,box-shadow .15s;
+}
+.browse-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.35);}
+
+/* STATS */
+.stats-bar{
+  background:var(--navy);
+  display:grid;
+  border-bottom:3px solid var(--gold);
+}
+.stats-bar.cols-4{grid-template-columns:repeat(4,1fr);}
+.stats-bar.cols-5{grid-template-columns:repeat(5,1fr);}
+.stats-bar.cols-6{grid-template-columns:repeat(6,1fr);}
+.stat-item{
+  text-align:center;padding:10px 6px;
+  border-left:1px solid rgba(255,255,255,.08);
+}
+.stat-item:last-child{border-left:none;}
+.stat-item strong{display:block;font-size:20px;font-weight:900;color:#fff;line-height:1.1;}
+.stat-item span{font-size:9px;color:#6a7888;text-transform:uppercase;letter-spacing:.4px;}
+.stat-item.total strong{color:#fff;}
+.stat-item.boycott strong{color:#e87070;}
+.stat-item.avoid strong{color:#e8c040;}
+.stat-item.alt strong{color:#6ec98a;}
+.stat-item.local strong{color:#e8c040;}
+.stat-item.info strong{color:#7aa8e8;}
+
+/* FILTER PILLS */
+.filter-row{
+  display:flex;gap:7px;padding:.9rem 1rem .4rem;
+  overflow-x:auto;scrollbar-width:none;flex-wrap:wrap;
+}
+.filter-row::-webkit-scrollbar{display:none;}
+.fpill{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:6px 13px;border-radius:99px;
+  border:1.5px solid var(--border);background:var(--surface);
+  font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;
+  color:var(--black);cursor:pointer;transition:all .18s;white-space:nowrap;
+}
+.fpill .dot{width:8px;height:8px;border-radius:50%;}
+.fpill .cnt{font-size:10px;background:var(--bg);color:var(--muted);padding:1px 6px;border-radius:99px;}
+.fpill:hover{border-color:#bbb;}
+.fpill.f-all.on {background:var(--navy);  color:#fff;border-color:var(--navy);}
+.fpill.f-red.on {background:var(--red);   color:#fff;border-color:var(--red);}
+.fpill.f-yel.on {background:var(--yellow);color:#fff;border-color:var(--yellow);}
+.fpill.f-grn.on {background:var(--green); color:#fff;border-color:var(--green);}
+.fpill.f-loc.on {background:#7c5c00;color:#fff;border-color:#7c5c00;}
+.fpill.f-blu.on {background:var(--blue);  color:#fff;border-color:var(--blue);}
+.fpill.on .cnt{background:rgba(255,255,255,.22);color:#fff;}
+
+/* CAT TABS */
+.cat-bar{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  display:flex;overflow-x:auto;scrollbar-width:none;padding:0 .4rem;
+}
+.cat-bar::-webkit-scrollbar{display:none;}
+.ctab{
+  flex-shrink:0;display:inline-flex;align-items:center;gap:5px;
+  padding:11px 13px;font-family:'Tajawal',sans-serif;
+  font-size:12px;font-weight:500;color:var(--muted);
+  background:none;border:none;border-bottom:2.5px solid transparent;
+  cursor:pointer;transition:all .18s;white-space:nowrap;
+}
+.ctab .cdot{width:7px;height:7px;border-radius:50%;}
+.ctab:hover{color:var(--black);}
+.ctab.on{color:var(--navy);border-bottom-color:var(--navy);font-weight:700;}
+
+/* GRID */
+.grid-section{max-width:960px;margin:0 auto;padding:.8rem .8rem 5rem;}
+.products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+@media(max-width:900px){.products-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:600px){.products-grid{grid-template-columns:repeat(2,1fr);}}
+
+/* CARD */
+.card{
+  background:var(--surface);border-radius:16px;
+  border:1px solid var(--border);overflow:hidden;
+  cursor:pointer;
+  transition:transform .2s,box-shadow .2s;
+  animation:fadeUp .3s ease both;
+  display:flex;flex-direction:column;
+}
+.card:hover{transform:translateY(-5px);box-shadow:0 14px 36px rgba(0,0,0,.11);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+.card-stripe{height:5px;width:100%;flex-shrink:0;}
+.s-red   {background:var(--red);}
+.s-yel   {background:var(--yellow);}
+.s-grn   {background:var(--green);}
+.s-loc   {background:var(--local);}
+.s-blu   {background:var(--blue);}
+
+.card-img{
+  width:100%;aspect-ratio:1;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  font-size:4rem;overflow:hidden;position:relative;flex-shrink:0;
+}
+.card-img img{
+  width:75%;height:75%;object-fit:contain;
+  transition:transform .25s;
+}
+.card:hover .card-img img{transform:scale(1.08);}
+.card-img .emoji-fb{font-size:4rem;}
+
+.card-body{padding:.85rem .9rem 1rem;display:flex;flex-direction:column;flex:1;}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;margin-bottom:6px;}
+.card-name{font-size:15px;font-weight:700;line-height:1.3;}
+.card-name-en{font-size:11px;color:var(--muted);margin-top:1px;}
+.sc{
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  margin-top:1px;background:transparent;border:none;
+}
+.sc-red,.sc-yel,.sc-grn,.sc-loc,.sc-blu{background:transparent;border:none;}
+
+.card-info{display:flex;flex-direction:column;gap:3px;margin-top:5px;}
+.card-info-row{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);}
+.card-info-row .lbl{font-weight:600;color:#666;min-width:42px;}
+.card-reason-preview{
+  margin-top:8px;font-size:11px;color:#666;line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  flex:1;
+}
+.card-btn{
+  display:block;width:100%;margin-top:10px;padding:9px;
+  border-radius:10px;background:var(--navy);color:#fff;
+  font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;
+  border:none;cursor:pointer;transition:background .18s;
+}
+.card-btn:hover{background:var(--red);}
+
+.empty-state{grid-column:1/-1;text-align:center;padding:4rem 2rem;color:var(--muted);}
+.empty-state .ei{font-size:3rem;margin-bottom:1rem;}
+
+/* MODAL */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.6);z-index:600;
+  align-items:flex-end;justify-content:center;padding:0;
+}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:var(--surface);border-radius:24px 24px 0 0;
+  width:100%;max-width:520px;max-height:94vh;
+  overflow-y:auto;animation:slideUp .28s cubic-bezier(.4,0,.2,1);
+}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+
+.modal-handle{width:40px;height:4px;background:var(--border);border-radius:4px;margin:12px auto 0;}
+.modal-stripe{height:6px;margin-top:10px;}
+.modal-img{
+  width:100%;aspect-ratio:16/9;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  font-size:5.5rem;overflow:hidden;
+}
+.modal-img img{max-height:90%;max-width:70%;object-fit:contain;}
+
+.modal-body{padding:1.1rem 1.3rem 2rem;}
+.modal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.9rem;gap:8px;}
+.mtw{display:flex;align-items:center;gap:10px;}
+.modal-sc{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.modal-title{font-size:21px;font-weight:900;}
+.modal-title-en{font-size:12px;color:var(--muted);margin-top:1px;}
+.modal-close{
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;
+  border:1px solid var(--border);background:none;cursor:pointer;
+  font-size:15px;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.modal-close:hover{background:var(--red-light);color:var(--red);}
+
+.minfo-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:1rem;}
+.mbox{background:var(--bg);border-radius:10px;padding:8px 11px;}
+.mbox label{font-size:10px;color:var(--muted);display:block;margin-bottom:2px;text-transform:uppercase;letter-spacing:.3px;}
+.mbox span{font-size:13px;font-weight:700;}
+.mbox.full{grid-column:1/-1;}
+
+.mst{font-size:10px;font-weight:700;color:var(--muted);margin:12px 0 5px;text-transform:uppercase;letter-spacing:.5px;}
+.mreason{
+  font-size:13px;color:#444;line-height:1.7;
+  background:var(--red-light);border-right:3px solid var(--red);
+  padding:9px 12px;border-radius:0 8px 8px 0;
+}
+.malt{
+  font-size:13px;color:var(--green-dark);
+  background:var(--green-light);border-right:3px solid var(--green);
+  padding:9px 12px;border-radius:0 8px 8px 0;margin-top:5px;
+}
+.malt-loc{
+  font-size:12px;color:#555;
+  background:#f5f5f0;border-right:3px solid #bbb;
+  padding:7px 11px;border-radius:0 8px 8px 0;margin-top:4px;
+  display:flex;align-items:center;gap:6px;
+}
+.share-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;margin-top:1.1rem;padding:12px;
+  border-radius:12px;background:var(--navy);color:#fff;
+  font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;
+  border:none;cursor:pointer;transition:background .2s;
+}
+.share-btn:hover{background:var(--red);}
+
+/* LEGEND */
+.legend-wrap{max-width:700px;margin:0 auto;padding:2rem 1rem 5rem;}
+.legend-wrap h2{font-size:22px;font-weight:900;color:var(--navy);margin-bottom:.3rem;}
+.legend-wrap .sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;}
+.legend-card{
+  background:var(--surface);border-radius:14px;border:1px solid var(--border);
+  padding:1.1rem;margin-bottom:.9rem;display:flex;align-items:flex-start;gap:.9rem;
+}
+.lc{width:48px;height:48px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.lc-r{background:var(--red);   }
+.lc-y{background:#b87d0a;      }
+.lc-g{background:#1a7040;      }
+.lc-l{background:#7c5c2a;      }
+.lc-b{background:var(--blue);  }
+.legend-text h3{font-size:16px;font-weight:900;margin-bottom:3px;}
+.legend-text p{font-size:12px;color:#555;line-height:1.7;}
+.legend-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px;}
+.ltag{font-size:11px;padding:2px 9px;border-radius:99px;font-weight:600;}
+.ltag-r{background:var(--red-light);   color:var(--red-dark);}
+.ltag-y{background:var(--yellow-light);color:var(--yellow-dark);}
+.ltag-g{background:var(--green-light); color:var(--green-dark);}
+.ltag-l{background:var(--local-light); color:#7a5200;}
+.ltag-b{background:var(--blue-light);  color:#0d4a9c;}
+.legend-note{
+  background:var(--navy);color:#7a8899;border-radius:12px;
+  padding:1rem 1.2rem;margin-top:1.3rem;font-size:12px;line-height:1.7;
+}
+.legend-note strong{color:var(--gold);}
+
+/* ABOUT */
+.about-wrap{max-width:700px;margin:0 auto;padding:2rem 1rem 5rem;}
+.about-wrap h2{font-size:22px;font-weight:900;color:var(--navy);margin-bottom:1.2rem;}
+.about-card{background:var(--surface);border-radius:14px;border:1px solid var(--border);padding:1.1rem;margin-bottom:.9rem;}
+.about-card h3{font-size:15px;font-weight:900;color:var(--red);margin-bottom:.4rem;}
+.about-card p{font-size:13px;color:#555;line-height:1.8;}
+.contribute-box{
+  background:var(--navy);border-radius:14px;padding:1.2rem;margin-top:1.5rem;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.contribute-box .icon{font-size:28px;flex-shrink:0;}
+.contribute-box h3{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;}
+.contribute-box p{font-size:12px;color:#8a95a8;line-height:1.6;}
+.github-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:10px;padding:9px 18px;border-radius:10px;
+  background:var(--gold);color:#fff;
+  font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;
+  border:none;cursor:pointer;text-decoration:none;
+  transition:opacity .2s;
+}
+.github-btn:hover{opacity:.85;}
+
+/* CONTACT */
+.contact-wrap{max-width:500px;margin:0 auto;padding:2rem 1rem 5rem;}
+.contact-wrap h2{font-size:22px;font-weight:900;color:var(--navy);margin-bottom:1.2rem;}
+.contact-card{
+  background:var(--surface);border-radius:14px;border:1px solid var(--border);
+  padding:1.1rem;margin-bottom:.9rem;
+  display:flex;align-items:center;gap:1rem;cursor:pointer;
+  transition:box-shadow .2s;
+}
+.contact-card:hover{box-shadow:0 6px 20px rgba(0,0,0,.08);}
+.cicon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.contact-card h3{font-size:14px;font-weight:700;}
+.contact-card p{font-size:12px;color:var(--muted);}
+
+/* FOOTER */
+footer{background:var(--navy);color:#444;text-align:center;padding:1rem;font-size:12px;}
+footer strong{color:var(--gold);}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--navy);color:#fff;padding:9px 18px;border-radius:99px;
+  font-size:13px;font-weight:600;z-index:999;
+  opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* CONTRIBUTE BANNER */
+.contribute-banner{
+  background:linear-gradient(135deg,var(--navy),#243352);
+  margin:.8rem 1rem 0;border-radius:14px;padding:1rem 1.1rem;
+  display:flex;align-items:center;gap:12px;
+}
+.contribute-banner .icon{font-size:24px;flex-shrink:0;}
+.contribute-banner p{font-size:12px;color:#8a95a8;line-height:1.5;flex:1;}
+.contribute-banner p strong{color:#fff;}
+.contribute-banner a{
+  flex-shrink:0;display:inline-flex;align-items:center;gap:6px;
+  padding:7px 14px;border-radius:10px;background:var(--gold);color:#fff;
+  font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;
+  text-decoration:none;white-space:nowrap;transition:opacity .2s;
+}
+.contribute-banner a:hover{opacity:.85;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="nav-logo-img">
+      <img src="1776867485136_image.png" alt="المقاطعة جبهة إسناد" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+    </div>
+    <div class="nav-logo-text">
+      المقاطعة جبهة إسناد
+    </div>
+  </div>
+  <button class="burger" onclick="openDrawer()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- DRAWER -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div class="drawer-head-logo">
+      <div style="width:34px;height:34px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,.4);flex-shrink:0;">
+        <img src="1776867485136_image.png" style="width:100%;height:100%;object-fit:cover;" alt="">
+      </div>
+      <span class="drawer-head-name">المقاطعة جبهة إسناد</span>
+    </div>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <button class="dl on" id="dl-home"    onclick="nav('home')">   <span class="dl-icon">🏠</span> الرئيسية</button>
+  <button class="dl"    id="dl-legend"  onclick="nav('legend')"> <span class="dl-icon">🏷️</span> العلامات والمعايير</button>
+  <div class="drawer-divider"></div>
+  <button class="dl"    id="dl-about"   onclick="nav('about')">  <span class="dl-icon">ℹ️</span> عن المبادرة</button>
+  <button class="dl"    id="dl-contact" onclick="nav('contact')"><span class="dl-icon">📬</span> تواصل معنا</button>
+  <div class="drawer-divider"></div>
+  <a class="dl" href="https://github.com/your-username/moqata3a" target="_blank" style="text-decoration:none;">
+    <span class="dl-icon">💻</span> المساهمة على GitHub
+  </a>
+  <div class="drawer-footer">مبادرة مجتمعية مفتوحة المصدر</div>
+</div>
+
+<!-- ══════════════ HOME ══════════════ -->
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <div class="hero-pattern"></div>
+    <div class="hero-logo-wrap">
+      <img src="1776867485136_image.png" alt="المقاطعة جبهة إسناد" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,.4);">
+    </div>
+    <h1>المقاطعة جبهة إسناد</h1>
+    <p>معاً نحو مقاطعة فعّالة ومؤثرة — اعرف ما تشتري وقاطع بوعي</p>
+    <div class="search-wrap">
+      <input type="text" id="searchInput" placeholder="ابحث هنا..." autocomplete="off">
+      <span class="s-icon">🔍</span>
+    </div>
+    <div class="results-count" id="resultsCount"></div>
+    <button class="browse-btn" onclick="document.querySelector('.grid-section').scrollIntoView({behavior:'smooth'})">
+      🛒 استعرض جميع المنتجات
+    </button>
+  </section>
+
+  <!-- STATS BAR — يتغير حسب الفلتر -->
+  <div class="stats-bar cols-6" id="statsBar">
+    <div class="stat-item total">   <strong id="sc-total">0</strong>  <span>الكل</span></div>
+    <div class="stat-item boycott"> <strong id="sc-boycott">0</strong><span>مقاطعة</span></div>
+    <div class="stat-item avoid">   <strong id="sc-avoid">0</strong>  <span>اجتناب</span></div>
+    <div class="stat-item alt">     <strong id="sc-alt">0</strong>    <span>بديل</span></div>
+    <div class="stat-item local">   <strong id="sc-local">0</strong>  <span>محلي أفضل</span></div>
+    <div class="stat-item info">    <strong id="sc-info">0</strong>   <span>لا معلومات</span></div>
+  </div>
+
+  <!-- CONTRIBUTE BANNER -->
+  <div class="contribute-banner">
+    <div class="icon">💻</div>
+    <p><strong>ساهم في المشروع!</strong> الموقع مفتوح المصدر — يمكنك إضافة منتجات وأقسام وتعديل البيانات.</p>
+    <a href="https://github.com/your-username/moqata3a" target="_blank">GitHub ↗</a>
+  </div>
+
+  <!-- FILTER PILLS -->
+  <div class="filter-row">
+    <button class="fpill f-all on" onclick="setFilter(this,'all')">الجميع <span class="cnt" id="cnt-all">0</span></button>
+    <button class="fpill f-red"    onclick="setFilter(this,'مقاطعة')"><span class="dot" style="background:var(--red)"></span>مقاطعة <span class="cnt" id="cnt-r">0</span></button>
+    <button class="fpill f-yel"    onclick="setFilter(this,'اجتناب')"><span class="dot" style="background:var(--yellow)"></span>اجتناب <span class="cnt" id="cnt-y">0</span></button>
+    <button class="fpill f-grn"    onclick="setFilter(this,'بديل')"><span class="dot" style="background:var(--green)"></span>بديل <span class="cnt" id="cnt-g">0</span></button>
+    <button class="fpill f-loc"    onclick="setFilter(this,'الشراء من المحلي أفضل')"><span class="dot" style="background:var(--local)"></span>محلي أفضل <span class="cnt" id="cnt-l">0</span></button>
+    <button class="fpill f-blu"    onclick="setFilter(this,'لا توجد معلومات كافية')"><span class="dot" style="background:var(--blue)"></span>لا معلومات <span class="cnt" id="cnt-b">0</span></button>
+  </div>
+
+  <!-- CAT TABS -->
+  <div class="cat-bar" id="catBar">
+    <button class="ctab on" onclick="setCat(this,'all')">الكل</button>
+    <button class="ctab" onclick="setCat(this,'مشروبات')"><span class="cdot" style="background:#4a90d9"></span>مشروبات</button>
+    <button class="ctab" onclick="setCat(this,'أغذية')"><span class="cdot" style="background:#e89c3a"></span>أغذية</button>
+    <button class="ctab" onclick="setCat(this,'مطاعم')"><span class="cdot" style="background:#c95454"></span>مطاعم</button>
+    <button class="ctab" onclick="setCat(this,'محلات')"><span class="cdot" style="background:#7c6fc9"></span>محلات</button>
+    <button class="ctab" onclick="setCat(this,'ترفيه')"><span class="cdot" style="background:#e040a0"></span>ترفيه</button>
+    <button class="ctab" onclick="setCat(this,'تبغ')"><span class="cdot" style="background:#888"></span>تبغ</button>
+    <button class="ctab" onclick="setCat(this,'تقنية')"><span class="cdot" style="background:#1567c4"></span>تقنية</button>
+    <button class="ctab" onclick="setCat(this,'ملابس')"><span class="cdot" style="background:#9c7c4a"></span>ملابس</button>
+    <button class="ctab" onclick="setCat(this,'مستحضرات')"><span class="cdot" style="background:#c97ec9"></span>مستحضرات</button>
+  </div>
+
+  <section class="grid-section">
+    <div class="products-grid" id="productsGrid"></div>
+  </section>
+</div>
+
+<!-- ══════════════ LEGEND ══════════════ -->
+<div class="page" id="page-legend">
+  <div class="legend-wrap">
+    <h2>العلامات والمعايير</h2>
+    <p class="sub">دليلك لفهم تصنيفات المنتجات في الموقع</p>
+
+    <div class="legend-card">
+      <div class="lc lc-r">🔴</div>
+      <div class="legend-text">
+        <h3 style="color:var(--red)">مقاطعة</h3>
+        <p>الدول الداعمة للكيان — منتجات ثبت بوضوح ارتباطها بجهات داعمة للاحتلال عبر الاستثمار المباشر أو الدعم المالي أو المواقف الرسمية. يُنصح بالامتناع عنها كلياً.</p>
+        <div class="legend-tags">
+          <span class="ltag ltag-r">كوكاكولا</span><span class="ltag ltag-r">ماكدونالدز</span><span class="ltag ltag-r">ستاربكس</span><span class="ltag ltag-r">نستله</span>
+        </div>
+      </div>
+    </div>
+    <div class="legend-card">
+      <div class="lc lc-y">🟡</div>
+      <div class="legend-text">
+        <h3 style="color:var(--yellow-dark)">اجتناب</h3>
+        <p>منتجات يوجد شك أو ارتباط غير مباشر بجهات داعمة، أو لم يُثبت موقفها بشكل قاطع. يُنصح بتجنبها حتى يتضح موقفها الكامل.</p>
+        <div class="legend-tags">
+          <span class="ltag ltag-y">ارتباط غير مباشر</span><span class="ltag ltag-y">تحت المراقبة</span>
+        </div>
+      </div>
+    </div>
+    <div class="legend-card">
+      <div class="lc lc-g">🟢</div>
+      <div class="legend-text">
+        <h3 style="color:var(--green)">بديل</h3>
+        <p>منتجات محلية أو من دول صديقة، تُعدّ بديلاً ممتازاً للمنتجات المقاطعة. استخدامها يدعم الاقتصاد المحلي.</p>
+        <div class="legend-tags">
+          <span class="ltag ltag-g">كينزا كولا</span><span class="ltag ltag-g">أسواق العثيم</span>
+        </div>
+      </div>
+    </div>
+    <div class="legend-card">
+      <div class="lc lc-l">🛒</div>
+      <div class="legend-text">
+        <h3 style="color:#7a5200">الشراء من المحلي أفضل</h3>
+        <p>منتجات لا مشكلة فيها تحديداً، لكن يوجد بديل محلي أجدى. شراء المحلي يدعم الاقتصاد الوطني.</p>
+        <div class="legend-tags">
+          <span class="ltag ltag-l">يفضّل المحلي</span>
+        </div>
+      </div>
+    </div>
+    <div class="legend-card">
+      <div class="lc lc-b">🔵</div>
+      <div class="legend-text">
+        <h3 style="color:#0d4a9c">لا توجد معلومات كافية</h3>
+        <p>منتجات لم تتوفر لدينا معلومات كافية لتصنيفها. نسعى لتحديث هذه المعلومات باستمرار.</p>
+        <div class="legend-tags">
+          <span class="ltag ltag-b">قيد البحث</span>
+        </div>
+      </div>
+    </div>
+    <div class="legend-note">
+      <strong>ملاحظة:</strong> التصنيفات مبنية على معلومات متاحة للعموم وتقارير موثوقة. إذا كان لديك معلومة جديدة، تواصل معنا أو ساهم عبر GitHub.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ABOUT ══════════════ -->
+<div class="page" id="page-about">
+  <div class="about-wrap">
+    <h2>عن المبادرة</h2>
+    <div class="about-card">
+      <h3>من نحن؟</h3>
+      <p>مقاطعة جهة إسناد مبادرة شعبية تهدف إلى توعية المستهلك العربي بالمنتجات المرتبطة بجهات داعمة للاحتلال، وتوجيهه نحو البدائل المحلية والصديقة.</p>
+    </div>
+    <div class="about-card">
+      <h3>هدفنا</h3>
+      <p>نؤمن بأن المقاطعة الاقتصادية سلاح فعّال في يد المستهلك الواعي. من خلال توفير معلومات موثوقة ومحدّثة، نساعد الجميع على اتخاذ قرارات شرائية مسؤولة.</p>
+    </div>
+    <div class="about-card">
+      <h3>منهجية التصنيف</h3>
+      <p>نعتمد على مصادر موثوقة وتقارير موثقة لتصنيف المنتجات. كل تصنيف قابل للمراجعة والتحديث بناءً على معلومات جديدة. يمكن لأي شخص المساهمة عبر GitHub.</p>
+    </div>
+    <div class="contribute-box">
+      <div class="icon">💻</div>
+      <div>
+        <h3>ساهم في المشروع</h3>
+        <p>الموقع مفتوح المصدر على GitHub. يمكنك إضافة منتجات جديدة، تعديل الأقسام، تصحيح معلومات، أو تطوير الموقع نفسه. كل مساهمة تُفرق!</p>
+        <a class="github-btn" href="https://github.com/your-username/moqata3a" target="_blank">
+          💻 افتح على GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ CONTACT ══════════════ -->
+<div class="page" id="page-contact">
+  <div class="contact-wrap">
+    <h2>تواصل معنا</h2>
+    <div class="contact-card">
+      <div class="cicon" style="background:#e6f0fc">📧</div>
+      <div><h3>البريد الإلكتروني</h3><p>info@moqata3a.com</p></div>
+    </div>
+    <div class="contact-card">
+      <div class="cicon" style="background:#e8f5ee">💬</div>
+      <div><h3>واتساب</h3><p>تواصل معنا لإضافة منتج أو الإبلاغ عن خطأ</p></div>
+    </div>
+    <div class="contact-card">
+      <div class="cicon" style="background:#fdecea">📢</div>
+      <div><h3>تلغرام</h3><p>انضم لقناتنا للتحديثات الفورية</p></div>
+    </div>
+    <div class="contact-card">
+      <div class="cicon" style="background:#f5f0e8">💻</div>
+      <div>
+        <h3>GitHub</h3>
+        <p>ساهم في الكود وأضف منتجات جديدة</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-stripe" id="mStripe"></div>
+    <div class="modal-img" id="mImg"></div>
+    <div class="modal-body">
+      <div class="modal-header">
+        <div class="mtw">
+          <div class="modal-sc" id="mCircle"></div>
+          <div>
+            <div class="modal-title" id="mTitle"></div>
+            <div style="font-size:12px;color:var(--muted)" id="mTitleEn"></div>
+          </div>
+        </div>
+        <button class="modal-close" id="mClose">✕</button>
+      </div>
+      <div class="minfo-grid">
+        <div class="mbox"><label>الحالة</label><span id="mStatus"></span></div>
+        <div class="mbox"><label>البلد</label><span id="mCountry"></span></div>
+        <div class="mbox full"><label>الشركة الأم</label><span id="mCompany"></span></div>
+        <div class="mbox full" id="mCatBox"><label>الفئة</label><span id="mCat"></span></div>
+      </div>
+      <div class="mst">سبب التصنيف</div>
+      <div class="mreason" id="mReason"></div>
+      <div id="mAltWrap" style="display:none">
+        <div class="mst">البديل المقترح</div>
+        <div class="malt" id="mAlt"></div>
+        <div class="malt-loc" id="mAltLoc" style="display:none">📍 <span id="mAltLocText"></span></div>
+      </div>
+      <button class="share-btn" onclick="shareProduct()">🔗 شارك هذا المنتج</button>
+    </div>
+  </div>
+</div>
+
+<footer><p>مبادرة <strong>المقاطعة جبهة إسناد</strong> — معاً نحو مقاطعة فعّالة ومؤثرة</p></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── DATA — يُحمّل من data.json تلقائياً ───
+let products = [];
+
+async function loadData() {
+  try {
+    const res = await fetch('data.json');
+    products = await res.json();
+  } catch(e) {
+    // fallback inline data
+    products = [
+      {id:1,name:"بيبسي",nameEn:"Pepsi",status:"مقاطعة",cat:"مشروبات",company:"PepsiCo",country:"أمريكا",logo:"https://logo.clearbit.com/pepsi.com",reason:"شركة PepsiCo لها استثمارات واسعة في الأسواق الداعمة.",alt:"كينزا كولا، بيلا كولا",altLocations:"أسواق محلية"},
+      {id:2,name:"كوكاكولا",nameEn:"Coca-Cola",status:"مقاطعة",cat:"مشروبات",company:"The Coca-Cola Company",country:"أمريكا",logo:"https://logo.clearbit.com/coca-cola.com",reason:"استثمارات ضخمة مع جهات داعمة للاحتلال.",alt:"بيلا كولا، أفانتي، كينزا",altLocations:"أسواق محلية"},
+      {id:3,name:"نستله",nameEn:"Nestlé",status:"مقاطعة",cat:"أغذية",company:"Nestlé S.A.",country:"سويسرا",logo:"https://logo.clearbit.com/nestle.com",reason:"نستله تمتلك مصانع في مناطق محتلة.",alt:"قهوة محلية، مزيون",altLocations:"أسواق محلية"},
+      {id:4,name:"ماكدونالدز",nameEn:"McDonald's",status:"مقاطعة",cat:"مطاعم",company:"McDonald's Corporation",country:"أمريكا",logo:"https://logo.clearbit.com/mcdonalds.com",reason:"وفّر الفرع الإسرائيلي وجبات مجانية لجنود الاحتلال.",alt:"مطاعم محلية، هرفي، كودو",altLocations:"المراكز التجارية المحلية"},
+      {id:5,name:"ستاربكس",nameEn:"Starbucks",status:"مقاطعة",cat:"مشروبات",company:"Starbucks Corporation",country:"أمريكا",logo:"https://logo.clearbit.com/starbucks.com",reason:"دعم مؤسسي لمواقف داعمة للاحتلال.",alt:"كافيهات محلية، دانكن",altLocations:"كافيهات الأحياء"},
+      {id:6,name:"كارفور",nameEn:"Carrefour",status:"مقاطعة",cat:"محلات",company:"Carrefour S.A.",country:"فرنسا",logo:"https://logo.clearbit.com/carrefour.com",reason:"شراكات مع سلاسل تشغيل في المناطق المحتلة.",alt:"أسواق العثيم، بندة، لولو",altLocations:"جميع المناطق"},
+      {id:7,name:"بورغر كنج",nameEn:"Burger King",status:"مقاطعة",cat:"مطاعم",company:"Restaurant Brands Int.",country:"أمريكا",logo:"https://logo.clearbit.com/burgerking.com",reason:"علاقات تجارية موثقة مع الكيان.",alt:"كودو، هرفي",altLocations:"المراكز التجارية"},
+      {id:8,name:"نايكي",nameEn:"Nike",status:"مقاطعة",cat:"ملابس",company:"Nike Inc.",country:"أمريكا",logo:"https://logo.clearbit.com/nike.com",reason:"دعم سياسي موثق لجهات داعمة.",alt:"أديداس، ريبوك",altLocations:"المراكز التجارية"},
+      {id:9,name:"ديزني",nameEn:"Disney",status:"اجتناب",cat:"ترفيه",company:"The Walt Disney Company",country:"أمريكا",logo:"https://logo.clearbit.com/disney.com",reason:"دعم لوبيات سياسية داعمة في الولايات المتحدة.",alt:"محتوى عربي ومحلي",altLocations:"منصات عربية"},
+      {id:10,name:"أمازون",nameEn:"Amazon",status:"اجتناب",cat:"تقنية",company:"Amazon Inc.",country:"أمريكا",logo:"https://logo.clearbit.com/amazon.com",reason:"عقود سحابية مع الكيان.",alt:"نون، جملة",altLocations:"نون.com، جملة.com"},
+      {id:11,name:"فيليب موريس",nameEn:"Philip Morris",status:"اجتناب",cat:"تبغ",company:"Philip Morris Int.",country:"أمريكا",logo:"https://logo.clearbit.com/pmi.com",reason:"استثمارات في مناطق محتلة.",alt:"تجنّب التدخين هو الأفضل",altLocations:""},
+      {id:12,name:"كينزا كولا",nameEn:"Kinza Cola",status:"بديل",cat:"مشروبات",company:"شركة الجميل العالمية",country:"السعودية",logo:"",reason:"",alt:"بديل ممتاز لكوكاكولا وبيبسي — سعودي 100%",altLocations:"أسواق محلية، بندة، لولو"},
+      {id:13,name:"أسواق العثيم",nameEn:"Othaim Markets",status:"بديل",cat:"محلات",company:"شركة العثيم",country:"السعودية",logo:"https://logo.clearbit.com/othaim.com.sa",reason:"",alt:"بديل محلي ممتاز لكارفور",altLocations:"جميع مناطق المملكة"},
+      {id:14,name:"جواد ميرزا",nameEn:"Jawad Mirza",status:"بديل",cat:"مطاعم",company:"مجموعة جواد",country:"البحرين",logo:"",reason:"",alt:"بديل محلي للمطاعم الأجنبية",altLocations:"البحرين"},
+      {id:15,name:"لوريال",nameEn:"L'Oréal",status:"الشراء من المحلي أفضل",cat:"مستحضرات",company:"L'Oréal S.A.",country:"فرنسا",logo:"https://logo.clearbit.com/loreal.com",reason:"لا يوجد دعم مباشر موثق، لكن يُفضل المحلي.",alt:"منتجات محلية",altLocations:"أسواق محلية"},
+      {id:16,name:"إيكيا",nameEn:"IKEA",status:"لا توجد معلومات كافية",cat:"محلات",company:"IKEA Group",country:"السويد",logo:"https://logo.clearbit.com/ikea.com",reason:"لا تتوفر معلومات كافية حالياً.",alt:"",altLocations:""}
+    ];
+  }
+  initCounts();
+  renderProducts();
+}
+
+// ─── HELPERS ───
+const STATUSES = {
+  'مقاطعة':                    {col:'red', sc:'sc-red', stripe:'var(--red)',    emoji:'🔴'},
+  'اجتناب':                    {col:'yel', sc:'sc-yel', stripe:'var(--yellow)', emoji:'🟡'},
+  'بديل':                      {col:'grn', sc:'sc-grn', stripe:'var(--green)',  emoji:'🟢'},
+  'الشراء من المحلي أفضل':     {col:'loc', sc:'sc-loc', stripe:'var(--local)',  emoji:'🛒'},
+  'لا توجد معلومات كافية':     {col:'blu', sc:'sc-blu', stripe:'var(--blue)',   emoji:'🔵'},
+};
+function si(s){ return STATUSES[s] || STATUSES['لا توجد معلومات كافية']; }
+
+const EMOJIS = {
+  'مشروبات':'🥤','أغذية':'🍽️','مطاعم':'🍔','محلات':'🛒',
+  'ترفيه':'🎬','تبغ':'🚬','تقنية':'💻','ملابس':'👔','مستحضرات':'💄'
+};
+
+function norm(s){ return (s||'').normalize('NFD').replace(/[\u0300-\u036f\u064b-\u0652]/g,''); }
+
+let curFilter='all', curCat='all', curSearch='', curProduct=null;
+
+function getFiltered(){
+  return products.filter(p=>{
+    const mF = curFilter==='all' || p.status===curFilter;
+    const mC = curCat==='all' || p.cat===curCat;
+    const q  = norm(curSearch.toLowerCase());
+    const mS = !q ||
+      norm(p.name).includes(q) ||
+      (p.nameEn||'').toLowerCase().includes(q) ||
+      norm(p.company||'').toLowerCase().includes(q);
+    return mF && mC && mS;
+  });
+}
+
+// عدادات الـ stats تتغير بناءً على الـ cat والـ search فقط (بدون filter الحالة)
+function updateStats(){
+  const src = products.filter(p=>{
+    const mC = curCat==='all' || p.cat===curCat;
+    const q  = norm(curSearch.toLowerCase());
+    const mS = !q ||
+      norm(p.name).includes(q) ||
+      (p.nameEn||'').toLowerCase().includes(q) ||
+      norm(p.company||'').toLowerCase().includes(q);
+    return mC && mS;
+  });
+  const count = (st) => src.filter(p=>p.status===st).length;
+  document.getElementById('sc-total').textContent   = src.length;
+  document.getElementById('sc-boycott').textContent = count('مقاطعة');
+  document.getElementById('sc-avoid').textContent   = count('اجتناب');
+  document.getElementById('sc-alt').textContent     = count('بديل');
+  document.getElementById('sc-local').textContent   = count('الشراء من المحلي أفضل');
+  document.getElementById('sc-info').textContent    = count('لا توجد معلومات كافية');
+}
+
+// عدادات الفلاتر ثابتة (كل المنتجات)
+function initCounts(){
+  const count = (st) => products.filter(p=>p.status===st).length;
+  document.getElementById('cnt-all').textContent = products.length;
+  document.getElementById('cnt-r').textContent   = count('مقاطعة');
+  document.getElementById('cnt-y').textContent   = count('اجتناب');
+  document.getElementById('cnt-g').textContent   = count('بديل');
+  document.getElementById('cnt-l').textContent   = count('الشراء من المحلي أفضل');
+  document.getElementById('cnt-b').textContent   = count('لا توجد معلومات كافية');
+  updateStats();
+}
+
+function renderProducts(){
+  updateStats();
+  const grid = document.getElementById('productsGrid');
+  const list = getFiltered();
+  document.getElementById('resultsCount').textContent =
+    curSearch ? list.length+' نتيجة للبحث عن "'+curSearch+'"' : '';
+  if(!list.length){
+    grid.innerHTML='<div class="empty-state"><div class="ei">🔍</div><p>ما لقينا نتائج — جرّب كلمة أخرى</p></div>';
+    return;
+  }
+  grid.innerHTML = list.map((p,i)=>{
+    const s = si(p.status);
+    const fallbackEmoji = EMOJIS[p.cat] || '📦';
+    const imgHtml = p.logo
+      ? `<img src="${p.logo}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+         <span class="emoji-fb" style="display:none">${fallbackEmoji}</span>`
+      : `<span class="emoji-fb">${fallbackEmoji}</span>`;
+
+    const reasonPreview = p.status==='بديل'
+      ? (p.alt||'')
+      : (p.reason||'');
+
+    return `<div class="card" style="animation-delay:${i*.03}s" onclick="openModal(${p.id})">
+      <div class="card-stripe s-${s.col}"></div>
+      <div class="card-img">${imgHtml}</div>
+      <div class="card-body">
+        <div class="card-top">
+          <div>
+            <div class="card-name">${p.name}</div>
+            <div class="card-name-en">${p.nameEn||''}</div>
+          </div>
+          <div class="sc ${s.sc}">${s.emoji}</div>
+        </div>
+        <div class="card-info">
+          <div class="card-info-row"><span class="lbl">الشركة:</span>${p.company||'—'}</div>
+          <div class="card-info-row"><span class="lbl">البلد:</span>${p.country||'—'}</div>
+          <div class="card-info-row"><span class="lbl">الفئة:</span>${p.cat||'—'}</div>
+        </div>
+        ${reasonPreview ? `<div class="card-reason-preview">${reasonPreview}</div>` : ''}
+        <button class="card-btn">عرض التفاصيل</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setFilter(btn,f){
+  curFilter=f;
+  document.querySelectorAll('.fpill').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderProducts();
+}
+function setCat(btn,cat){
+  curCat=cat;
+  document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderProducts();
+}
+
+function openModal(id){
+  curProduct=products.find(p=>p.id===id);
+  if(!curProduct)return;
+  const p=curProduct, s=si(p.status);
+  const fallback = EMOJIS[p.cat]||'📦';
+
+  document.getElementById('mStripe').style.background = s.stripe;
+
+  const mImg = document.getElementById('mImg');
+  if(p.logo){
+    mImg.innerHTML=`<img src="${p.logo}" alt="${p.name}"
+      onerror="this.parentElement.innerHTML='<span style=\\'font-size:5rem\\'>${fallback}</span>'"
+      style="max-height:90%;max-width:65%;object-fit:contain;">`;
+  } else {
+    mImg.innerHTML=`<span style="font-size:5rem">${fallback}</span>`;
+  }
+
+  const circ=document.getElementById('mCircle');
+  circ.style.background='transparent';
+  circ.style.border='none';
+  circ.textContent=s.emoji;
+
+  document.getElementById('mTitle').textContent   = p.name;
+  document.getElementById('mTitleEn').textContent = p.nameEn||'';
+  document.getElementById('mStatus').textContent  = p.status;
+  document.getElementById('mCountry').textContent = p.country||'—';
+  document.getElementById('mCompany').textContent = p.company||'—';
+  document.getElementById('mCat').textContent     = p.cat||'—';
+  document.getElementById('mReason').textContent  = p.reason || 'هذا منتج بديل موصى به.';
+
+  const aw=document.getElementById('mAltWrap');
+  if(p.alt){
+    document.getElementById('mAlt').textContent=p.alt;
+    aw.style.display='block';
+    const al=document.getElementById('mAltLoc');
+    if(p.altLocations){
+      document.getElementById('mAltLocText').textContent=p.altLocations;
+      al.style.display='flex';
+    } else { al.style.display='none'; }
+  } else { aw.style.display='none'; }
+
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('modal').addEventListener('click',e=>{
+  if(e.target===document.getElementById('modal'))closeModal();
+});
+document.getElementById('mClose').addEventListener('click',closeModal);
+
+function shareProduct(){
+  if(!curProduct)return;
+  const p=curProduct,s=si(p.status);
+  const text=`${s.emoji} ${p.status}: ${p.name}\n✅ البديل: ${p.alt||'—'}\n\nاكتشف المزيد على موقع مقاطعة جهة إسناد`;
+  else navigator.clipboard.writeText(text).then(()=>showToast('تم النسخ! ✅'));
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+function showPage(p){
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.dl').forEach(a=>a.classList.remove('on'));
+  document.getElementById('page-'+p).classList.add('active');
+  const dl=document.getElementById('dl-'+p);
+  if(dl)dl.classList.add('on');
+  window.scrollTo(0,0);
+}
+
+function nav(p){ showPage(p); closeDrawer(); }
+
+function openDrawer(){
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawerOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawerOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+let timer;
+document.getElementById('searchInput').addEventListener('input',function(){
+  clearTimeout(timer);
+  timer=setTimeout(()=>{curSearch=this.value.trim();renderProducts();},180);
+});
+
+// ─── INIT ───
+loadData();
+</script>
+</body>
+</html>
