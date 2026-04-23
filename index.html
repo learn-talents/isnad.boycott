@@ -50,16 +50,6 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
 .card:nth-child(8) { animation-delay: 0.24s; }
 .card:nth-child(9) { animation-delay: 0.27s; }
 .card:nth-child(10) { animation-delay: 0.3s; }
-.card:nth-child(11) { animation-delay: 0.33s; }
-.card:nth-child(12) { animation-delay: 0.36s; }
-.card:nth-child(13) { animation-delay: 0.39s; }
-.card:nth-child(14) { animation-delay: 0.42s; }
-.card:nth-child(15) { animation-delay: 0.45s; }
-.card:nth-child(16) { animation-delay: 0.48s; }
-.card:nth-child(17) { animation-delay: 0.51s; }
-.card:nth-child(18) { animation-delay: 0.54s; }
-.card:nth-child(19) { animation-delay: 0.57s; }
-.card:nth-child(20) { animation-delay: 0.6s; }
 
 /* تأثير الأقسام عند المرور */
 .ctab {
@@ -140,8 +130,19 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   from { opacity: 0; transform: translateY(50px); }
   to { opacity: 1; transform: translateY(0); }
 }
+@keyframes modalSlideDown {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(100%); opacity: 0; }
+}
 .modal {
   animation: modalFadeIn 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+.modal.closing {
+  animation: modalSlideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.modal-overlay.closing {
+  transition: background 0.3s ease;
+  background: transparent;
 }
 
 /* أنيميشن خانة البحث */
@@ -161,6 +162,33 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
 }
 .keyword-suggestions, .country-suggestions, .company-suggestions {
   animation: slideDown 0.2s ease;
+}
+
+/* البدائل */
+.alternatives-list {
+  background: var(--green-light);
+  border-right: 3px solid var(--green);
+  padding: 10px 14px;
+  border-radius: 0 10px 10px 0;
+  margin-top: 8px;
+}
+.alternative-link {
+  display: inline-block;
+  background: var(--surface);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin: 3px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--green-dark);
+  font-weight: 600;
+  text-decoration: none;
+}
+.alternative-link:hover {
+  background: var(--green);
+  color: white;
+  transform: translateY(-2px);
 }
 
 /* نافذة المشاركة */
@@ -224,25 +252,42 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   direction: ltr;
   text-align: left;
 }
-.share-copy-btn {
-  background: var(--green);
-  color: white;
-  border: none;
+.share-buttons {
+  display: flex;
+  gap: 10px;
+  margin: 1rem 0;
+}
+.share-copy-link, .share-copy-message {
+  flex: 1;
   padding: 10px;
-  width: 100%;
   border-radius: 12px;
   font-size: 14px;
   font-weight: bold;
+  border: none;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
-.share-copy-btn:hover {
+.share-copy-link {
+  background: var(--navy);
+  color: white;
+}
+.share-copy-link:hover {
+  background: var(--blue);
+  transform: translateY(-2px);
+}
+.share-copy-message {
+  background: var(--green);
+  color: white;
+}
+.share-copy-message:hover {
   background: var(--green-dark);
+  transform: translateY(-2px);
 }
 .share-close {
   background: none;
   border: none;
   color: var(--muted);
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   cursor: pointer;
 }
 
@@ -339,6 +384,11 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
 .company-close:hover {
   background: var(--red);
   transform: translateY(-2px);
+}
+
+/* إزالة العداد الأزرق من التصنيفات */
+.cat-count {
+  display: none;
 }
 
 /* ========== صفحة الشركات ========== */
@@ -664,14 +714,6 @@ nav {
 }
 .ctab .cdot { width: 7px; height: 7px; border-radius: 50%; }
 .ctab.on { color: var(--navy); border-bottom-color: var(--navy); font-weight: 700; }
-.cat-count {
-  background: var(--navy);
-  color: white;
-  padding: 0px 7px;
-  border-radius: 20px;
-  font-size: 10px;
-  margin-right: 5px;
-}
 
 .grid-section { max-width: 1200px; margin: 0 auto; padding: .8rem .8rem 5rem; }
 .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
@@ -737,10 +779,8 @@ nav {
 .mst { font-size: 10px; font-weight: 700; color: var(--muted); margin: 12px 0 5px; }
 .mreason { font-size: 13px; color: #444; line-height: 1.7; background: var(--red-light); border-right: 3px solid var(--red); padding: 10px 14px; border-radius: 0 10px 10px 0; }
 .mreason.green { background: var(--green-light); border-right-color: var(--green); color: var(--green-dark); }
-.malt { font-size: 13px; color: var(--green-dark); background: var(--green-light); border-right: 3px solid var(--green); padding: 10px 14px; border-radius: 0 10px 10px 0; margin-top: 8px; }
+.mreason.alt-bg { background: var(--green-light); border-right-color: var(--green); }
 .mdate { font-size: 11px; color: var(--muted); margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); text-align: center; }
-.share-btn { width: 100%; margin-top: 1.2rem; padding: 12px; border-radius: 12px; background: var(--navy); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; }
-.share-btn:hover { background: var(--red); }
 
 footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 12px; color: #888; }
 .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; padding: 10px 20px; border-radius: 99px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s ease; }
@@ -757,7 +797,8 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
 .legend-text p { font-size: 12px; color: #555; line-height: 1.6; }
 
 .contact-wrap { max-width: 500px; margin: 0 auto; padding: 2rem 1rem; }
-.contact-card { background: var(--surface); border-radius: 14px; border: 1px solid var(--border); padding: 1rem; margin-bottom: 1rem; display: flex; gap: 1rem; align-items: center; }
+.contact-card { background: var(--surface); border-radius: 14px; border: 1px solid var(--border); padding: 1rem; margin-bottom: 1rem; display: flex; gap: 1rem; align-items: center; text-decoration: none; color: inherit; transition: all 0.2s ease; }
+.contact-card:hover { transform: translateX(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 .loading { text-align: center; padding: 2rem; color: var(--muted); }
 
 .keyword-suggestions, .country-suggestions, .company-suggestions {
@@ -812,37 +853,6 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
   cursor: pointer;
   color: var(--red);
   font-size: 14px;
-}
-.share-buttons {
-  display: flex;
-  gap: 10px;
-  margin: 1rem 0;
-}
-.share-copy-link, .share-copy-message {
-  flex: 1;
-  padding: 10px;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.share-copy-link {
-  background: var(--navy);
-  color: white;
-}
-.share-copy-link:hover {
-  background: var(--blue);
-  transform: translateY(-2px);
-}
-.share-copy-message {
-  background: var(--green);
-  color: white;
-}
-.share-copy-message:hover {
-  background: var(--green-dark);
-  transform: translateY(-2px);
 }
 </style>
 </head>
@@ -1093,11 +1103,14 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
 <div class="page" id="page-contact">
   <div class="contact-wrap">
     <h2>تواصل معنا</h2>
-    <div class="contact-card"><div style="font-size:28px;">📞</div><div><h3>واتساب / اتصال</h3><p style="direction:ltr;font-size:18px;font-weight:bold;color:var(--red)">+973 3828 2371</p></div></div>
+    <a class="contact-card" href="https://wa.me/97338282371" target="_blank" style="text-decoration:none; display:flex; gap:1rem; align-items:center; background:var(--surface); border-radius:14px; border:1px solid var(--border); padding:1rem; margin-bottom:1rem;">
+      <div style="font-size:28px;">📞</div>
+      <div><h3>واتساب / اتصال</h3><p style="direction:ltr;font-size:18px;font-weight:bold;color:var(--red)">+973 3828 2371</p></div>
+    </a>
   </div>
 </div>
 
-<div class="modal-overlay" id="modal"><div class="modal"><div class="modal-handle"></div><div class="modal-stripe" id="mStripe"></div><div class="modal-img" id="mImg"></div><div class="modal-body"><div class="modal-header"><div class="mtw"><div class="modal-sc" id="mCircle"></div><div><div class="modal-title" id="mTitle"></div><div id="mTitleEn"></div></div></div><button class="modal-close" id="mClose">✕</button></div><div class="minfo-grid"><div class="mbox"><label>الحالة</label><span id="mStatus"></span></div><div class="mbox"><label>الدولة</label><span id="mCountry"></span></div><div class="mbox full"><label>الشركة</label><span id="mCompany"></span></div><div class="mbox full"><label>الفئة</label><span id="mCat"></span></div></div><div class="mst">سبب التصنيف</div><div class="mreason" id="mReason"></div><div id="mAltWrap" style="display:none"><div class="mst">البديل المقترح</div><div class="malt" id="mAlt"></div></div><div class="mdate" id="mUpdatedAt"></div><button class="share-btn" id="shareBtn" onclick="showShareModal()">🔗 شارك المنتج</button></div></div></div>
+<div class="modal-overlay" id="modal"><div class="modal"><div class="modal-handle"></div><div class="modal-stripe" id="mStripe"></div><div class="modal-img" id="mImg"></div><div class="modal-body"><div class="modal-header"><div class="mtw"><div class="modal-sc" id="mCircle"></div><div><div class="modal-title" id="mTitle"></div><div id="mTitleEn"></div></div></div><button class="modal-close" id="mClose">✕</button></div><div class="minfo-grid"><div class="mbox"><label>الحالة</label><span id="mStatus"></span></div><div class="mbox"><label>الدولة</label><span id="mCountry"></span></div><div class="mbox full"><label>الشركة</label><span id="mCompany"></span></div><div class="mbox full"><label>الفئة</label><span id="mCat"></span></div></div><div class="mst">سبب التصنيف</div><div class="mreason" id="mReason"></div><div id="mAltWrap" style="display:none"><div class="mst">البديل المقترح</div><div class="alternatives-list" id="mAlt"></div></div><div class="mdate" id="mUpdatedAt"></div><button class="share-btn" id="shareBtn" onclick="showShareModal()">🔗 شارك المنتج</button></div></div></div>
 
 <footer><p>🇵🇸 المقاطعة جبهة إسناد — دليل المقاطعة الشامل</p></footer>
 <div class="toast" id="toast"></div>
@@ -1287,6 +1300,23 @@ function updateCategoryCounts() {
     span.textContent = products.length;
     allBtn.appendChild(span);
   }
+}
+
+// ===================== البدائل الديناميكية =====================
+function getAlternativesForProduct(product) {
+  if(product.status !== 'مقاطعة') return [];
+  const alternatives = products.filter(p => 
+    p.status === 'بديل' && p.cat === product.cat
+  );
+  return alternatives;
+}
+
+function getAlternativesHtml(product) {
+  const alternatives = getAlternativesForProduct(product);
+  if(alternatives.length === 0) return '';
+  return alternatives.map(alt => `
+    <span class="alternative-link" onclick="event.stopPropagation(); openModal(${alt.id})">${escapeHtml(alt.name)}</span>
+  `).join('');
 }
 
 // ===================== إدارة الدول مع البحث =====================
@@ -1644,21 +1674,38 @@ function clearImageUpload() {
   document.getElementById('previewImg').src = '';
 }
 
-// ===================== المنتجات (أكثر من 100 منتج) =====================
+// وظيفة للحصول على شعار الشركة
+function getCompanyLogo(companyName) {
+  const logos = {
+    'Apple': 'https://logo.clearbit.com/apple.com',
+    'سامسونج': 'https://logo.clearbit.com/samsung.com',
+    'LG': 'https://logo.clearbit.com/lg.com',
+    'نستله': 'https://logo.clearbit.com/nestle.com',
+    'اديداس': 'https://logo.clearbit.com/adidas.com',
+    'صافولا': 'https://logo.clearbit.com/savola.com',
+    'Unilever': 'https://logo.clearbit.com/unilever.com',
+    'P&G': 'https://logo.clearbit.com/pg.com',
+    'كوكاكولا': 'https://logo.clearbit.com/coca-cola.com',
+    'بيبسي': 'https://logo.clearbit.com/pepsi.com',
+  };
+  return logos[companyName] || '';
+}
+
+// ===================== المنتجات =====================
 function loadDefaultProducts() {
   return [
     // زيت الطهي - مقاطعة
-    {id:101,name:"صافولا",nameEn:"Safola",status:"مقاطعة",cat:"زيت الطهي",company:"صافولا",country:"السعودية",image:"",reason:"منتجات صافولا تدعم جهات داعمة",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
-    {id:102,name:"عافية",nameEn:"Afia",status:"مقاطعة",cat:"زيت الطهي",company:"عافية",country:"السعودية",image:"",reason:"تابعة لصافولا",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
-    {id:103,name:"العربي",nameEn:"Al Arabi",status:"مقاطعة",cat:"زيت الطهي",company:"صافولا",country:"السعودية",image:"",reason:"تابعة لصافولا",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
-    {id:104,name:"زهرتي",nameEn:"Zahrati",status:"مقاطعة",cat:"زيت الطهي",company:"صافولا",country:"السعودية",image:"",reason:"تابعة لصافولا",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
-    {id:105,name:"شمس",nameEn:"Shams",status:"مقاطعة",cat:"زيت الطهي",company:"عافية",country:"السعودية",image:"",reason:"تابعة لعافية",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
-    {id:106,name:"دلال",nameEn:"Dalal",status:"مقاطعة",cat:"زيت الطهي",company:"عافية",country:"السعودية",image:"",reason:"تابعة لعافية",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
-    {id:107,name:"افكو",nameEn:"Afco",status:"مقاطعة",cat:"زيت الطهي",company:"افكو",country:"مصر",image:"",reason:"منتجات افكو تدعم جهات داعمة",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
-    {id:108,name:"الشروق",nameEn:"Al Shorouk",status:"مقاطعة",cat:"زيت الطهي",company:"افكو",country:"مصر",image:"",reason:"تابعة لافكو",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
-    {id:109,name:"حياة",nameEn:"Hayat",status:"مقاطعة",cat:"زيت الطهي",company:"افكو",country:"مصر",image:"",reason:"تابعة لافكو",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
-    {id:110,name:"زيت الجميل",nameEn:"Al Jameel",status:"مقاطعة",cat:"زيت الطهي",company:"الجميل",country:"السعودية",image:"",reason:"منتجات الجميل تدعم جهات داعمة",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
-    {id:111,name:"مازولا",nameEn:"Mazola",status:"مقاطعة",cat:"زيت الطهي",company:"ACH Food",country:"أمريكا",image:"",reason:"منتج أمريكي",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
+    {id:101,name:"صافولا",nameEn:"Safola",status:"مقاطعة",cat:"زيت الطهي",company:"صافولا",country:"السعودية",image:"",reason:"منتجات صافولا تدعم جهات داعمة",updatedAt:"2025-06-23"},
+    {id:102,name:"عافية",nameEn:"Afia",status:"مقاطعة",cat:"زيت الطهي",company:"عافية",country:"السعودية",image:"",reason:"تابعة لصافولا",updatedAt:"2025-06-23"},
+    {id:103,name:"العربي",nameEn:"Al Arabi",status:"مقاطعة",cat:"زيت الطهي",company:"صافولا",country:"السعودية",image:"",reason:"تابعة لصافولا",updatedAt:"2025-06-23"},
+    {id:104,name:"زهرتي",nameEn:"Zahrati",status:"مقاطعة",cat:"زيت الطهي",company:"صافولا",country:"السعودية",image:"",reason:"تابعة لصافولا",updatedAt:"2025-06-23"},
+    {id:105,name:"شمس",nameEn:"Shams",status:"مقاطعة",cat:"زيت الطهي",company:"عافية",country:"السعودية",image:"",reason:"تابعة لعافية",updatedAt:"2025-06-23"},
+    {id:106,name:"دلال",nameEn:"Dalal",status:"مقاطعة",cat:"زيت الطهي",company:"عافية",country:"السعودية",image:"",reason:"تابعة لعافية",updatedAt:"2025-06-23"},
+    {id:107,name:"افكو",nameEn:"Afco",status:"مقاطعة",cat:"زيت الطهي",company:"افكو",country:"مصر",image:"",reason:"منتجات افكو تدعم جهات داعمة",updatedAt:"2025-06-23"},
+    {id:108,name:"الشروق",nameEn:"Al Shorouk",status:"مقاطعة",cat:"زيت الطهي",company:"افكو",country:"مصر",image:"",reason:"تابعة لافكو",updatedAt:"2025-06-23"},
+    {id:109,name:"حياة",nameEn:"Hayat",status:"مقاطعة",cat:"زيت الطهي",company:"افكو",country:"مصر",image:"",reason:"تابعة لافكو",updatedAt:"2025-06-23"},
+    {id:110,name:"زيت الجميل",nameEn:"Al Jameel",status:"مقاطعة",cat:"زيت الطهي",company:"الجميل",country:"السعودية",image:"",reason:"منتجات الجميل تدعم جهات داعمة",updatedAt:"2025-06-23"},
+    {id:111,name:"مازولا",nameEn:"Mazola",status:"مقاطعة",cat:"زيت الطهي",company:"ACH Food",country:"أمريكا",image:"",reason:"منتج أمريكي",updatedAt:"2025-06-23"},
     // زيت الطهي - بدائل
     {id:112,name:"الحلي",nameEn:"Al Heli",status:"بديل",cat:"زيت الطهي",company:"الحلي",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
     {id:113,name:"اطايب",nameEn:"Atayeb",status:"بديل",cat:"زيت الطهي",company:"اطايب",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
@@ -1678,42 +1725,42 @@ function loadDefaultProducts() {
     {id:127,name:"كرامي",nameEn:"Karami",status:"بديل",cat:"زيت الطهي",company:"كرامي",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
     {id:128,name:"النخبة",nameEn:"Prime",status:"بديل",cat:"زيت الطهي",company:"النخبة",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
     // مزيلات عرق
-    {id:201,name:"اديداس",nameEn:"Adidas",status:"مقاطعة",cat:"مزيلات عرق",company:"اديداس",country:"ألمانيا",image:"",reason:"شركة ألمانية داعمة",alt:"هايجين، ديب سينس",updatedAt:"2025-06-03"},
-    {id:202,name:"ريكسونا",nameEn:"Rexona",status:"مقاطعة",cat:"مزيلات عرق",company:"Unilever",country:"بريطانيا",image:"",reason:"منتجات يونيليفر",alt:"هايجين، ديب سينس",updatedAt:"2025-06-03"},
-    {id:203,name:"نيفيا",nameEn:"Nivea",status:"مقاطعة",cat:"مزيلات عرق",company:"Beiersdorf",country:"ألمانيا",image:"",reason:"شركة ألمانية",alt:"هايجين، ديب سينس",updatedAt:"2025-06-03"},
-    {id:204,name:"دوف",nameEn:"Dove",status:"مقاطعة",cat:"مزيلات عرق",company:"Unilever",country:"بريطانيا",image:"",reason:"منتجات يونيليفر",alt:"هايجين، ديب سينس",updatedAt:"2025-06-03"},
+    {id:201,name:"اديداس",nameEn:"Adidas",status:"مقاطعة",cat:"مزيلات عرق",company:"اديداس",country:"ألمانيا",image:"",reason:"شركة ألمانية داعمة",updatedAt:"2025-06-03"},
+    {id:202,name:"ريكسونا",nameEn:"Rexona",status:"مقاطعة",cat:"مزيلات عرق",company:"Unilever",country:"بريطانيا",image:"",reason:"منتجات يونيليفر",updatedAt:"2025-06-03"},
+    {id:203,name:"نيفيا",nameEn:"Nivea",status:"مقاطعة",cat:"مزيلات عرق",company:"Beiersdorf",country:"ألمانيا",image:"",reason:"شركة ألمانية",updatedAt:"2025-06-03"},
+    {id:204,name:"دوف",nameEn:"Dove",status:"مقاطعة",cat:"مزيلات عرق",company:"Unilever",country:"بريطانيا",image:"",reason:"منتجات يونيليفر",updatedAt:"2025-06-03"},
     {id:205,name:"هايجين",nameEn:"Hygiene",status:"بديل",cat:"مزيلات عرق",company:"هايجين",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-03"},
     {id:206,name:"ديب سينس",nameEn:"Deep Sense",status:"بديل",cat:"مزيلات عرق",company:"ديب سينس",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-03"},
     // أجهزة كهربائية
-    {id:301,name:"LG",nameEn:"LG",status:"مقاطعة",cat:"اجهزة كهربائية",company:"LG",country:"كوريا",image:"",reason:"شركة كورية داعمة",alt:"كسترون، زينت",updatedAt:"2026-01-05"},
-    {id:302,name:"سامسونج",nameEn:"Samsung",status:"مقاطعة",cat:"اجهزة كهربائية",company:"سامسونج",country:"كوريا",image:"",reason:"شركة كورية داعمة",alt:"كسترون، زينت",updatedAt:"2026-01-05"},
+    {id:301,name:"LG",nameEn:"LG",status:"مقاطعة",cat:"اجهزة كهربائية",company:"LG",country:"كوريا",image:"",reason:"شركة كورية داعمة",updatedAt:"2026-01-05"},
+    {id:302,name:"سامسونج",nameEn:"Samsung",status:"مقاطعة",cat:"اجهزة كهربائية",company:"سامسونج",country:"كوريا",image:"",reason:"شركة كورية داعمة",updatedAt:"2026-01-05"},
     {id:303,name:"كسترون",nameEn:"Kastron",status:"بديل",cat:"اجهزة كهربائية",company:"كسترون",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2026-01-05"},
     {id:304,name:"زينت",nameEn:"Zenet",status:"بديل",cat:"اجهزة كهربائية",company:"زينت",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2026-01-05"},
     // دجاج
-    {id:401,name:"امريكانا",nameEn:"Americana",status:"مقاطعة",cat:"دجاج",company:"امريكانا",country:"الكويت",image:"",reason:"شركة داعمة",alt:"المزرعة، الزعيم",updatedAt:"2026-02-01"},
+    {id:401,name:"امريكانا",nameEn:"Americana",status:"مقاطعة",cat:"دجاج",company:"امريكانا",country:"الكويت",image:"",reason:"شركة داعمة",updatedAt:"2026-02-01"},
     {id:402,name:"المزرعة",nameEn:"Al Mazraa",status:"بديل",cat:"دجاج",company:"المزرعة",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2026-02-01"},
     {id:403,name:"الزعيم",nameEn:"Al Zaeem",status:"بديل",cat:"دجاج",company:"الزعيم",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2026-02-01"},
     // ألبان
-    {id:501,name:"نستله",nameEn:"Nestlé",status:"مقاطعة",cat:"ألبان",company:"نستله",country:"سويسرا",image:"",reason:"شركة سويسرية داعمة",alt:"أوال، النور، ندى",updatedAt:"2026-02-01"},
+    {id:501,name:"نستله",nameEn:"Nestlé",status:"مقاطعة",cat:"ألبان",company:"نستله",country:"سويسرا",image:"",reason:"شركة سويسرية داعمة",updatedAt:"2026-02-01"},
     {id:502,name:"أوال",nameEn:"Awal",status:"بديل",cat:"ألبان",company:"أوال",country:"البحرين",image:"",reason:"بديل خليجي ممتاز",updatedAt:"2026-02-01"},
     {id:503,name:"النور",nameEn:"Al Noor",status:"بديل",cat:"ألبان",company:"النور",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2026-02-01"},
     {id:504,name:"ندى",nameEn:"Nada",status:"بديل",cat:"ألبان",company:"ندى",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2026-02-01"},
     // صابون غسيل
-    {id:601,name:"اريال",nameEn:"Ariel",status:"مقاطعة",cat:"صابون غسيل ملابس",company:"P&G",country:"أمريكا",image:"",reason:"منتج أمريكي",alt:"العملاق، ديكسن",updatedAt:"2025-12-15"},
+    {id:601,name:"اريال",nameEn:"Ariel",status:"مقاطعة",cat:"صابون غسيل ملابس",company:"P&G",country:"أمريكا",image:"",reason:"منتج أمريكي",updatedAt:"2025-12-15"},
     {id:602,name:"العملاق",nameEn:"Al Amlaq",status:"بديل",cat:"صابون غسيل ملابس",company:"العملاق",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-12-15"},
     {id:603,name:"ديكسن",nameEn:"Dickson",status:"بديل",cat:"صابون غسيل ملابس",company:"ديكسن",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-12-15"},
     // تلفزيونات
-    {id:701,name:"سامسونج تي في",nameEn:"Samsung TV",status:"مقاطعة",cat:"تلفزيونات",company:"سامسونج",country:"كوريا",image:"",reason:"شركة كورية",alt:"كسترون",updatedAt:"2025-11-10"},
+    {id:701,name:"سامسونج تي في",nameEn:"Samsung TV",status:"مقاطعة",cat:"تلفزيونات",company:"سامسونج",country:"كوريا",image:"",reason:"شركة كورية",updatedAt:"2025-11-10"},
     {id:702,name:"كسترون تي في",nameEn:"Kastron TV",status:"بديل",cat:"تلفزيونات",company:"كسترون",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-11-10"},
     // سائل جلي
-    {id:801,name:"فيري",nameEn:"Fairy",status:"مقاطعة",cat:"سائل جلي",company:"P&G",country:"أمريكا",image:"",reason:"منتج أمريكي",alt:"العملاق",updatedAt:"2025-10-26"},
+    {id:801,name:"فيري",nameEn:"Fairy",status:"مقاطعة",cat:"سائل جلي",company:"P&G",country:"أمريكا",image:"",reason:"منتج أمريكي",updatedAt:"2025-10-26"},
     {id:802,name:"العملاق جلي",nameEn:"Al Amlaq",status:"بديل",cat:"سائل جلي",company:"العملاق",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-10-26"},
     // منظفات ارضية
-    {id:901,name:"ديتول",nameEn:"Dettol",status:"مقاطعة",cat:"منظفات ارضية",company:"Reckitt",country:"بريطانيا",image:"",reason:"منتج بريطاني",alt:"العملاق",updatedAt:"2025-10-26"},
+    {id:901,name:"ديتول",nameEn:"Dettol",status:"مقاطعة",cat:"منظفات ارضية",company:"Reckitt",country:"بريطانيا",image:"",reason:"منتج بريطاني",updatedAt:"2025-10-26"},
     // حلويات
-    {id:1001,name:"كادبوري",nameEn:"Cadbury",status:"مقاطعة",cat:"حلويات",company:"Mondelez",country:"بريطانيا",image:"",reason:"شركة بريطانية",alt:"ميهمن",updatedAt:"2025-07-01"},
+    {id:1001,name:"كادبوري",nameEn:"Cadbury",status:"مقاطعة",cat:"حلويات",company:"Mondelez",country:"بريطانيا",image:"",reason:"شركة بريطانية",updatedAt:"2025-07-01"},
     // هواتف
-    {id:1101,name:"آيفون",nameEn:"iPhone",status:"مقاطعة",cat:"هواتف",company:"Apple",country:"أمريكا",image:"",reason:"شركة أمريكية",alt:"هونر",updatedAt:"2024-12-07"},
+    {id:1101,name:"آيفون",nameEn:"iPhone",status:"مقاطعة",cat:"هواتف",company:"Apple",country:"أمريكا",image:"",reason:"شركة أمريكية",updatedAt:"2024-12-07"},
     {id:1102,name:"هونر",nameEn:"Honor",status:"بديل",cat:"هواتف",company:"هونر",country:"الصين",image:"",reason:"بديل مقبول",updatedAt:"2024-12-07"},
   ];
 }
@@ -1802,12 +1849,14 @@ function renderProducts() {
   const statusColors = {مقاطعة:'red',اجتناب:'yel',بديل:'grn','الشراء من المحلي أفضل':'loc','لا توجد معلومات كافية':'blu'};
   const statusEmoji = {مقاطعة:'🔴',اجتناب:'🟡',بديل:'🟢','الشراء من المحلي أفضل':'🟤','لا توجد معلومات كافية':'🔵'};
   grid.innerHTML = list.map(p => {
-    const hasImage = p.image && p.image.trim() !== '';
+    const logoUrl = getCompanyLogo(p.company);
+    const hasImage = (p.image && p.image.trim() !== '') || logoUrl;
+    const imgSrc = p.image || logoUrl;
     const companyName = p.company || '—';
     return `
     <div class="card" onclick="openModal(${p.id})">
       <div class="card-stripe s-${statusColors[p.status]}"></div>
-      <div class="card-img">${hasImage ? `<img src="${p.image}" onerror="this.parentElement.innerHTML='<div class=no-image>${statusEmoji[p.status]}</div>'">` : `<div class="no-image">${statusEmoji[p.status]}</div>`}</div>
+      <div class="card-img">${hasImage ? `<img src="${imgSrc}" onerror="this.parentElement.innerHTML='<div class=no-image>${statusEmoji[p.status]}</div>'">` : `<div class="no-image">${statusEmoji[p.status]}</div>`}</div>
       <div class="card-body">
         <div class="card-name-row"><div class="card-name">${escapeHtml(p.name)}</div><div class="card-status-dot ${statusColors[p.status]}"></div></div>
         <div class="card-name-en">${escapeHtml(p.nameEn || '')}</div>
@@ -1899,27 +1948,35 @@ async function saveProduct() {
     country: countriesStr || '—', 
     image: document.getElementById('productImage').value, 
     reason: document.getElementById('productReason').value, 
-    alt: (status === 'مقاطعة') ? document.getElementById('productAlt').value : '', 
     updatedAt: document.getElementById('productDate').value || getCurrentDate() 
   }; 
   if(!newProduct.name) { showToast('❌ الرجاء إدخال اسم المنتج'); return; } 
+  
+  let isEdit = false;
   if(id) { 
     const index = products.findIndex(p => p.id == id); 
     if(index !== -1) { 
       products[index] = newProduct; 
-      showToast('✅ تم تحديث المنتج'); 
+      isEdit = true;
     } 
   } else { 
     products.unshift(newProduct); 
-    showToast('✅ تم إضافة المنتج'); 
+    isEdit = false;
   } 
+  
   const saved = await saveProductsToGitHub(); 
   if(saved) { 
     updateAllCounters(); 
     renderProducts(); 
     renderAdminList(); 
     updateCatBar(); 
+    if(isEdit) {
+      showToast('✏️ تم التعديل بنجاح');
+    } else {
+      showToast('✅ تمت الإضافة بنجاح');
+    }
   } 
+  
   document.getElementById('editId').value = ''; 
   document.getElementById('productName').value = ''; 
   document.getElementById('productNameEn').value = ''; 
@@ -1932,6 +1989,10 @@ async function saveProduct() {
   selectedCountriesList = []; 
   renderSelectedCountries(); 
   clearImageUpload();
+  
+  setTimeout(() => {
+    closeAdminPanel();
+  }, 1500);
 }
 
 async function deleteProduct(id) { 
@@ -1949,6 +2010,11 @@ async function deleteProduct(id) {
   } 
 }
 
+function closeAdminPanel() { 
+  document.getElementById('adminPanel').classList.remove('open'); 
+  document.getElementById('adminOverlay').classList.remove('open'); 
+}
+
 document.getElementById('productStatus')?.addEventListener('change', function() { 
   const altField = document.getElementById('altField'); 
   if(this.value === 'مقاطعة') { altField.style.display = 'block'; } else { altField.style.display = 'none'; } 
@@ -1959,21 +2025,17 @@ function renderCompaniesPage() {
   const container = document.getElementById('companiesGrid');
   if(!container) return;
   
-  // حساب عدد المنتجات لكل شركة
   const companyStats = {};
   products.forEach(p => {
     const comp = p.company || 'غير محدد';
     companyStats[comp] = (companyStats[comp] || 0) + 1;
   });
   
-  // تحويل إلى مصفوفة وترتيبها: حسب العدد (تنازلي) ثم أبجدياً
   const allCompanies = [...new Set(products.map(p => p.company || 'غير محدد'))];
   const sortedCompanies = allCompanies.sort((a, b) => {
-    // مقارنة حسب عدد المنتجات (تنازلي)
     if (companyStats[a] !== companyStats[b]) {
       return companyStats[b] - companyStats[a];
     }
-    // إذا كان العدد متساوياً، رتب أبجدياً
     return a.localeCompare(b);
   });
   
@@ -1984,6 +2046,7 @@ function renderCompaniesPage() {
     </div>
   `).join('');
 }
+
 // البحث في الشركات (صفحة الشركات)
 let companiesSearchTimeout;
 function setupCompaniesSearch() {
@@ -1996,13 +2059,9 @@ function setupCompaniesSearch() {
       const allCompanies = [...new Set(products.map(p => p.company || 'غير محدد'))];
       let filtered = allCompanies.filter(c => c.toLowerCase().includes(query));
       
-      // حساب عدد المنتجات لكل شركة
       const companyStats = {};
-      products.forEach(p => { 
-        companyStats[p.company] = (companyStats[p.company] || 0) + 1; 
-      });
+      products.forEach(p => { companyStats[p.company] = (companyStats[p.company] || 0) + 1; });
       
-      // ترتيب النتائج حسب الأكثر منتجات ثم أبجدياً
       filtered = filtered.sort((a, b) => {
         if (companyStats[a] !== companyStats[b]) {
           return companyStats[b] - companyStats[a];
@@ -2060,13 +2119,22 @@ function copyShareMessage() {
   const statusEmoji = {مقاطعة:'🔴',اجتناب:'🟡',بديل:'🟢','الشراء من المحلي أفضل':'🟤','لا توجد معلومات كافية':'🔵'};
   const shareUrl = `${window.location.origin}${window.location.pathname}?product=${shareProduct.id}`;
   
-  const message = `🛒 ${shareProduct.name}
+  let message = `🛒 ${shareProduct.name}
 📋 الحالة: ${statusEmoji[shareProduct.status]} ${shareProduct.status}
 📂 القسم: ${shareProduct.cat}
 🏢 الشركة: ${shareProduct.company || '—'}
-📝 السبب: ${shareProduct.reason || '—'}
-
-🔗 رابط المنتج: ${shareUrl}`;
+📝 السبب: ${shareProduct.reason || '—'}`;
+  
+  // إذا كان المنتج مقاطعة، أضف البدائل من نفس القائمة
+  if(shareProduct.status === 'مقاطعة') {
+    const alternatives = getAlternativesForProduct(shareProduct);
+    if(alternatives.length > 0) {
+      const altNames = alternatives.map(alt => alt.name).join('، ');
+      message += `\n🔄 البدائل: ${altNames}`;
+    }
+  }
+  
+  message += `\n\n🔗 رابط المنتج: ${shareUrl}`;
   
   navigator.clipboard.writeText(message);
   showToast('💬 تم نسخ الرسالة مع الرابط');
@@ -2132,8 +2200,11 @@ function openModal(id) {
   const isAlt = currentProduct.status === 'بديل'; 
   const isBoycott = currentProduct.status === 'مقاطعة'; 
   const hasImage = currentProduct.image && currentProduct.image.trim() !== ''; 
+  const logoUrl = getCompanyLogo(currentProduct.company);
+  const imgSrc = currentProduct.image || logoUrl;
+  
   document.getElementById('mStripe').style.background = `var(--${statusColors[currentProduct.status]})`; 
-  document.getElementById('mImg').innerHTML = hasImage ? `<img src="${currentProduct.image}" onerror="this.parentElement.innerHTML='<div class=no-image-modal>${statusEmoji[currentProduct.status]}</div>'">` : `<div class="no-image-modal">${statusEmoji[currentProduct.status]}</div>`; 
+  document.getElementById('mImg').innerHTML = (hasImage || logoUrl) ? `<img src="${imgSrc}" onerror="this.parentElement.innerHTML='<div class=no-image-modal>${statusEmoji[currentProduct.status]}</div>'">` : `<div class="no-image-modal">${statusEmoji[currentProduct.status]}</div>`; 
   document.getElementById('mTitle').textContent = currentProduct.name; 
   document.getElementById('mTitleEn').textContent = currentProduct.nameEn || ''; 
   document.getElementById('mStatus').textContent = currentProduct.status; 
@@ -2147,11 +2218,17 @@ function openModal(id) {
   const reasonElement = document.getElementById('mReason'); 
   reasonElement.textContent = currentProduct.reason || 'لا يوجد سبب محدد'; 
   if(isAlt) { reasonElement.classList.add('green'); } else { reasonElement.classList.remove('green'); } 
+  
   const altWrap = document.getElementById('mAltWrap'); 
   const altElement = document.getElementById('mAlt'); 
-  if(isBoycott && currentProduct.alt) { 
-    altElement.textContent = currentProduct.alt; 
-    altWrap.style.display = 'block'; 
+  if(isBoycott) {
+    const alternativesHtml = getAlternativesHtml(currentProduct);
+    if(alternativesHtml) {
+      altElement.innerHTML = alternativesHtml;
+      altWrap.style.display = 'block';
+    } else {
+      altWrap.style.display = 'none';
+    }
   } else { 
     altWrap.style.display = 'none'; 
   } 
@@ -2163,10 +2240,18 @@ function openModal(id) {
 }
 
 function closeModal() { 
-  document.getElementById('modal').classList.remove('open'); 
-  document.body.style.overflow = ''; 
-  const newUrl = `${window.location.origin}${window.location.pathname}`; 
-  window.history.pushState({}, '', newUrl); 
+  const modal = document.getElementById('modal');
+  const overlay = document.getElementById('modal');
+  modal.classList.add('closing');
+  if(overlay.parentElement) overlay.parentElement.classList.add('closing');
+  setTimeout(() => {
+    modal.classList.remove('closing');
+    if(overlay.parentElement) overlay.parentElement.classList.remove('closing');
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow = '';
+    const newUrl = `${window.location.origin}${window.location.pathname}`;
+    window.history.pushState({}, '', newUrl);
+  }, 300);
 }
 
 function closeLoginModalOnOutside(event) { 
@@ -2235,11 +2320,6 @@ function toggleAdminPanel() {
   document.getElementById('adminPanel').classList.toggle('open'); 
   document.getElementById('adminOverlay').classList.toggle('open'); 
   if(isAdmin) renderAdminList(); 
-}
-
-function closeAdminPanel() { 
-  document.getElementById('adminPanel').classList.remove('open'); 
-  document.getElementById('adminOverlay').classList.remove('open'); 
 }
 
 function showToast(msg) { 
