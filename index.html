@@ -113,16 +113,14 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   text-align: right;
   font-weight: 600;
   color: var(--blue);
+  width: 100%;
+  display: block;
 }
 .company-full-box:hover {
-  background: var(--red-light);
-  color: var(--red);
+  background: var(--green-light);
+  color: var(--green-dark);
   transform: translateX(-3px);
 }
-.fpill:active, .ctab:active, .stat-item:active, .admin-tab:active, .btn-primary:active, .btn-secondary:active {
-  transform: translateY(1px);
-}
-
 /* أنيميشن المودال */
 @keyframes modalFadeIn {
   from { opacity: 0; transform: translateY(50px); }
@@ -1807,9 +1805,7 @@ function openModal(id) {
   
   // خانة الشركة - كاملة قابلة للنقر مع بقاء النص يمين
   const companyName = currentProduct.company || '—';
-  document.getElementById('mCompany').innerHTML = `<div class="company-full-box" onclick="event.stopPropagation(); showCompanyProducts('${escapeHtml(companyName)}')">${escapeHtml(companyName)}</div>`;
-  
-  document.getElementById('mCat').textContent = currentProduct.cat || '—'; 
+document.getElementById('mCompany').innerHTML = `<div class="company-full-box" onclick="event.stopPropagation(); showCompanyProducts('${escapeHtml(companyName)}')" style="cursor:pointer; width:100%; display:block; text-align:right; background:var(--bg); border-radius:10px; padding:8px 12px; transition:all 0.2s ease; font-weight:600; color:var(--blue);">${escapeHtml(companyName)}</div>`;  document.getElementById('mCat').textContent = currentProduct.cat || '—'; 
   document.getElementById('mUpdatedAt').textContent = `📅 آخر تحديث: ${currentProduct.updatedAt || getCurrentDate()}`; 
   const reasonElement = document.getElementById('mReason'); 
   reasonElement.textContent = currentProduct.reason || 'لا يوجد سبب محدد'; 
