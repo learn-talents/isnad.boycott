@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>المقاطعة جبهة إسناد - نظام الإدارة المتقدم</title>
+<title>المقاطعة جبهة إسناد - دليل المقاطعة الشامل</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -31,6 +31,75 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);min-height:100vh;}
 
+/* ========== أنيميشن البطاقات ========== */
+.card {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1), box-shadow 0.25s ease;
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+}
+.card:active {
+  transform: translateY(3px) scale(0.98);
+  transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========== أنيميشن خانة البحث ========== */
+.search-wrap input {
+  transition: all 0.2s ease;
+}
+.search-wrap input:focus {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  border: none;
+  outline: none;
+}
+
+/* ========== أنيميشن الاقتراحات ========== */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.keyword-suggestions, .country-suggestions {
+  position: relative;
+  margin-top: 5px;
+  animation: slideDown 0.2s ease;
+}
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.suggestion-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  transition: background 0.15s ease;
+}
+.suggestion-item:hover {
+  background: var(--red-light);
+}
+.suggestion-item .suggestion-desc {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* ========== باقي التنسيقات ========== */
 nav {
   position: sticky; top: 0; z-index: 300;
   background: var(--red); height: 60px;
@@ -43,8 +112,7 @@ nav {
   background: #fff; display: flex; align-items: center; justify-content: center;
   border: 2px solid rgba(255,255,255,.5); overflow: hidden;
 }
-.nav-logo-img img { width: 40px; height: 40px; object-fit: cover; display: none; }
-.nav-logo-img img.loaded { display: block; }
+.nav-logo-img img { width: 40px; height: 40px; object-fit: cover; }
 .nav-logo-text { font-size: 19px; font-weight: 900; color: #fff; }
 .burger {
   width: 38px; height: 38px; background: rgba(255,255,255,.18);
@@ -63,8 +131,7 @@ nav {
 .drawer.open { right: 0; }
 .drawer-head { background: var(--red); padding: 1rem; display: flex; align-items: center; justify-content: space-between; }
 .drawer-head-logo { display: flex; align-items: center; gap: 8px; }
-.drawer-head-logo img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; display: none; }
-.drawer-head-logo img.loaded { display: block; }
+.drawer-head-logo img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
 .drawer-head-name { font-size: 15px; font-weight: 900; color: #fff; }
 .drawer-close {
   width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,.2);
@@ -93,7 +160,7 @@ nav {
 }
 .admin-secret:hover { background: var(--red); color: white; }
 
-/* ========== نافذة تسجيل الدخول ========== */
+/* نافذة تسجيل الدخول */
 .login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
 .login-modal.open { display: flex; }
 .login-box {
@@ -110,7 +177,7 @@ nav {
 .login-box button { background: var(--red); color: white; border: none; padding: 12px; width: 100%; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; }
 .login-error { color: var(--red); font-size: 12px; margin-top: 10px; display: none; }
 
-/* ========== لوحة الإدارة الرئيسية ========== */
+/* لوحة الإدارة */
 .admin-panel {
   position: fixed; top: 0; right: -100%;
   width: 100%; max-width: 700px; height: 100vh;
@@ -234,11 +301,10 @@ nav {
   border-radius: 10px;
   font-family: inherit;
 }
-/* ========== باقي التنسيقات ========== */
+
 .hero { background: var(--red); padding: 2rem 1.2rem 1.8rem; text-align: center; }
 .hero-logo-wrap { width: 100px; height: 100px; margin: 0 auto 1rem; }
-.hero-logo-wrap img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid rgba(255,255,255,.4); object-fit: cover; display: none; }
-.hero-logo-wrap img.loaded { display: block; }
+.hero-logo-wrap img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid rgba(255,255,255,.4); object-fit: cover; }
 .hero h1 { font-size: clamp(1.6rem,6vw,2.4rem); font-weight: 900; color: #fff; margin-bottom: .4rem; }
 .hero p { font-size: 13px; color: rgba(255,255,255,.8); margin: 0 auto 1.3rem; max-width: 320px; }
 .search-wrap { position: relative; max-width: 460px; margin: 0 auto; }
@@ -259,10 +325,13 @@ nav {
   padding: 6px 13px; border-radius: 99px;
   border: 1.5px solid var(--border); background: var(--surface);
   font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: all 0.2s ease;
 }
 .fpill .dot { width: 8px; height: 8px; border-radius: 50%; }
 .fpill .cnt { font-size: 10px; background: var(--navy); color: white; padding: 2px 7px; border-radius: 99px; min-width: 24px; text-align: center; }
+.fpill:hover { transform: translateY(-2px); }
 .fpill.on { background: var(--navy); color: #fff; border-color: var(--navy); }
+.fpill.on .cnt { background: rgba(255,255,255,.3); color: white; }
 
 .cat-bar { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; overflow-x: auto; padding: 0 .4rem; flex-wrap: wrap; }
 .ctab {
@@ -270,21 +339,15 @@ nav {
   padding: 11px 13px; font-size: 12px; font-weight: 500;
   color: var(--muted); background: none; border: none;
   border-bottom: 2.5px solid transparent; cursor: pointer;
+  transition: all 0.2s ease;
 }
 .ctab .cdot { width: 7px; height: 7px; border-radius: 50%; }
+.ctab:hover { color: var(--navy); }
 .ctab.on { color: var(--navy); border-bottom-color: var(--navy); font-weight: 700; }
 
 .grid-section { max-width: 1200px; margin: 0 auto; padding: .8rem .8rem 5rem; }
 .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
 
-.card {
-  background: var(--surface);
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  overflow: hidden;
-  cursor: pointer;
-}
-.card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
 .card-stripe { height: 5px; width: 100%; }
 .s-red { background: var(--red); }
 .s-yel { background: var(--yellow); }
@@ -308,7 +371,7 @@ nav {
 .card-info-row .lbl { font-weight: 600; min-width: 42px; }
 .card-cat { display: inline-block; background: var(--bg); padding: 2px 8px; border-radius: 12px; font-size: 10px; color: var(--muted); margin-top: 4px; }
 .card-updated { font-size: 9px; color: var(--muted); margin-top: 6px; }
-.card-btn { width: 100%; margin-top: 10px; padding: 9px; border-radius: 10px; background: var(--navy); color: #fff; font-size: 13px; font-weight: 600; border: none; cursor: pointer; }
+.card-btn { width: 100%; margin-top: 10px; padding: 9px; border-radius: 10px; background: var(--navy); color: #fff; font-size: 13px; font-weight: 600; border: none; cursor: pointer; transition: background 0.2s ease; }
 .card-btn:hover { background: var(--red); }
 .empty-state { text-align: center; padding: 4rem 2rem; color: var(--muted); }
 
@@ -336,7 +399,7 @@ nav {
 .mreason.green { background: var(--green-light); border-right-color: var(--green); color: var(--green-dark); }
 .malt { font-size: 13px; color: var(--green-dark); background: var(--green-light); border-right: 3px solid var(--green); padding: 9px 12px; border-radius: 0 8px 8px 0; margin-top: 5px; }
 .mdate { font-size: 11px; color: var(--muted); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); text-align: center; }
-.share-btn { width: 100%; margin-top: 1.1rem; padding: 12px; border-radius: 12px; background: var(--navy); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; }
+.share-btn { width: 100%; margin-top: 1.1rem; padding: 12px; border-radius: 12px; background: var(--navy); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; transition: background 0.2s ease; }
 .share-btn:hover { background: var(--red); }
 
 footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 12px; color: #888; }
@@ -356,6 +419,13 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
 .contact-wrap { max-width: 500px; margin: 0 auto; padding: 2rem 1rem; }
 .contact-card { background: var(--surface); border-radius: 14px; border: 1px solid var(--border); padding: 1rem; margin-bottom: 1rem; display: flex; gap: 1rem; align-items: center; }
 .loading { text-align: center; padding: 2rem; color: var(--muted); }
+
+/* اقتراحات الدول */
+.country-suggestions {
+  position: relative;
+  margin-top: 5px;
+  animation: slideDown 0.2s ease;
+}
 </style>
 </head>
 <body>
@@ -414,13 +484,19 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
     <div class="form-group"><label>الاسم بالإنجليزي</label><input type="text" id="productNameEn" placeholder="Safola"></div>
     <div class="form-row">
       <div class="form-group"><label>الحالة</label><select id="productStatus"><option value="مقاطعة">🔴 مقاطعة</option><option value="اجتناب">🟡 اجتناب</option><option value="بديل">🟢 بديل</option><option value="الشراء من المحلي أفضل">🟤 محلي أفضل</option><option value="لا توجد معلومات كافية">🔵 لا معلومات</option></select></div>
-      <div class="form-group"><label>الفئة</label><select id="productCat"><option>زيت الطهي</option><option>مزيلات عرق</option><option>اجهزة كهربائية</option><option>دجاج</option><option>ألبان</option><option>صابون غسيل ملابس</option><option>تلفزيونات</option><option>سائل جلي</option><option>منظفات ارضية</option><option>حلويات</option><option>هواتف</option></select></div>
+      <div class="form-group"><label>الفئة</label><select id="productCat"></select></div>
     </div>
     <div class="form-group"><label>الشركة الأم</label><input type="text" id="productCompany" placeholder="الشركة المصنعة"></div>
-    <div class="form-group"><label>الدولة</label><select id="productCountry" style="height:120px;" multiple size="5"></select><small>يمكنك اختيار أكثر من دولة (Ctrl + Click)</small></div>
+    <div class="form-group"><label>الدولة</label>
+      <input type="text" id="countrySearchInput" placeholder="ابحث عن دولة... (اكتب اسم الدولة)">
+      <div class="country-suggestions" id="countrySuggestions" style="display:none;">
+        <div class="suggestions-list" id="countrySuggestionsList"></div>
+      </div>
+      <div id="selectedCountries" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;"></div>
+    </div>
     <div class="form-group"><label>رابط الصورة</label><input type="text" id="productImage" placeholder="https://example.com/image.jpg"></div>
     <div class="form-group"><label>سبب التصنيف</label><textarea id="productReason" rows="2" placeholder="سبب المقاطعة أو الاجتناب... (اكتب / متبوعاً بكلمة مفتاحية لاقتراحات)"></textarea>
-      <div class="keyword-suggestions" id="keywordSuggestions" style="display:none; position:relative;">
+      <div class="keyword-suggestions" id="keywordSuggestions" style="display:none;">
         <div class="suggestions-list" id="suggestionsList"></div>
       </div>
     </div>
@@ -599,6 +675,8 @@ let countries = [
   {id:"cnt35", nameAr:"البرازيل", nameEn:"Brazil"},
 ];
 
+let selectedCountriesList = [];
+
 // حفظ وإعدادات
 function saveKeywordsToLocal() { localStorage.setItem('admin_keywords', JSON.stringify(keywords)); }
 function saveCategoriesToLocal() { localStorage.setItem('admin_categories', JSON.stringify(categories)); }
@@ -612,22 +690,12 @@ function loadAdminData() {
   const savedCountries = localStorage.getItem('admin_countries');
   if(savedCountries) countries = JSON.parse(savedCountries);
   
-  // تحديث قائمة الدول في حقل المنتج
-  updateCountriesSelect();
-  // تحديث قائمة الأقسام في حقل المنتج
   updateCategoriesSelect();
-  // تحديث شريط التصنيفات
   updateCatBar();
-  // تحديث قوائم الإدارة
   renderKeywordsList();
   renderCategoriesList();
   renderCountriesList();
-}
-
-function updateCountriesSelect() {
-  const select = document.getElementById('productCountry');
-  if(!select) return;
-  select.innerHTML = countries.map(c => `<option value="${c.nameAr}">${c.nameAr} (${c.nameEn})</option>`).join('');
+  renderSelectedCountries();
 }
 
 function updateCategoriesSelect() {
@@ -640,6 +708,93 @@ function updateCatBar() {
   const catBar = document.getElementById('catBar');
   if(!catBar) return;
   catBar.innerHTML = `<button class="ctab on" onclick="setCat(this,'all')">الكل</button>` + categories.map(cat => `<button class="ctab" onclick="setCat(this,'${cat.name}')"><span class="cdot" style="background:${cat.color}"></span>${cat.name}</button>`).join('');
+  // تحديث أعداد الأقسام
+  updateCategoryCounts();
+}
+
+function updateCategoryCounts() {
+  categories.forEach(cat => {
+    const count = products.filter(p => p.cat === cat.name).length;
+    const btn = document.querySelector(`.ctab[onclick="setCat(this,'${cat.name}')"]`);
+    if(btn) {
+      const existingSpan = btn.querySelector('.cat-count');
+      if(existingSpan) existingSpan.remove();
+      const span = document.createElement('span');
+      span.className = 'cat-count';
+      span.style.cssText = 'background:var(--navy);color:white;padding:0px 6px;border-radius:12px;font-size:10px;margin-right:5px;';
+      span.textContent = count;
+      btn.appendChild(span);
+    }
+  });
+  const allBtn = document.querySelector('.ctab[onclick="setCat(this,\'all\')"]');
+  if(allBtn) {
+    const existingSpan = allBtn.querySelector('.cat-count');
+    if(existingSpan) existingSpan.remove();
+    const span = document.createElement('span');
+    span.className = 'cat-count';
+    span.style.cssText = 'background:var(--navy);color:white;padding:0px 6px;border-radius:12px;font-size:10px;margin-right:5px;';
+    span.textContent = products.length;
+    allBtn.appendChild(span);
+  }
+}
+
+// ===================== إدارة الدول مع البحث =====================
+let countrySearchTimeout;
+function setupCountrySearch() {
+  const input = document.getElementById('countrySearchInput');
+  if(!input) return;
+  input.addEventListener('input', function() {
+    clearTimeout(countrySearchTimeout);
+    countrySearchTimeout = setTimeout(() => {
+      const query = this.value.toLowerCase();
+      const suggestionsDiv = document.getElementById('countrySuggestions');
+      const suggestionsList = document.getElementById('countrySuggestionsList');
+      
+      if(query.length > 0) {
+        const matches = countries.filter(c => 
+          c.nameAr.toLowerCase().includes(query) || 
+          c.nameEn.toLowerCase().includes(query)
+        );
+        if(matches.length > 0) {
+          suggestionsList.innerHTML = matches.map(c => `
+            <div class="suggestion-item" onclick="selectCountry('${c.nameAr}', '${c.nameEn}')">
+              <strong>${c.nameAr}</strong> <span style="color:#888">(${c.nameEn})</span>
+            </div>
+          `).join('');
+          suggestionsDiv.style.display = 'block';
+        } else {
+          suggestionsDiv.style.display = 'none';
+        }
+      } else {
+        suggestionsDiv.style.display = 'none';
+      }
+    }, 300);
+  });
+}
+
+function selectCountry(nameAr, nameEn) {
+  if(!selectedCountriesList.find(c => c.nameAr === nameAr)) {
+    selectedCountriesList.push({ nameAr: nameAr, nameEn: nameEn });
+    renderSelectedCountries();
+  }
+  document.getElementById('countrySearchInput').value = '';
+  document.getElementById('countrySuggestions').style.display = 'none';
+}
+
+function renderSelectedCountries() {
+  const container = document.getElementById('selectedCountries');
+  if(!container) return;
+  container.innerHTML = selectedCountriesList.map(c => `
+    <span style="background:var(--bg);padding:4px 12px;border-radius:20px;font-size:12px;display:inline-flex;align-items:center;gap:6px;">
+      ${c.nameAr}
+      <button type="button" onclick="removeCountry('${c.nameAr}')" style="background:none;border:none;cursor:pointer;color:var(--red);font-size:14px;">✕</button>
+    </span>
+  `).join('');
+}
+
+function removeCountry(nameAr) {
+  selectedCountriesList = selectedCountriesList.filter(c => c.nameAr !== nameAr);
+  renderSelectedCountries();
 }
 
 // ===================== إدارة الكلمات المفتاحية =====================
@@ -652,9 +807,7 @@ function renderKeywordsList() {
         <strong>/${kw.name}</strong>
         <div style="font-size:12px;color:#666;margin-top:4px;">${kw.desc.substring(0,80)}${kw.desc.length>80?'...':''}</div>
       </div>
-      <div>
-        <button class="btn-danger" onclick="deleteKeyword('${kw.id}')">🗑️ حذف</button>
-      </div>
+      <div><button class="btn-danger" onclick="deleteKeyword('${kw.id}')">🗑️ حذف</button></div>
     </div>
   `).join('');
 }
@@ -742,7 +895,7 @@ function filterCategories() {
   `).join('');
 }
 
-// ===================== إدارة الدول =====================
+// ===================== إدارة الدول (القائمة الأساسية) =====================
 function renderCountriesList() {
   const container = document.getElementById('countriesList');
   if(!container) return;
@@ -762,7 +915,6 @@ function addCountry() {
   countries.push(newCountry);
   saveCountriesToLocal();
   renderCountriesList();
-  updateCountriesSelect();
   document.getElementById('countryNameAr').value = '';
   document.getElementById('countryNameEn').value = '';
   showToast('✅ تم إضافة الدولة');
@@ -773,7 +925,6 @@ function deleteCountry(id) {
     countries = countries.filter(c => c.id !== id);
     saveCountriesToLocal();
     renderCountriesList();
-    updateCountriesSelect();
     showToast('🗑️ تم حذف الدولة');
   }
 }
@@ -860,6 +1011,7 @@ async function loadProducts() {
   } catch(e) { products = loadDefaultProducts(); }
   updateAllCounters();
   renderProducts();
+  updateCategoryCounts();
   if(isAdmin) renderAdminList();
 }
 
@@ -947,13 +1099,14 @@ function setCat(btn, cat) { curCat = cat; document.querySelectorAll('.ctab').for
 function renderAdminList() { if(!isAdmin) return; const container = document.getElementById('adminProducts'); if(!container) return; let filtered = products; if(adminSearchTerm) filtered = products.filter(p => p.name.includes(adminSearchTerm)); container.innerHTML = filtered.map(p => `<div class="admin-list-item"><div class="info"><span class="admin-product-name">${escapeHtml(p.name)}</span><br><small>${p.status} | ${p.cat}</small><br><small>📅 ${p.updatedAt || getCurrentDate()}</small></div><div><button class="btn-secondary" style="background:var(--blue);color:white;margin-left:5px;" onclick="editProduct(${p.id})">✏️ تعديل</button><button class="btn-danger" onclick="deleteProduct(${p.id})">🗑️ حذف</button></div></div>`).join(''); }
 function filterAdminList() { adminSearchTerm = document.getElementById('adminSearch').value; renderAdminList(); }
 function editProduct(id) { const p = products.find(p => p.id === id); if(!p) return; document.getElementById('editId').value = p.id; document.getElementById('productName').value = p.name; document.getElementById('productNameEn').value = p.nameEn || ''; document.getElementById('productStatus').value = p.status; document.getElementById('productCat').value = p.cat; document.getElementById('productCompany').value = p.company || ''; document.getElementById('productImage').value = p.image || ''; document.getElementById('productReason').value = p.reason || ''; document.getElementById('productAlt').value = p.alt || ''; document.getElementById('productDate').value = p.updatedAt || getCurrentDate(); const altField = document.getElementById('altField'); if(p.status === 'مقاطعة') { altField.style.display = 'block'; } else { altField.style.display = 'none'; } showToast('✏️ قم بالتعديل ثم اضغط حفظ'); }
-async function saveProduct() { if(!isAdmin) { showToast('❌ يجب تسجيل الدخول أولاً'); return; } const id = document.getElementById('editId').value; const status = document.getElementById('productStatus').value; const countrySelect = document.getElementById('productCountry'); const selectedCountries = Array.from(countrySelect.selectedOptions).map(opt => opt.value); const newProduct = { id: id ? parseInt(id) : Date.now(), name: document.getElementById('productName').value, nameEn: document.getElementById('productNameEn').value, status: status, cat: document.getElementById('productCat').value, company: document.getElementById('productCompany').value, country: selectedCountries.join(', '), image: document.getElementById('productImage').value, reason: document.getElementById('productReason').value, alt: (status === 'مقاطعة') ? document.getElementById('productAlt').value : '', updatedAt: document.getElementById('productDate').value || getCurrentDate() }; if(!newProduct.name) { showToast('❌ الرجاء إدخال اسم المنتج'); return; } if(id) { const index = products.findIndex(p => p.id == id); if(index !== -1) { products[index] = newProduct; showToast('✅ تم تحديث المنتج'); } } else { products.unshift(newProduct); showToast('✅ تم إضافة المنتج'); } const saved = await saveProductsToGitHub(); if(saved) { updateAllCounters(); renderProducts(); renderAdminList(); } document.getElementById('editId').value = ''; document.getElementById('productName').value = ''; document.getElementById('productNameEn').value = ''; document.getElementById('productCompany').value = ''; document.getElementById('productImage').value = ''; document.getElementById('productReason').value = ''; document.getElementById('productAlt').value = ''; document.getElementById('altField').style.display = 'block'; }
-async function deleteProduct(id) { if(!isAdmin) return; if(confirm('هل أنت متأكد من حذف هذا المنتج؟')) { products = products.filter(p => p.id !== id); const saved = await saveProductsToGitHub(); if(saved) { updateAllCounters(); renderProducts(); renderAdminList(); showToast('🗑️ تم حذف المنتج'); } } }
+async function saveProduct() { if(!isAdmin) { showToast('❌ يجب تسجيل الدخول أولاً'); return; } const id = document.getElementById('editId').value; const status = document.getElementById('productStatus').value; const countriesStr = selectedCountriesList.map(c => c.nameAr).join(', '); const newProduct = { id: id ? parseInt(id) : Date.now(), name: document.getElementById('productName').value, nameEn: document.getElementById('productNameEn').value, status: status, cat: document.getElementById('productCat').value, company: document.getElementById('productCompany').value, country: countriesStr || '—', image: document.getElementById('productImage').value, reason: document.getElementById('productReason').value, alt: (status === 'مقاطعة') ? document.getElementById('productAlt').value : '', updatedAt: document.getElementById('productDate').value || getCurrentDate() }; if(!newProduct.name) { showToast('❌ الرجاء إدخال اسم المنتج'); return; } if(id) { const index = products.findIndex(p => p.id == id); if(index !== -1) { products[index] = newProduct; showToast('✅ تم تحديث المنتج'); } } else { products.unshift(newProduct); showToast('✅ تم إضافة المنتج'); } const saved = await saveProductsToGitHub(); if(saved) { updateAllCounters(); renderProducts(); renderAdminList(); updateCategoryCounts(); } document.getElementById('editId').value = ''; document.getElementById('productName').value = ''; document.getElementById('productNameEn').value = ''; document.getElementById('productCompany').value = ''; document.getElementById('productImage').value = ''; document.getElementById('productReason').value = ''; document.getElementById('productAlt').value = ''; document.getElementById('altField').style.display = 'block'; selectedCountriesList = []; renderSelectedCountries(); }
+async function deleteProduct(id) { if(!isAdmin) return; if(confirm('هل أنت متأكد من حذف هذا المنتج؟')) { products = products.filter(p => p.id !== id); const saved = await saveProductsToGitHub(); if(saved) { updateAllCounters(); renderProducts(); renderAdminList(); updateCategoryCounts(); showToast('🗑️ تم حذف المنتج'); } } }
 document.getElementById('productStatus')?.addEventListener('change', function() { const altField = document.getElementById('altField'); if(this.value === 'مقاطعة') { altField.style.display = 'block'; } else { altField.style.display = 'none'; } });
 
 // ===================== مستمعي الأحداث =====================
 const reasonTextarea = document.getElementById('productReason');
 if(reasonTextarea) { reasonTextarea.addEventListener('input', function(e) { showKeywordSuggestions(this); }); }
+setupCountrySearch();
 
 // ===================== تبويبات لوحة الإدارة =====================
 document.querySelectorAll('.admin-tab').forEach(tab => {
