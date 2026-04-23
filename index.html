@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>المقاطعة جبهة إسناد - دليل المقاطعة الشامل</title>
+<title>المقاطعة جبهة إسناد - نظام الإدارة المتقدم</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -31,7 +31,6 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);min-height:100vh;}
 
-/* ========== تنسيقات النافبار ========== */
 nav {
   position: sticky; top: 0; z-index: 300;
   background: var(--red); height: 60px;
@@ -54,7 +53,6 @@ nav {
 }
 .burger span { display: block; width: 20px; height: 2px; background: #fff; border-radius: 2px; }
 
-/* ========== القائمة الجانبية ========== */
 .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 400; }
 .drawer-overlay.open { display: block; }
 .drawer {
@@ -81,11 +79,10 @@ nav {
 .dl:hover, .dl.on { color: #fff; background: rgba(255,255,255,.06); border-right-color: var(--gold); }
 .drawer-footer { margin-top: auto; padding: 1rem; font-size: 11px; color: #3a4560; text-align: center; }
 
-/* ========== الصفحات ========== */
 .page { display: none; }
 .page.active { display: block; }
 
-/* ========== زر الترس ========== */
+/* زر الترس */
 .admin-secret {
   position: fixed; bottom: 20px; left: 20px;
   width: 50px; height: 50px; border-radius: 50%;
@@ -96,47 +93,7 @@ nav {
 }
 .admin-secret:hover { background: var(--red); color: white; }
 
-/* ========== لوحة الإدارة ========== */
-.admin-panel {
-  position: fixed; top: 0; right: -100%;
-  width: 100%; max-width: 550px; height: 100vh;
-  background: var(--surface); z-index: 1000;
-  transition: right 0.3s ease;
-  overflow-y: auto;
-  box-shadow: -5px 0 30px rgba(0,0,0,.3);
-}
-.admin-panel.open { right: 0; }
-.admin-panel-header { background: var(--red); color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
-.admin-close {
-  width: 35px; height: 35px; border-radius: 50%;
-  background: rgba(255,255,255,.2); border: none;
-  color: white; font-size: 18px; cursor: pointer;
-}
-.admin-content { padding: 1rem; }
-.form-group { margin-bottom: 1rem; }
-.form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px; }
-.form-group input, .form-group select, .form-group textarea {
-  width: 100%; padding: 10px;
-  border: 2px solid var(--border); border-radius: 10px;
-  font-family: inherit; font-size: 14px;
-}
-.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-.btn-primary {
-  background: var(--red); color: white; border: none;
-  padding: 12px; width: 100%; border-radius: 12px;
-  font-size: 16px; font-weight: bold; cursor: pointer;
-  margin-top: 10px;
-}
-.search-admin { margin: 15px 0; }
-.search-admin input { width: 100%; padding: 10px; border: 2px solid var(--border); border-radius: 10px; }
-.product-list-admin { margin-top: 2rem; border-top: 2px solid var(--border); padding-top: 1rem; max-height: 400px; overflow-y: auto; }
-.admin-product-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--border); }
-.delete-btn { background: var(--red-light); color: var(--red); padding: 5px 10px; border-radius: 8px; border: none; cursor: pointer; }
-.edit-btn { background: var(--blue); color: white; padding: 5px 10px; border-radius: 8px; border: none; cursor: pointer; margin-left: 5px; }
-.admin-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 999; }
-.admin-overlay.open { display: block; }
-
-/* ========== نافذة تسجيل الدخول (بدون زر X) ========== */
+/* ========== نافذة تسجيل الدخول ========== */
 .login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
 .login-modal.open { display: flex; }
 .login-box {
@@ -153,7 +110,131 @@ nav {
 .login-box button { background: var(--red); color: white; border: none; padding: 12px; width: 100%; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; }
 .login-error { color: var(--red); font-size: 12px; margin-top: 10px; display: none; }
 
-/* ========== الهيرو ========== */
+/* ========== لوحة الإدارة الرئيسية ========== */
+.admin-panel {
+  position: fixed; top: 0; right: -100%;
+  width: 100%; max-width: 700px; height: 100vh;
+  background: var(--surface); z-index: 1000;
+  transition: right 0.3s ease;
+  overflow-y: auto;
+  box-shadow: -5px 0 30px rgba(0,0,0,.3);
+}
+.admin-panel.open { right: 0; }
+.admin-panel-header { background: var(--red); color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
+.admin-close {
+  width: 35px; height: 35px; border-radius: 50%;
+  background: rgba(255,255,255,.2); border: none;
+  color: white; font-size: 18px; cursor: pointer;
+}
+.admin-tabs {
+  display: flex;
+  gap: 5px;
+  padding: 0.5rem;
+  background: var(--bg);
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+}
+.admin-tab {
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.admin-tab.active {
+  background: var(--red);
+  color: white;
+}
+.admin-section {
+  display: none;
+  padding: 1rem;
+}
+.admin-section.active {
+  display: block;
+}
+.admin-section h3 {
+  color: var(--red);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 8px;
+}
+.form-group {
+  margin-bottom: 1rem;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  font-size: 13px;
+}
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.btn-primary {
+  background: var(--red);
+  color: white;
+  border: none;
+  padding: 12px;
+  width: 100%;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.btn-secondary {
+  background: var(--navy);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.btn-danger {
+  background: var(--red-light);
+  color: var(--red);
+  border: none;
+  padding: 5px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.admin-list {
+  margin-top: 1.5rem;
+}
+.admin-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.admin-list-item .info {
+  flex: 1;
+}
+.search-box {
+  margin-bottom: 1rem;
+}
+.search-box input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-family: inherit;
+}
+/* ========== باقي التنسيقات ========== */
 .hero { background: var(--red); padding: 2rem 1.2rem 1.8rem; text-align: center; }
 .hero-logo-wrap { width: 100px; height: 100px; margin: 0 auto 1rem; }
 .hero-logo-wrap img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid rgba(255,255,255,.4); object-fit: cover; display: none; }
@@ -161,15 +242,10 @@ nav {
 .hero h1 { font-size: clamp(1.6rem,6vw,2.4rem); font-weight: 900; color: #fff; margin-bottom: .4rem; }
 .hero p { font-size: 13px; color: rgba(255,255,255,.8); margin: 0 auto 1.3rem; max-width: 320px; }
 .search-wrap { position: relative; max-width: 460px; margin: 0 auto; }
-.search-wrap input {
-  width: 100%; padding: 12px 16px 12px 46px;
-  font-size: 15px; border: none; border-radius: 12px;
-  background: #fff; outline: none;
-}
+.search-wrap input { width: 100%; padding: 12px 16px 12px 46px; font-size: 15px; border: none; border-radius: 12px; background: #fff; outline: none; }
 .s-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #aaa; }
 .results-count { font-size: 12px; color: rgba(255,255,255,.7); text-align: center; margin-top: .5rem; }
 
-/* ========== شريط الإحصائيات ========== */
 .stats-bar { background: var(--navy); display: grid; grid-template-columns: repeat(6,1fr); border-bottom: 3px solid var(--gold); }
 .stat-item { text-align: center; padding: 10px 6px; border-left: 1px solid rgba(255,255,255,.08); cursor: pointer; }
 .stat-item:last-child { border-left: none; }
@@ -177,7 +253,6 @@ nav {
 .stat-item span { font-size: 9px; color: #6a7888; text-transform: uppercase; }
 .stat-item.active { background: rgba(255,255,255,.1); border-bottom: 2px solid var(--gold); }
 
-/* ========== أزرار الفلاتر ========== */
 .filter-row { display: flex; gap: 7px; padding: .9rem 1rem .4rem; flex-wrap: wrap; }
 .fpill {
   display: inline-flex; align-items: center; gap: 5px;
@@ -188,9 +263,7 @@ nav {
 .fpill .dot { width: 8px; height: 8px; border-radius: 50%; }
 .fpill .cnt { font-size: 10px; background: var(--navy); color: white; padding: 2px 7px; border-radius: 99px; min-width: 24px; text-align: center; }
 .fpill.on { background: var(--navy); color: #fff; border-color: var(--navy); }
-.fpill.on .cnt { background: rgba(255,255,255,.3); color: white; }
 
-/* ========== التصنيفات ========== */
 .cat-bar { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; overflow-x: auto; padding: 0 .4rem; flex-wrap: wrap; }
 .ctab {
   display: inline-flex; align-items: center; gap: 5px;
@@ -201,11 +274,9 @@ nav {
 .ctab .cdot { width: 7px; height: 7px; border-radius: 50%; }
 .ctab.on { color: var(--navy); border-bottom-color: var(--navy); font-weight: 700; }
 
-/* ========== شبكة المنتجات ========== */
 .grid-section { max-width: 1200px; margin: 0 auto; padding: .8rem .8rem 5rem; }
 .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
 
-/* ========== بطاقة المنتج ========== */
 .card {
   background: var(--surface);
   border-radius: 16px;
@@ -213,10 +284,7 @@ nav {
   overflow: hidden;
   cursor: pointer;
 }
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
+.card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
 .card-stripe { height: 5px; width: 100%; }
 .s-red { background: var(--red); }
 .s-yel { background: var(--yellow); }
@@ -240,15 +308,10 @@ nav {
 .card-info-row .lbl { font-weight: 600; min-width: 42px; }
 .card-cat { display: inline-block; background: var(--bg); padding: 2px 8px; border-radius: 12px; font-size: 10px; color: var(--muted); margin-top: 4px; }
 .card-updated { font-size: 9px; color: var(--muted); margin-top: 6px; }
-.card-btn {
-  width: 100%; margin-top: 10px; padding: 9px;
-  border-radius: 10px; background: var(--navy); color: #fff;
-  font-size: 13px; font-weight: 600; border: none; cursor: pointer;
-}
+.card-btn { width: 100%; margin-top: 10px; padding: 9px; border-radius: 10px; background: var(--navy); color: #fff; font-size: 13px; font-weight: 600; border: none; cursor: pointer; }
 .card-btn:hover { background: var(--red); }
 .empty-state { text-align: center; padding: 4rem 2rem; color: var(--muted); }
 
-/* ========== نافذة التفاصيل ========== */
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 600; align-items: flex-end; justify-content: center; }
 .modal-overlay.open { display: flex; }
 .modal { background: var(--surface); border-radius: 24px 24px 0 0; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; }
@@ -276,23 +339,12 @@ nav {
 .share-btn { width: 100%; margin-top: 1.1rem; padding: 12px; border-radius: 12px; background: var(--navy); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; }
 .share-btn:hover { background: var(--red); }
 
-/* ========== التذييل ========== */
 footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 12px; color: #888; }
 .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; padding: 9px 18px; border-radius: 99px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s ease; }
 .toast.show { opacity: 1; }
 
-/* ========== صفحة العلامات ========== */
 .legend-wrap { max-width: 700px; margin: 0 auto; padding: 2rem 1rem; }
-.legend-card {
-  background: transparent;
-  border-radius: 0;
-  border: none;
-  border-right: 4px solid;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  display: block;
-  box-shadow: none;
-}
+.legend-card { background: transparent; border-radius: 0; border: none; border-right: 4px solid; padding: 1rem; margin-bottom: 1rem; display: block; }
 .legend-card-red { border-right-color: var(--red); }
 .legend-card-yellow { border-right-color: var(--yellow); }
 .legend-card-green { border-right-color: var(--green); }
@@ -301,43 +353,9 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
 .legend-text h3 { font-size: 16px; font-weight: 900; margin-bottom: 5px; }
 .legend-text p { font-size: 12px; color: #555; line-height: 1.6; }
 
-/* ========== صفحة التواصل ========== */
 .contact-wrap { max-width: 500px; margin: 0 auto; padding: 2rem 1rem; }
 .contact-card { background: var(--surface); border-radius: 14px; border: 1px solid var(--border); padding: 1rem; margin-bottom: 1rem; display: flex; gap: 1rem; align-items: center; }
 .loading { text-align: center; padding: 2rem; color: var(--muted); }
-
-/* ========== اقتراحات الكلمات المفتاحية ========== */
-.keyword-suggestions {
-  position: relative;
-  margin-top: 5px;
-}
-.suggestions-list {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  max-height: 150px;
-  overflow-y: auto;
-  z-index: 100;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-.suggestion-item {
-  padding: 8px 12px;
-  cursor: pointer;
-  border-bottom: 1px solid var(--border);
-  font-size: 13px;
-}
-.suggestion-item:hover {
-  background: var(--red-light);
-}
-.suggestion-item .suggestion-desc {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 4px;
-}
 </style>
 </head>
 <body>
@@ -373,36 +391,78 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
   </div>
 </div>
 
+<!-- ADMIN PANEL -->
 <div class="admin-overlay" id="adminOverlay" onclick="closeAdminPanel()"></div>
 <div class="admin-panel" id="adminPanel">
   <div class="admin-panel-header">
-    <h3>⚙️ لوحة الإدارة</h3>
+    <h3>⚙️ لوحة الإدارة المتقدمة</h3>
     <button class="admin-close" onclick="closeAdminPanel()">✕</button>
   </div>
-  <div class="admin-content">
-    <h4 style="color:var(--red);margin-bottom:1rem">➕ إضافة/تعديل منتج</h4>
+  
+  <div class="admin-tabs">
+    <button class="admin-tab active" data-tab="products">📦 المنتجات</button>
+    <button class="admin-tab" data-tab="keywords">🔑 الكلمات المفتاحية</button>
+    <button class="admin-tab" data-tab="categories">📂 الأقسام</button>
+    <button class="admin-tab" data-tab="countries">🌍 الدول</button>
+  </div>
+  
+  <!-- قسم المنتجات -->
+  <div class="admin-section active" id="section-products">
+    <h3>➕ إضافة/تعديل منتج</h3>
     <input type="hidden" id="editId" value="">
     <div class="form-group"><label>اسم المنتج</label><input type="text" id="productName" placeholder="مثال: صافولا"></div>
     <div class="form-group"><label>الاسم بالإنجليزي</label><input type="text" id="productNameEn" placeholder="Safola"></div>
-    <div class="form-row-3">
+    <div class="form-row">
       <div class="form-group"><label>الحالة</label><select id="productStatus"><option value="مقاطعة">🔴 مقاطعة</option><option value="اجتناب">🟡 اجتناب</option><option value="بديل">🟢 بديل</option><option value="الشراء من المحلي أفضل">🟤 محلي أفضل</option><option value="لا توجد معلومات كافية">🔵 لا معلومات</option></select></div>
       <div class="form-group"><label>الفئة</label><select id="productCat"><option>زيت الطهي</option><option>مزيلات عرق</option><option>اجهزة كهربائية</option><option>دجاج</option><option>ألبان</option><option>صابون غسيل ملابس</option><option>تلفزيونات</option><option>سائل جلي</option><option>منظفات ارضية</option><option>حلويات</option><option>هواتف</option></select></div>
-      <div class="form-group"><label>تاريخ التحديث</label><input type="date" id="productDate" value=""></div>
     </div>
     <div class="form-group"><label>الشركة الأم</label><input type="text" id="productCompany" placeholder="الشركة المصنعة"></div>
-    <div class="form-group"><label>البلد</label><input type="text" id="productCountry" placeholder="بلد المنشأ"></div>
+    <div class="form-group"><label>الدولة</label><select id="productCountry" style="height:120px;" multiple size="5"></select><small>يمكنك اختيار أكثر من دولة (Ctrl + Click)</small></div>
     <div class="form-group"><label>رابط الصورة</label><input type="text" id="productImage" placeholder="https://example.com/image.jpg"></div>
-    <div class="form-group"><label>سبب التصنيف</label>
-      <textarea id="productReason" rows="2" placeholder="سبب المقاطعة أو الاجتناب... (اكتب / متبوعاً بكلمة مفتاحية لاقتراحات)"></textarea>
-      <div class="keyword-suggestions" id="keywordSuggestions" style="display:none;">
+    <div class="form-group"><label>سبب التصنيف</label><textarea id="productReason" rows="2" placeholder="سبب المقاطعة أو الاجتناب... (اكتب / متبوعاً بكلمة مفتاحية لاقتراحات)"></textarea>
+      <div class="keyword-suggestions" id="keywordSuggestions" style="display:none; position:relative;">
         <div class="suggestions-list" id="suggestionsList"></div>
       </div>
     </div>
     <div class="form-group" id="altField"><label>البديل المقترح (للمقاطعة فقط)</label><textarea id="productAlt" rows="2" placeholder="البدائل المتاحة..."></textarea></div>
+    <div class="form-group"><label>تاريخ التحديث</label><input type="date" id="productDate" value=""></div>
     <button class="btn-primary" onclick="saveProduct()">💾 حفظ المنتج</button>
     
-    <div class="search-admin"><input type="text" id="adminSearch" placeholder="🔍 بحث في المنتجات..." onkeyup="filterAdminList()"></div>
-    <div class="product-list-admin"><h4>📋 قائمة المنتجات</h4><div id="adminProducts"></div></div>
+    <div class="search-box"><input type="text" id="adminSearch" placeholder="🔍 بحث في المنتجات..." onkeyup="filterAdminList()"></div>
+    <div class="admin-list"><h4>📋 قائمة المنتجات</h4><div id="adminProducts"></div></div>
+  </div>
+  
+  <!-- قسم الكلمات المفتاحية -->
+  <div class="admin-section" id="section-keywords">
+    <h3>🔑 إدارة الكلمات المفتاحية وأسباب المقاطعة</h3>
+    <div class="form-group"><label>الكلمة المفتاحية</label><input type="text" id="keywordName" placeholder="مثال: كوشير"></div>
+    <div class="form-group"><label>الشرح / الوصف</label><textarea id="keywordDesc" rows="3" placeholder="شرح مفصل عن هذه الكلمة المفتاحية..."></textarea></div>
+    <button class="btn-primary" onclick="addKeyword()">➕ إضافة كلمة مفتاحية</button>
+    
+    <div class="search-box"><input type="text" id="keywordSearch" placeholder="🔍 بحث في الكلمات المفتاحية..." onkeyup="filterKeywords()"></div>
+    <div class="admin-list"><h4>📋 الكلمات المفتاحية الحالية</h4><div id="keywordsList"></div></div>
+  </div>
+  
+  <!-- قسم الأقسام -->
+  <div class="admin-section" id="section-categories">
+    <h3>📂 إدارة الأقسام</h3>
+    <div class="form-group"><label>اسم القسم</label><input type="text" id="categoryName" placeholder="مثال: مشروبات"></div>
+    <div class="form-group"><label>لون القسم (اختياري)</label><input type="color" id="categoryColor" value="#4a90d9"></div>
+    <button class="btn-primary" onclick="addCategory()">➕ إضافة قسم</button>
+    
+    <div class="search-box"><input type="text" id="categorySearch" placeholder="🔍 بحث في الأقسام..." onkeyup="filterCategories()"></div>
+    <div class="admin-list"><h4>📋 الأقسام الحالية</h4><div id="categoriesList"></div></div>
+  </div>
+  
+  <!-- قسم الدول -->
+  <div class="admin-section" id="section-countries">
+    <h3>🌍 إدارة الدول</h3>
+    <div class="form-group"><label>اسم الدولة (عربي)</label><input type="text" id="countryNameAr" placeholder="مثال: السعودية"></div>
+    <div class="form-group"><label>اسم الدولة (إنجليزي)</label><input type="text" id="countryNameEn" placeholder="مثال: Saudi Arabia"></div>
+    <button class="btn-primary" onclick="addCountry()">➕ إضافة دولة</button>
+    
+    <div class="search-box"><input type="text" id="countrySearch" placeholder="🔍 بحث في الدول..." onkeyup="filterCountries()"></div>
+    <div class="admin-list"><h4>📋 قائمة الدول</h4><div id="countriesList"></div></div>
   </div>
 </div>
 
@@ -441,21 +501,11 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
 <div class="page" id="page-legend">
   <div class="legend-wrap">
     <h2>العلامات والمعايير</h2>
-    <div class="legend-card legend-card-red">
-      <div class="legend-text"><h3 style="color:var(--red)">🔴 مقاطعة</h3><p>الشركة صهيونية أو من الدول الداعمة للكيانات الصهيونية والمحاربة للإسلام (أمريكا، ألمانيا، فرنسا، بريطانيا، إيطاليا) أو إذا كانت الشركة تدعم الشذوذ أو تدعو لتقل المسلمين.</p></div>
-    </div>
-    <div class="legend-card legend-card-yellow">
-      <div class="legend-text"><h3 style="color:var(--yellow-dark)">🟡 يُفضل اجتنابها</h3><p>الشركة عندها استثمارات مشبوهة أو مصنوعة في بلاد الكفر.</p></div>
-    </div>
-    <div class="legend-card legend-card-brown">
-      <div class="legend-text"><h3 style="color:#7a5200">🟤 غير مقاطعة</h3><p>لكنها من بلد كفار والفضل شراء منتجات من بلاد المسلمين في حال التوافر، والفضل أيضًا دعم المحلي.</p></div>
-    </div>
-    <div class="legend-card legend-card-blue">
-      <div class="legend-text"><h3 style="color:#0d4a9c">🔵 لا توجد معلومات كافية</h3><p>لا توجد معلومات كافية عن الشركة.</p></div>
-    </div>
-    <div class="legend-card legend-card-green">
-      <div class="legend-text"><h3 style="color:var(--green)">🟢 بديل أو أصيل</h3><p>منتجات محلية أو من دول صديقة بديلة للمنتجات المقاطعة.</p></div>
-    </div>
+    <div class="legend-card legend-card-red"><div class="legend-text"><h3 style="color:var(--red)">🔴 مقاطعة</h3><p>الشركة صهيونية أو من الدول الداعمة للكيانات الصهيونية والمحاربة للإسلام</p></div></div>
+    <div class="legend-card legend-card-yellow"><div class="legend-text"><h3 style="color:var(--yellow-dark)">🟡 يُفضل اجتنابها</h3><p>الشركة عندها استثمارات مشبوهة أو مصنوعة في بلاد الكفر</p></div></div>
+    <div class="legend-card legend-card-brown"><div class="legend-text"><h3 style="color:#7a5200">🟤 غير مقاطعة</h3><p>لكنها من بلد كفار والفضل شراء منتجات من بلاد المسلمين</p></div></div>
+    <div class="legend-card legend-card-blue"><div class="legend-text"><h3 style="color:#0d4a9c">🔵 لا توجد معلومات كافية</h3><p>لا توجد معلومات كافية عن الشركة</p></div></div>
+    <div class="legend-card legend-card-green"><div class="legend-text"><h3 style="color:var(--green)">🟢 بديل أو أصيل</h3><p>منتجات محلية أو من دول صديقة بديلة للمنتجات المقاطعة</p></div></div>
   </div>
 </div>
 
@@ -466,7 +516,7 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
   </div>
 </div>
 
-<div class="modal-overlay" id="modal"><div class="modal"><div class="modal-handle"></div><div class="modal-stripe" id="mStripe"></div><div class="modal-img" id="mImg"></div><div class="modal-body"><div class="modal-header"><div class="mtw"><div class="modal-sc" id="mCircle"></div><div><div class="modal-title" id="mTitle"></div><div id="mTitleEn"></div></div></div><button class="modal-close" id="mClose">✕</button></div><div class="minfo-grid"><div class="mbox"><label>الحالة</label><span id="mStatus"></span></div><div class="mbox"><label>البلد</label><span id="mCountry"></span></div><div class="mbox full"><label>الشركة</label><span id="mCompany"></span></div><div class="mbox full"><label>الفئة</label><span id="mCat"></span></div></div><div class="mst">سبب التصنيف</div><div class="mreason" id="mReason"></div><div id="mAltWrap" style="display:none"><div class="mst">البديل المقترح</div><div class="malt" id="mAlt"></div></div><div class="mdate" id="mUpdatedAt"></div><button class="share-btn" id="shareBtn" onclick="shareProduct()">🔗 شارك المنتج</button></div></div></div>
+<div class="modal-overlay" id="modal"><div class="modal"><div class="modal-handle"></div><div class="modal-stripe" id="mStripe"></div><div class="modal-img" id="mImg"></div><div class="modal-body"><div class="modal-header"><div class="mtw"><div class="modal-sc" id="mCircle"></div><div><div class="modal-title" id="mTitle"></div><div id="mTitleEn"></div></div></div><button class="modal-close" id="mClose">✕</button></div><div class="minfo-grid"><div class="mbox"><label>الحالة</label><span id="mStatus"></span></div><div class="mbox"><label>الدولة</label><span id="mCountry"></span></div><div class="mbox full"><label>الشركة</label><span id="mCompany"></span></div><div class="mbox full"><label>الفئة</label><span id="mCat"></span></div></div><div class="mst">سبب التصنيف</div><div class="mreason" id="mReason"></div><div id="mAltWrap" style="display:none"><div class="mst">البديل المقترح</div><div class="malt" id="mAlt"></div></div><div class="mdate" id="mUpdatedAt"></div><button class="share-btn" id="shareBtn" onclick="shareProduct()">🔗 شارك المنتج</button></div></div></div>
 
 <footer><p>🇵🇸 المقاطعة جبهة إسناد — دليل المقاطعة الشامل</p></footer>
 <div class="toast" id="toast"></div>
@@ -484,34 +534,277 @@ let isAdmin = false;
 let adminSearchTerm = '';
 let curFilter = 'all', curCat = 'all', curSearch = '';
 
-// ===================== الكلمات المفتاحية والشرح =====================
-const keywordTemplates = {
-  "كوشير": "المنتجات الحاصلة على شهادة كوشير (Kosher) هي منتجات معتمدة حسب الشريعة اليهودية. بعض هذه المنتجات تدعم اقتصاد الكيان الصهيوني عبر الضرائب والتراخيص. يُنصح بالتحقق من مصدر العلامة التجارية.",
-  "حلال": "المنتجات الحاصلة على شهادة حلال قد تكون من شركات غير إسلامية. يجب التأكد من أن الشركة الأم لا تدعم الكيان الصهيوني.",
-  "صهيوني": "الشركات التي لها استثمارات أو علاقات تجارية مباشرة مع الكيان الصهيوني، أو التي تدعم سياساته مالياً أو إعلامياً.",
-  "امريكي": "الشركات الأمريكية التي تدعم سياسات الكيان الصهيوني، سواء عبر التبرعات أو الضغط السياسي (Lobbying).",
-  "الاحتلال": "الشركات التي لها مصانع أو فروع أو استثمارات في المستوطنات غير الشرعية في الأراضي المحتلة.",
-  "باي كوت": "شركات مقاطعة لأنها تدعم الاحتلال بشكل مباشر أو غير مباشر، مثل توفير خدمات أو منتجات للجيش الإسرائيلي.",
-  "داعم": "شركات تقدم تبرعات أو دعم مالي لمنظمات صهيونية أو للجيش الإسرائيلي.",
-  "اسرائيل": "شركات لها شراكات أو اتفاقيات تجارية مع الكيان الإسرائيلي، أو تستثمر في السوق الإسرائيلي.",
-  "استثمارات": "شركات لديها استثمارات في إسرائيل، سواء في البورصة أو في شركات إسرائيلية.",
-  "توأمة": "شركات تشارك في برامج توأمة أو تعاون مع جهات إسرائيلية.",
-};
+// ===================== الكلمات المفتاحية والأقسام والدول =====================
+let keywords = [
+  {id:"kw1", name:"الدعم المادي المباشر", desc:"الشركات التي تقدم دعماً مالياً مباشراً للكيان الصهيوني أو للمستوطنات أو للجيش الإسرائيلي."},
+  {id:"kw2", name:"الدعم المعنوي والتعاطف", desc:"الشركات التي تعلن تعاطفها أو دعمها المعنوي للكيان الصهيوني عبر بيانات أو تصريحات رسمية."},
+  {id:"kw3", name:"دعم المثلية والشواذ", desc:"الشركات التي تدعم منظمات المثلية أو تروج للأفكار الشاذة المخالفة للفطرة."},
+  {id:"kw4", name:"شهادات الكوشير", desc:"المنتجات الحاصلة على شهادة كوشير (Kosher) تعني أنها معتمدة حسب الشريعة اليهودية، وتدعم اقتصاد الكيان عبر الرسوم والتراخيص."},
+  {id:"kw5", name:"التصدير للكيان", desc:"الشركات التي تصدر منتجاتها إلى الكيان الصهيوني، مما يدعم اقتصاده."},
+  {id:"kw6", name:"مقاطعة دولة", desc:"المقاطعة بناءً على موقف الدولة الداعم للكيان الصهيوني."},
+  {id:"kw7", name:"الاستثمارات التي تتجاوز 3%", desc:"الشركات التي لديها استثمارات في الكيان الصهيوني تتجاوز 3% من رأسمالها."},
+  {id:"kw8", name:"التصنيع داخل الأراضي المحتلة", desc:"الشركات التي تملك مصانع أو فروعاً داخل المستوطنات غير الشرعية."},
+  {id:"kw9", name:"الشركات التعاونية (التوأمة)", desc:"الشركات التي لديها اتفاقيات توأمة أو تعاون مع كيانات صهيونية."}
+];
 
+let categories = [
+  {id:"cat1", name:"زيت الطهي", color:"#e8a040"},
+  {id:"cat2", name:"مزيلات عرق", color:"#d4a373"},
+  {id:"cat3", name:"اجهزة كهربائية", color:"#708090"},
+  {id:"cat4", name:"دجاج", color:"#f5deb3"},
+  {id:"cat5", name:"ألبان", color:"#f5f5dc"},
+  {id:"cat6", name:"صابون غسيل ملابس", color:"#87ceeb"},
+  {id:"cat7", name:"تلفزيونات", color:"#483d8b"},
+  {id:"cat8", name:"سائل جلي", color:"#ffb6c1"},
+  {id:"cat9", name:"منظفات ارضية", color:"#9acd32"},
+  {id:"cat10", name:"حلويات", color:"#e8a040"},
+  {id:"cat11", name:"هواتف", color:"#2e8b57"}
+];
+
+let countries = [
+  {id:"cnt1", nameAr:"السعودية", nameEn:"Saudi Arabia"},
+  {id:"cnt2", nameAr:"الإمارات", nameEn:"UAE"},
+  {id:"cnt3", nameAr:"الكويت", nameEn:"Kuwait"},
+  {id:"cnt4", nameAr:"قطر", nameEn:"Qatar"},
+  {id:"cnt5", nameAr:"البحرين", nameEn:"Bahrain"},
+  {id:"cnt6", nameAr:"عمان", nameEn:"Oman"},
+  {id:"cnt7", nameAr:"مصر", nameEn:"Egypt"},
+  {id:"cnt8", nameAr:"الأردن", nameEn:"Jordan"},
+  {id:"cnt9", nameAr:"فلسطين", nameEn:"Palestine"},
+  {id:"cnt10", nameAr:"العراق", nameEn:"Iraq"},
+  {id:"cnt11", nameAr:"سوريا", nameEn:"Syria"},
+  {id:"cnt12", nameAr:"لبنان", nameEn:"Lebanon"},
+  {id:"cnt13", nameAr:"اليمن", nameEn:"Yemen"},
+  {id:"cnt14", nameAr:"ليبيا", nameEn:"Libya"},
+  {id:"cnt15", nameAr:"تونس", nameEn:"Tunisia"},
+  {id:"cnt16", nameAr:"الجزائر", nameEn:"Algeria"},
+  {id:"cnt17", nameAr:"المغرب", nameEn:"Morocco"},
+  {id:"cnt18", nameAr:"السودان", nameEn:"Sudan"},
+  {id:"cnt19", nameAr:"تركيا", nameEn:"Turkey"},
+  {id:"cnt20", nameAr:"إيران", nameEn:"Iran"},
+  {id:"cnt21", nameAr:"باكستان", nameEn:"Pakistan"},
+  {id:"cnt22", nameAr:"الهند", nameEn:"India"},
+  {id:"cnt23", nameAr:"الصين", nameEn:"China"},
+  {id:"cnt24", nameAr:"اليابان", nameEn:"Japan"},
+  {id:"cnt25", nameAr:"كوريا الجنوبية", nameEn:"South Korea"},
+  {id:"cnt26", nameAr:"أمريكا", nameEn:"USA"},
+  {id:"cnt27", nameAr:"بريطانيا", nameEn:"UK"},
+  {id:"cnt28", nameAr:"فرنسا", nameEn:"France"},
+  {id:"cnt29", nameAr:"ألمانيا", nameEn:"Germany"},
+  {id:"cnt30", nameAr:"إيطاليا", nameEn:"Italy"},
+  {id:"cnt31", nameAr:"إسبانيا", nameEn:"Spain"},
+  {id:"cnt32", nameAr:"روسيا", nameEn:"Russia"},
+  {id:"cnt33", nameAr:"كندا", nameEn:"Canada"},
+  {id:"cnt34", nameAr:"أستراليا", nameEn:"Australia"},
+  {id:"cnt35", nameAr:"البرازيل", nameEn:"Brazil"},
+];
+
+// حفظ وإعدادات
+function saveKeywordsToLocal() { localStorage.setItem('admin_keywords', JSON.stringify(keywords)); }
+function saveCategoriesToLocal() { localStorage.setItem('admin_categories', JSON.stringify(categories)); }
+function saveCountriesToLocal() { localStorage.setItem('admin_countries', JSON.stringify(countries)); }
+
+function loadAdminData() {
+  const savedKeywords = localStorage.getItem('admin_keywords');
+  if(savedKeywords) keywords = JSON.parse(savedKeywords);
+  const savedCategories = localStorage.getItem('admin_categories');
+  if(savedCategories) categories = JSON.parse(savedCategories);
+  const savedCountries = localStorage.getItem('admin_countries');
+  if(savedCountries) countries = JSON.parse(savedCountries);
+  
+  // تحديث قائمة الدول في حقل المنتج
+  updateCountriesSelect();
+  // تحديث قائمة الأقسام في حقل المنتج
+  updateCategoriesSelect();
+  // تحديث شريط التصنيفات
+  updateCatBar();
+  // تحديث قوائم الإدارة
+  renderKeywordsList();
+  renderCategoriesList();
+  renderCountriesList();
+}
+
+function updateCountriesSelect() {
+  const select = document.getElementById('productCountry');
+  if(!select) return;
+  select.innerHTML = countries.map(c => `<option value="${c.nameAr}">${c.nameAr} (${c.nameEn})</option>`).join('');
+}
+
+function updateCategoriesSelect() {
+  const select = document.getElementById('productCat');
+  if(!select) return;
+  select.innerHTML = categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+}
+
+function updateCatBar() {
+  const catBar = document.getElementById('catBar');
+  if(!catBar) return;
+  catBar.innerHTML = `<button class="ctab on" onclick="setCat(this,'all')">الكل</button>` + categories.map(cat => `<button class="ctab" onclick="setCat(this,'${cat.name}')"><span class="cdot" style="background:${cat.color}"></span>${cat.name}</button>`).join('');
+}
+
+// ===================== إدارة الكلمات المفتاحية =====================
+function renderKeywordsList() {
+  const container = document.getElementById('keywordsList');
+  if(!container) return;
+  container.innerHTML = keywords.map(kw => `
+    <div class="admin-list-item">
+      <div class="info">
+        <strong>/${kw.name}</strong>
+        <div style="font-size:12px;color:#666;margin-top:4px;">${kw.desc.substring(0,80)}${kw.desc.length>80?'...':''}</div>
+      </div>
+      <div>
+        <button class="btn-danger" onclick="deleteKeyword('${kw.id}')">🗑️ حذف</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addKeyword() {
+  const name = document.getElementById('keywordName').value.trim();
+  const desc = document.getElementById('keywordDesc').value.trim();
+  if(!name) { showToast('❌ الرجاء إدخال الكلمة المفتاحية'); return; }
+  const newKeyword = { id: Date.now().toString(), name: name, desc: desc };
+  keywords.push(newKeyword);
+  saveKeywordsToLocal();
+  renderKeywordsList();
+  document.getElementById('keywordName').value = '';
+  document.getElementById('keywordDesc').value = '';
+  showToast('✅ تم إضافة الكلمة المفتاحية');
+}
+
+function deleteKeyword(id) {
+  if(confirm('هل أنت متأكد من حذف هذه الكلمة المفتاحية؟')) {
+    keywords = keywords.filter(k => k.id !== id);
+    saveKeywordsToLocal();
+    renderKeywordsList();
+    showToast('🗑️ تم حذف الكلمة المفتاحية');
+  }
+}
+
+function filterKeywords() {
+  const search = document.getElementById('keywordSearch').value.toLowerCase();
+  const container = document.getElementById('keywordsList');
+  const filtered = keywords.filter(k => k.name.toLowerCase().includes(search) || k.desc.toLowerCase().includes(search));
+  container.innerHTML = filtered.map(kw => `
+    <div class="admin-list-item">
+      <div class="info"><strong>/${kw.name}</strong><div style="font-size:12px;color:#666;margin-top:4px;">${kw.desc.substring(0,80)}</div></div>
+      <div><button class="btn-danger" onclick="deleteKeyword('${kw.id}')">🗑️ حذف</button></div>
+    </div>
+  `).join('');
+}
+
+// ===================== إدارة الأقسام =====================
+function renderCategoriesList() {
+  const container = document.getElementById('categoriesList');
+  if(!container) return;
+  container.innerHTML = categories.map(cat => `
+    <div class="admin-list-item">
+      <div class="info"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${cat.color};margin-left:8px;"></span><strong>${cat.name}</strong></div>
+      <div><button class="btn-danger" onclick="deleteCategory('${cat.id}')">🗑️ حذف</button></div>
+    </div>
+  `).join('');
+}
+
+function addCategory() {
+  const name = document.getElementById('categoryName').value.trim();
+  const color = document.getElementById('categoryColor').value;
+  if(!name) { showToast('❌ الرجاء إدخال اسم القسم'); return; }
+  const newCategory = { id: Date.now().toString(), name: name, color: color };
+  categories.push(newCategory);
+  saveCategoriesToLocal();
+  renderCategoriesList();
+  updateCategoriesSelect();
+  updateCatBar();
+  document.getElementById('categoryName').value = '';
+  showToast('✅ تم إضافة القسم');
+}
+
+function deleteCategory(id) {
+  if(confirm('هل أنت متأكد من حذف هذا القسم؟')) {
+    categories = categories.filter(c => c.id !== id);
+    saveCategoriesToLocal();
+    renderCategoriesList();
+    updateCategoriesSelect();
+    updateCatBar();
+    showToast('🗑️ تم حذف القسم');
+  }
+}
+
+function filterCategories() {
+  const search = document.getElementById('categorySearch').value.toLowerCase();
+  const container = document.getElementById('categoriesList');
+  const filtered = categories.filter(c => c.name.toLowerCase().includes(search));
+  container.innerHTML = filtered.map(cat => `
+    <div class="admin-list-item">
+      <div class="info"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${cat.color};margin-left:8px;"></span><strong>${cat.name}</strong></div>
+      <div><button class="btn-danger" onclick="deleteCategory('${cat.id}')">🗑️ حذف</button></div>
+    </div>
+  `).join('');
+}
+
+// ===================== إدارة الدول =====================
+function renderCountriesList() {
+  const container = document.getElementById('countriesList');
+  if(!container) return;
+  container.innerHTML = countries.map(cnt => `
+    <div class="admin-list-item">
+      <div class="info"><strong>${cnt.nameAr}</strong> <span style="color:#888">(${cnt.nameEn})</span></div>
+      <div><button class="btn-danger" onclick="deleteCountry('${cnt.id}')">🗑️ حذف</button></div>
+    </div>
+  `).join('');
+}
+
+function addCountry() {
+  const nameAr = document.getElementById('countryNameAr').value.trim();
+  const nameEn = document.getElementById('countryNameEn').value.trim();
+  if(!nameAr) { showToast('❌ الرجاء إدخال اسم الدولة'); return; }
+  const newCountry = { id: Date.now().toString(), nameAr: nameAr, nameEn: nameEn || nameAr };
+  countries.push(newCountry);
+  saveCountriesToLocal();
+  renderCountriesList();
+  updateCountriesSelect();
+  document.getElementById('countryNameAr').value = '';
+  document.getElementById('countryNameEn').value = '';
+  showToast('✅ تم إضافة الدولة');
+}
+
+function deleteCountry(id) {
+  if(confirm('هل أنت متأكد من حذف هذه الدولة؟')) {
+    countries = countries.filter(c => c.id !== id);
+    saveCountriesToLocal();
+    renderCountriesList();
+    updateCountriesSelect();
+    showToast('🗑️ تم حذف الدولة');
+  }
+}
+
+function filterCountries() {
+  const search = document.getElementById('countrySearch').value.toLowerCase();
+  const container = document.getElementById('countriesList');
+  const filtered = countries.filter(c => c.nameAr.toLowerCase().includes(search) || c.nameEn.toLowerCase().includes(search));
+  container.innerHTML = filtered.map(cnt => `
+    <div class="admin-list-item">
+      <div class="info"><strong>${cnt.nameAr}</strong> <span style="color:#888">(${cnt.nameEn})</span></div>
+      <div><button class="btn-danger" onclick="deleteCountry('${cnt.id}')">🗑️ حذف</button></div>
+    </div>
+  `).join('');
+}
+
+// ===================== الكلمات المفتاحية والاقتراحات =====================
 function showKeywordSuggestions(input) {
   const text = input.value;
   const lastWord = text.split(' ').pop();
   if (lastWord.startsWith('/')) {
     const keyword = lastWord.substring(1).toLowerCase();
-    const matches = Object.keys(keywordTemplates).filter(k => k.toLowerCase().includes(keyword));
+    const matches = keywords.filter(k => k.name.toLowerCase().includes(keyword));
     const suggestionsDiv = document.getElementById('keywordSuggestions');
     const suggestionsList = document.getElementById('suggestionsList');
     
     if (matches.length > 0) {
       suggestionsList.innerHTML = matches.map(m => `
-        <div class="suggestion-item" onclick="insertKeyword('${m}')">
-          <strong>/${m}</strong>
-          <div class="suggestion-desc">${keywordTemplates[m].substring(0, 80)}...</div>
+        <div class="suggestion-item" onclick="insertKeyword('${m.name}', '${m.desc.replace(/'/g, "\\'")}')">
+          <strong>/${m.name}</strong>
+          <div class="suggestion-desc">${m.desc.substring(0, 80)}...</div>
         </div>
       `).join('');
       suggestionsDiv.style.display = 'block';
@@ -523,33 +816,31 @@ function showKeywordSuggestions(input) {
   }
 }
 
-function insertKeyword(keyword) {
+function insertKeyword(keyword, description) {
   const textarea = document.getElementById('productReason');
   const text = textarea.value;
   const words = text.split(' ');
   words.pop();
-  words.push(keywordTemplates[keyword]);
+  words.push(description);
   textarea.value = words.join(' ');
   document.getElementById('keywordSuggestions').style.display = 'none';
   textarea.focus();
 }
 
-// ===================== المنتجات الافتراضية =====================
+// ===================== المنتجات =====================
 function loadDefaultProducts() {
   return [
     {id:101,name:"صافولا",nameEn:"Safola",status:"مقاطعة",cat:"زيت الطهي",company:"صافولا",country:"السعودية",image:"https://logo.clearbit.com/safola.com",reason:"منتجات صافولا تدعم جهات داعمة",alt:"الحلي، اطايب، جنان",updatedAt:"2025-06-23"},
     {id:102,name:"فيري",nameEn:"Fairy",status:"مقاطعة",cat:"سائل جلي",company:"Procter & Gamble",country:"أمريكا",image:"https://logo.clearbit.com/fairy.com",reason:"منتج أمريكي",alt:"العملاق، بحر، فاسترين",updatedAt:"2025-10-26"},
-    {id:103,name:"سامسونج",nameEn:"Samsung",status:"مقاطعة",cat:"اجهزة كهربائية",company:"Samsung",country:"كوريا",image:"https://logo.clearbit.com/samsung.com",reason:"شركة كورية داعمة",alt:"زينت، كسترون",updatedAt:"2026-01-05"},
+    {id:103,name:"سامسونج",nameEn:"Samsung",status:"مقاطعة",cat:"اجهزة كهربائية",company:"Samsung",country:"كوريا الجنوبية",image:"https://logo.clearbit.com/samsung.com",reason:"شركة كورية داعمة",alt:"زينت، كسترون",updatedAt:"2026-01-05"},
     {id:104,name:"الحلي",nameEn:"Al Heli",status:"بديل",cat:"زيت الطهي",company:"الحلي",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
     {id:105,name:"هايجين",nameEn:"Hygiene",status:"بديل",cat:"مزيلات عرق",company:"هايجين",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-03"},
     {id:106,name:"العملاق",nameEn:"Al Amlaq",status:"بديل",cat:"صابون غسيل ملابس",company:"العملاق",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-12-15"},
   ];
 }
 
-// ===================== دوال أساسية =====================
 async function loadProducts() {
   try {
-    showToast("🔄 جاري تحميل المنتجات...");
     const saved = localStorage.getItem('products_data');
     if (saved) { products = JSON.parse(saved); }
     try {
@@ -567,7 +858,6 @@ async function loadProducts() {
       localStorage.setItem('products_data', JSON.stringify(products));
     }
   } catch(e) { products = loadDefaultProducts(); }
-  initCategories();
   updateAllCounters();
   renderProducts();
   if(isAdmin) renderAdminList();
@@ -593,12 +883,6 @@ async function saveProductsToGitHub() {
 }
 
 function getCurrentDate() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
-
-function initCategories() {
-  const cats = [...new Set(products.map(p => p.cat))];
-  const catBar = document.getElementById('catBar');
-  if(catBar) catBar.innerHTML = `<button class="ctab on" onclick="setCat(this,'all')">الكل</button>` + cats.map(cat => `<button class="ctab" onclick="setCat(this,'${cat}')"><span class="cdot" style="background:#4a90d9"></span>${cat}</button>`).join('');
-}
 
 function getFiltered() {
   return products.filter(p => {
@@ -660,20 +944,26 @@ function setFilter(btn, filter) { curFilter = filter; document.querySelectorAll(
 function setStatFilter(el, filter) { curFilter = filter; document.querySelectorAll('.fpill').forEach(b => b.classList.remove('on')); const targetPill = Array.from(document.querySelectorAll('.fpill')).find(b => b.innerText.includes(filter === 'all' ? 'الجميع' : filter)); if(targetPill) targetPill.classList.add('on'); document.querySelectorAll('.stat-item').forEach(s => s.classList.remove('active')); el.classList.add('active'); renderProducts(); updateStatsBar(); }
 function setCat(btn, cat) { curCat = cat; document.querySelectorAll('.ctab').forEach(b => b.classList.remove('on')); btn.classList.add('on'); renderProducts(); updateStatsBar(); }
 
-function renderAdminList() { if(!isAdmin) return; const container = document.getElementById('adminProducts'); if(!container) return; let filtered = products; if(adminSearchTerm) filtered = products.filter(p => p.name.includes(adminSearchTerm)); container.innerHTML = filtered.map(p => `<div class="admin-product-item"><div><span class="admin-product-name">${escapeHtml(p.name)}</span><br><small>${p.status} | ${p.cat}</small><br><small class="admin-updated">📅 ${p.updatedAt || getCurrentDate()}</small></div><div><button class="edit-btn" onclick="editProduct(${p.id})">✏️ تعديل</button><button class="delete-btn" onclick="deleteProduct(${p.id})">🗑️ حذف</button></div></div>`).join(''); }
+function renderAdminList() { if(!isAdmin) return; const container = document.getElementById('adminProducts'); if(!container) return; let filtered = products; if(adminSearchTerm) filtered = products.filter(p => p.name.includes(adminSearchTerm)); container.innerHTML = filtered.map(p => `<div class="admin-list-item"><div class="info"><span class="admin-product-name">${escapeHtml(p.name)}</span><br><small>${p.status} | ${p.cat}</small><br><small>📅 ${p.updatedAt || getCurrentDate()}</small></div><div><button class="btn-secondary" style="background:var(--blue);color:white;margin-left:5px;" onclick="editProduct(${p.id})">✏️ تعديل</button><button class="btn-danger" onclick="deleteProduct(${p.id})">🗑️ حذف</button></div></div>`).join(''); }
 function filterAdminList() { adminSearchTerm = document.getElementById('adminSearch').value; renderAdminList(); }
-function editProduct(id) { const p = products.find(p => p.id === id); if(!p) return; document.getElementById('editId').value = p.id; document.getElementById('productName').value = p.name; document.getElementById('productNameEn').value = p.nameEn || ''; document.getElementById('productStatus').value = p.status; document.getElementById('productCat').value = p.cat; document.getElementById('productCompany').value = p.company || ''; document.getElementById('productCountry').value = p.country || ''; document.getElementById('productImage').value = p.image || ''; document.getElementById('productReason').value = p.reason || ''; document.getElementById('productAlt').value = p.alt || ''; document.getElementById('productDate').value = p.updatedAt || getCurrentDate(); const altField = document.getElementById('altField'); if(p.status === 'مقاطعة') { altField.style.display = 'block'; } else { altField.style.display = 'none'; } showToast('✏️ قم بالتعديل ثم اضغط حفظ'); }
-async function saveProduct() { if(!isAdmin) { showToast('❌ يجب تسجيل الدخول أولاً'); return; } const id = document.getElementById('editId').value; const status = document.getElementById('productStatus').value; const newProduct = { id: id ? parseInt(id) : Date.now(), name: document.getElementById('productName').value, nameEn: document.getElementById('productNameEn').value, status: status, cat: document.getElementById('productCat').value, company: document.getElementById('productCompany').value, country: document.getElementById('productCountry').value, image: document.getElementById('productImage').value, reason: document.getElementById('productReason').value, alt: (status === 'مقاطعة') ? document.getElementById('productAlt').value : '', updatedAt: document.getElementById('productDate').value || getCurrentDate() }; if(!newProduct.name) { showToast('❌ الرجاء إدخال اسم المنتج'); return; } if(id) { const index = products.findIndex(p => p.id == id); if(index !== -1) { products[index] = newProduct; showToast('✅ تم تحديث المنتج'); } } else { products.unshift(newProduct); showToast('✅ تم إضافة المنتج'); } const saved = await saveProductsToGitHub(); if(saved) { updateAllCounters(); renderProducts(); renderAdminList(); initCategories(); } document.getElementById('editId').value = ''; document.getElementById('productName').value = ''; document.getElementById('productNameEn').value = ''; document.getElementById('productCompany').value = ''; document.getElementById('productCountry').value = ''; document.getElementById('productImage').value = ''; document.getElementById('productReason').value = ''; document.getElementById('productAlt').value = ''; document.getElementById('altField').style.display = 'block'; }
-async function deleteProduct(id) { if(!isAdmin) return; if(confirm('هل أنت متأكد من حذف هذا المنتج؟')) { products = products.filter(p => p.id !== id); const saved = await saveProductsToGitHub(); if(saved) { updateAllCounters(); renderProducts(); renderAdminList(); initCategories(); showToast('🗑️ تم حذف المنتج'); } } }
+function editProduct(id) { const p = products.find(p => p.id === id); if(!p) return; document.getElementById('editId').value = p.id; document.getElementById('productName').value = p.name; document.getElementById('productNameEn').value = p.nameEn || ''; document.getElementById('productStatus').value = p.status; document.getElementById('productCat').value = p.cat; document.getElementById('productCompany').value = p.company || ''; document.getElementById('productImage').value = p.image || ''; document.getElementById('productReason').value = p.reason || ''; document.getElementById('productAlt').value = p.alt || ''; document.getElementById('productDate').value = p.updatedAt || getCurrentDate(); const altField = document.getElementById('altField'); if(p.status === 'مقاطعة') { altField.style.display = 'block'; } else { altField.style.display = 'none'; } showToast('✏️ قم بالتعديل ثم اضغط حفظ'); }
+async function saveProduct() { if(!isAdmin) { showToast('❌ يجب تسجيل الدخول أولاً'); return; } const id = document.getElementById('editId').value; const status = document.getElementById('productStatus').value; const countrySelect = document.getElementById('productCountry'); const selectedCountries = Array.from(countrySelect.selectedOptions).map(opt => opt.value); const newProduct = { id: id ? parseInt(id) : Date.now(), name: document.getElementById('productName').value, nameEn: document.getElementById('productNameEn').value, status: status, cat: document.getElementById('productCat').value, company: document.getElementById('productCompany').value, country: selectedCountries.join(', '), image: document.getElementById('productImage').value, reason: document.getElementById('productReason').value, alt: (status === 'مقاطعة') ? document.getElementById('productAlt').value : '', updatedAt: document.getElementById('productDate').value || getCurrentDate() }; if(!newProduct.name) { showToast('❌ الرجاء إدخال اسم المنتج'); return; } if(id) { const index = products.findIndex(p => p.id == id); if(index !== -1) { products[index] = newProduct; showToast('✅ تم تحديث المنتج'); } } else { products.unshift(newProduct); showToast('✅ تم إضافة المنتج'); } const saved = await saveProductsToGitHub(); if(saved) { updateAllCounters(); renderProducts(); renderAdminList(); } document.getElementById('editId').value = ''; document.getElementById('productName').value = ''; document.getElementById('productNameEn').value = ''; document.getElementById('productCompany').value = ''; document.getElementById('productImage').value = ''; document.getElementById('productReason').value = ''; document.getElementById('productAlt').value = ''; document.getElementById('altField').style.display = 'block'; }
+async function deleteProduct(id) { if(!isAdmin) return; if(confirm('هل أنت متأكد من حذف هذا المنتج؟')) { products = products.filter(p => p.id !== id); const saved = await saveProductsToGitHub(); if(saved) { updateAllCounters(); renderProducts(); renderAdminList(); showToast('🗑️ تم حذف المنتج'); } } }
 document.getElementById('productStatus')?.addEventListener('change', function() { const altField = document.getElementById('altField'); if(this.value === 'مقاطعة') { altField.style.display = 'block'; } else { altField.style.display = 'none'; } });
 
-// ===================== إضافة مستمع لأحداث الكلمات المفتاحية =====================
+// ===================== مستمعي الأحداث =====================
 const reasonTextarea = document.getElementById('productReason');
-if(reasonTextarea) {
-  reasonTextarea.addEventListener('input', function(e) {
-    showKeywordSuggestions(this);
+if(reasonTextarea) { reasonTextarea.addEventListener('input', function(e) { showKeywordSuggestions(this); }); }
+
+// ===================== تبويبات لوحة الإدارة =====================
+document.querySelectorAll('.admin-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById(`section-${this.dataset.tab}`).classList.add('active');
   });
-}
+});
 
 let currentProduct = null;
 function openModal(id) { currentProduct = products.find(p => p.id === id); if(!currentProduct) return; const statusEmoji = {مقاطعة:'🔴',اجتناب:'🟡',بديل:'🟢','الشراء من المحلي أفضل':'🟤','لا توجد معلومات كافية':'🔵'}; const statusColors = {مقاطعة:'red',اجتناب:'yel',بديل:'grn','الشراء من المحلي أفضل':'loc','لا توجد معلومات كافية':'blu'}; const isAlt = currentProduct.status === 'بديل'; const isBoycott = currentProduct.status === 'مقاطعة'; const hasImage = currentProduct.image && currentProduct.image.trim() !== ''; document.getElementById('mStripe').style.background = `var(--${statusColors[currentProduct.status]})`; document.getElementById('mImg').innerHTML = hasImage ? `<img src="${currentProduct.image}" onerror="this.parentElement.innerHTML='<div class=no-image-modal>${statusEmoji[currentProduct.status]}</div>'">` : `<div class="no-image-modal">${statusEmoji[currentProduct.status]}</div>`; document.getElementById('mTitle').textContent = currentProduct.name; document.getElementById('mTitleEn').textContent = currentProduct.nameEn || ''; document.getElementById('mStatus').textContent = currentProduct.status; document.getElementById('mCountry').textContent = currentProduct.country || '—'; document.getElementById('mCompany').textContent = currentProduct.company || '—'; document.getElementById('mCat').textContent = currentProduct.cat || '—'; document.getElementById('mUpdatedAt').textContent = `📅 آخر تحديث: ${currentProduct.updatedAt || getCurrentDate()}`; const reasonElement = document.getElementById('mReason'); reasonElement.textContent = currentProduct.reason || 'لا يوجد سبب محدد'; if(isAlt) { reasonElement.classList.add('green'); } else { reasonElement.classList.remove('green'); } const altWrap = document.getElementById('mAltWrap'); const altElement = document.getElementById('mAlt'); if(isBoycott && currentProduct.alt) { altElement.textContent = currentProduct.alt; altWrap.style.display = 'block'; } else { altWrap.style.display = 'none'; } document.getElementById('mCircle').textContent = statusEmoji[currentProduct.status]; document.getElementById('modal').classList.add('open'); document.body.style.overflow = 'hidden'; const newUrl = `${window.location.origin}${window.location.pathname}?product=${currentProduct.id}`; window.history.pushState({ productId: currentProduct.id }, '', newUrl); }
@@ -702,6 +992,7 @@ function setDefaultDate() { const dateInput = document.getElementById('productDa
 
 checkAdminSession();
 loadProducts();
+loadAdminData();
 setTimeout(() => { tryLoadLogo(); setDefaultDate(); checkUrlForProduct(); }, 500);
 </script>
 </body>
