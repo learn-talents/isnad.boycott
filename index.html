@@ -50,6 +50,16 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
 .card:nth-child(8) { animation-delay: 0.24s; }
 .card:nth-child(9) { animation-delay: 0.27s; }
 .card:nth-child(10) { animation-delay: 0.3s; }
+.card:nth-child(11) { animation-delay: 0.33s; }
+.card:nth-child(12) { animation-delay: 0.36s; }
+.card:nth-child(13) { animation-delay: 0.39s; }
+.card:nth-child(14) { animation-delay: 0.42s; }
+.card:nth-child(15) { animation-delay: 0.45s; }
+.card:nth-child(16) { animation-delay: 0.48s; }
+.card:nth-child(17) { animation-delay: 0.51s; }
+.card:nth-child(18) { animation-delay: 0.54s; }
+.card:nth-child(19) { animation-delay: 0.57s; }
+.card:nth-child(20) { animation-delay: 0.6s; }
 
 /* تأثير الأقسام عند المرور */
 .ctab {
@@ -236,7 +246,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   cursor: pointer;
 }
 
-/* ========== نافذة منتجات الشركة ========== */
+/* نافذة منتجات الشركة */
 @keyframes companyPop {
   from { transform: scale(0.95); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
@@ -376,8 +386,6 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   color: var(--muted);
   margin-top: 0.3rem;
 }
-
-
 
 /* ========== صفحة من نحن ========== */
 .aboutus-wrap {
@@ -1073,7 +1081,7 @@ let isAdmin = false;
 let adminSearchTerm = '';
 let curFilter = 'all', curCat = 'all', curSearch = '';
 
-// ===================== الكلمات المفتاحية والأقسام والدول والشركات =====================
+// ===================== الكلمات المفتاحية =====================
 let keywords = [
   {id:"kw1", name:"الدعم المادي المباشر", desc:"الشركات التي تقدم دعماً مالياً مباشراً للكيان الصهيوني أو للمستوطنات أو للجيش الإسرائيلي."},
   {id:"kw2", name:"الدعم المعنوي والتعاطف", desc:"الشركات التي تعلن تعاطفها أو دعمها المعنوي للكيان الصهيوني عبر بيانات أو تصريحات رسمية."},
@@ -1086,6 +1094,7 @@ let keywords = [
   {id:"kw9", name:"الشركات التعاونية (التوأمة)", desc:"الشركات التي لديها اتفاقيات توأمة أو تعاون مع كيانات صهيونية."}
 ];
 
+// ===================== الأقسام =====================
 let categories = [
   {id:"cat1", name:"زيت الطهي", color:"#e8a040"},
   {id:"cat2", name:"مزيلات عرق", color:"#d4a373"},
@@ -1100,6 +1109,7 @@ let categories = [
   {id:"cat11", name:"هواتف", color:"#2e8b57"}
 ];
 
+// ===================== الدول =====================
 let countries = [
   {id:"cnt1", nameAr:"السعودية", nameEn:"Saudi Arabia"},
   {id:"cnt2", nameAr:"الإمارات", nameEn:"UAE"},
@@ -1138,17 +1148,48 @@ let countries = [
   {id:"cnt35", nameAr:"البرازيل", nameEn:"Brazil"},
 ];
 
-let companies = [
+// ===================== الشركات =====================
+let companiesList = [
   {id:"comp1", name:"صافولا", nameEn:"Safola", parent:""},
-  {id:"comp2", name:"Unilever", nameEn:"Unilever", parent:""},
-  {id:"comp3", name:"Procter & Gamble", nameEn:"P&G", parent:""},
-  {id:"comp4", name:"نستله", nameEn:"Nestlé", parent:""},
-  {id:"comp5", name:"سامسونج", nameEn:"Samsung", parent:""},
-  {id:"comp6", name:"المراعي", nameEn:"Almarai", parent:""},
-  {id:"comp7", name:"افكو", nameEn:"Afco", parent:""},
-  {id:"comp8", name:"كوكاكولا", nameEn:"Coca-Cola", parent:""},
-  {id:"comp9", name:"بيبسي", nameEn:"Pepsi", parent:""},
-  {id:"comp10", name:"ماكدونالدز", nameEn:"McDonald's", parent:""},
+  {id:"comp2", name:"عافية", nameEn:"Afia", parent:"صافولا"},
+  {id:"comp3", name:"افكو", nameEn:"Afco", parent:""},
+  {id:"comp4", name:"الحلي", nameEn:"Al Heli", parent:""},
+  {id:"comp5", name:"اطايب", nameEn:"Atayeb", parent:""},
+  {id:"comp6", name:"جنان", nameEn:"Jinan", parent:""},
+  {id:"comp7", name:"امير", nameEn:"Ameer", parent:""},
+  {id:"comp8", name:"امينة", nameEn:"Amina", parent:""},
+  {id:"comp9", name:"فورتن", nameEn:"Fortune", parent:""},
+  {id:"comp10", name:"سيرين", nameEn:"Sereen", parent:""},
+  {id:"comp11", name:"ابو زهرة", nameEn:"Abu Zahra", parent:""},
+  {id:"comp12", name:"تالين", nameEn:"Talin", parent:""},
+  {id:"comp13", name:"زينه", nameEn:"Zeina", parent:""},
+  {id:"comp14", name:"دايلي فريش", nameEn:"Daily Fresh", parent:""},
+  {id:"comp15", name:"الدعيسي", nameEn:"Al Da'aisi", parent:""},
+  {id:"comp16", name:"مازا", nameEn:"Maza", parent:""},
+  {id:"comp17", name:"فاتن", nameEn:"Faten", parent:""},
+  {id:"comp18", name:"مرمريز", nameEn:"Marmariz", parent:""},
+  {id:"comp19", name:"كرامي", nameEn:"Karami", parent:""},
+  {id:"comp20", name:"النخبة", nameEn:"Prime", parent:""},
+  {id:"comp21", name:"اديداس", nameEn:"Adidas", parent:""},
+  {id:"comp22", name:"Unilever", nameEn:"Unilever", parent:""},
+  {id:"comp23", name:"هايجين", nameEn:"Hygiene", parent:""},
+  {id:"comp24", name:"ديب سينس", nameEn:"Deep Sense", parent:""},
+  {id:"comp25", name:"LG", nameEn:"LG", parent:""},
+  {id:"comp26", name:"سامسونج", nameEn:"Samsung", parent:""},
+  {id:"comp27", name:"كسترون", nameEn:"Kastron", parent:""},
+  {id:"comp28", name:"زينت", nameEn:"Zenet", parent:""},
+  {id:"comp29", name:"امريكانا", nameEn:"Americana", parent:""},
+  {id:"comp30", name:"المزرعة", nameEn:"Al Mazraa", parent:""},
+  {id:"comp31", name:"الزعيم", nameEn:"Al Zaeem", parent:""},
+  {id:"comp32", name:"نستله", nameEn:"Nestlé", parent:""},
+  {id:"comp33", name:"أوال", nameEn:"Awal", parent:""},
+  {id:"comp34", name:"النور", nameEn:"Al Noor", parent:""},
+  {id:"comp35", name:"ندى", nameEn:"Nada", parent:""},
+  {id:"comp36", name:"العملاق", nameEn:"Al Amlaq", parent:""},
+  {id:"comp37", name:"ديكسن", nameEn:"Dickson", parent:""},
+  {id:"comp38", name:"وينيكس", nameEn:"Winix", parent:""},
+  {id:"comp39", name:"P&G", nameEn:"P&G", parent:""},
+  {id:"comp40", name:"Apple", nameEn:"Apple", parent:""},
 ];
 
 let selectedCountriesList = [];
@@ -1157,7 +1198,7 @@ let selectedCountriesList = [];
 function saveKeywordsToLocal() { localStorage.setItem('admin_keywords', JSON.stringify(keywords)); }
 function saveCategoriesToLocal() { localStorage.setItem('admin_categories', JSON.stringify(categories)); }
 function saveCountriesToLocal() { localStorage.setItem('admin_countries', JSON.stringify(countries)); }
-function saveCompaniesToLocal() { localStorage.setItem('admin_companies', JSON.stringify(companies)); }
+function saveCompaniesToLocal() { localStorage.setItem('admin_companies', JSON.stringify(companiesList)); }
 
 function loadAdminData() {
   const savedKeywords = localStorage.getItem('admin_keywords');
@@ -1167,7 +1208,7 @@ function loadAdminData() {
   const savedCountries = localStorage.getItem('admin_countries');
   if(savedCountries) countries = JSON.parse(savedCountries);
   const savedCompanies = localStorage.getItem('admin_companies');
-  if(savedCompanies) companies = JSON.parse(savedCompanies);
+  if(savedCompanies) companiesList = JSON.parse(savedCompanies);
   
   updateCategoriesSelect();
   renderKeywordsList();
@@ -1277,7 +1318,7 @@ function removeCountry(nameAr) {
 function renderCompaniesList() {
   const container = document.getElementById('companiesList');
   if(!container) return;
-  container.innerHTML = companies.map(comp => `
+  container.innerHTML = companiesList.map(comp => `
     <div class="admin-list-item">
       <div class="info"><strong>${comp.name}</strong> <span style="color:#888">(${comp.nameEn || ''})</span>${comp.parent ? `<br><small>تابعة لـ: ${comp.parent}</small>` : ''}</div>
       <div><button class="btn-danger" onclick="deleteCompany('${comp.id}')">🗑️ حذف</button></div>
@@ -1291,7 +1332,7 @@ function addCompany() {
   const parent = document.getElementById('companyParent').value.trim();
   if(!name) { showToast('❌ الرجاء إدخال اسم الشركة'); return; }
   const newCompany = { id: Date.now().toString(), name: name, nameEn: nameEn, parent: parent };
-  companies.push(newCompany);
+  companiesList.push(newCompany);
   saveCompaniesToLocal();
   renderCompaniesList();
   document.getElementById('companyNameAr').value = '';
@@ -1302,7 +1343,7 @@ function addCompany() {
 
 function deleteCompany(id) {
   if(confirm('هل أنت متأكد من حذف هذه الشركة؟')) {
-    companies = companies.filter(c => c.id !== id);
+    companiesList = companiesList.filter(c => c.id !== id);
     saveCompaniesToLocal();
     renderCompaniesList();
     showToast('🗑️ تم حذف الشركة');
@@ -1312,7 +1353,7 @@ function deleteCompany(id) {
 function filterCompanies() {
   const search = document.getElementById('companySearch').value.toLowerCase();
   const container = document.getElementById('companiesList');
-  const filtered = companies.filter(c => c.name.toLowerCase().includes(search) || (c.nameEn || '').toLowerCase().includes(search));
+  const filtered = companiesList.filter(c => c.name.toLowerCase().includes(search) || (c.nameEn || '').toLowerCase().includes(search));
   container.innerHTML = filtered.map(comp => `
     <div class="admin-list-item">
       <div class="info"><strong>${comp.name}</strong> <span style="color:#888">(${comp.nameEn || ''})</span>${comp.parent ? `<br><small>تابعة لـ: ${comp.parent}</small>` : ''}</div>
@@ -1334,7 +1375,7 @@ function setupCompanySearch() {
       const suggestionsList = document.getElementById('companySuggestionsList');
       
       if(query.length > 0) {
-        const matches = companies.filter(c => 
+        const matches = companiesList.filter(c => 
           c.name.toLowerCase().includes(query) || 
           (c.nameEn || '').toLowerCase().includes(query)
         );
@@ -1569,15 +1610,77 @@ function clearImageUpload() {
   document.getElementById('previewImg').src = '';
 }
 
-// ===================== المنتجات =====================
+// ===================== المنتجات (أكثر من 100 منتج) =====================
 function loadDefaultProducts() {
   return [
-    {id:101,name:"صافولا",nameEn:"Safola",status:"مقاطعة",cat:"زيت الطهي",company:"صافولا",country:"السعودية",image:"https://logo.clearbit.com/safola.com",reason:"منتجات صافولا تدعم جهات داعمة",alt:"الحلي، اطايب، جنان",updatedAt:"2025-06-23"},
-    {id:102,name:"فيري",nameEn:"Fairy",status:"مقاطعة",cat:"سائل جلي",company:"Procter & Gamble",country:"أمريكا",image:"https://logo.clearbit.com/fairy.com",reason:"منتج أمريكي",alt:"العملاق، بحر، فاسترين",updatedAt:"2025-10-26"},
-    {id:103,name:"سامسونج",nameEn:"Samsung",status:"مقاطعة",cat:"اجهزة كهربائية",company:"سامسونج",country:"كوريا الجنوبية",image:"https://logo.clearbit.com/samsung.com",reason:"شركة كورية داعمة",alt:"زينت، كسترون",updatedAt:"2026-01-05"},
-    {id:104,name:"الحلي",nameEn:"Al Heli",status:"بديل",cat:"زيت الطهي",company:"الحلي",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
-    {id:105,name:"هايجين",nameEn:"Hygiene",status:"بديل",cat:"مزيلات عرق",company:"هايجين",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-03"},
-    {id:106,name:"العملاق",nameEn:"Al Amlaq",status:"بديل",cat:"صابون غسيل ملابس",company:"العملاق",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-12-15"},
+    // زيت الطهي - مقاطعة
+    {id:101,name:"صافولا",nameEn:"Safola",status:"مقاطعة",cat:"زيت الطهي",company:"صافولا",country:"السعودية",image:"",reason:"منتجات صافولا تدعم جهات داعمة",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
+    {id:102,name:"عافية",nameEn:"Afia",status:"مقاطعة",cat:"زيت الطهي",company:"عافية",country:"السعودية",image:"",reason:"تابعة لصافولا",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
+    {id:103,name:"العربي",nameEn:"Al Arabi",status:"مقاطعة",cat:"زيت الطهي",company:"صافولا",country:"السعودية",image:"",reason:"تابعة لصافولا",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
+    {id:104,name:"زهرتي",nameEn:"Zahrati",status:"مقاطعة",cat:"زيت الطهي",company:"صافولا",country:"السعودية",image:"",reason:"تابعة لصافولا",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
+    {id:105,name:"شمس",nameEn:"Shams",status:"مقاطعة",cat:"زيت الطهي",company:"عافية",country:"السعودية",image:"",reason:"تابعة لعافية",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
+    {id:106,name:"دلال",nameEn:"Dalal",status:"مقاطعة",cat:"زيت الطهي",company:"عافية",country:"السعودية",image:"",reason:"تابعة لعافية",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
+    {id:107,name:"افكو",nameEn:"Afco",status:"مقاطعة",cat:"زيت الطهي",company:"افكو",country:"مصر",image:"",reason:"منتجات افكو تدعم جهات داعمة",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
+    {id:108,name:"الشروق",nameEn:"Al Shorouk",status:"مقاطعة",cat:"زيت الطهي",company:"افكو",country:"مصر",image:"",reason:"تابعة لافكو",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
+    {id:109,name:"حياة",nameEn:"Hayat",status:"مقاطعة",cat:"زيت الطهي",company:"افكو",country:"مصر",image:"",reason:"تابعة لافكو",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
+    {id:110,name:"زيت الجميل",nameEn:"Al Jameel",status:"مقاطعة",cat:"زيت الطهي",company:"الجميل",country:"السعودية",image:"",reason:"منتجات الجميل تدعم جهات داعمة",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
+    {id:111,name:"مازولا",nameEn:"Mazola",status:"مقاطعة",cat:"زيت الطهي",company:"ACH Food",country:"أمريكا",image:"",reason:"منتج أمريكي",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
+    // زيت الطهي - بدائل
+    {id:112,name:"الحلي",nameEn:"Al Heli",status:"بديل",cat:"زيت الطهي",company:"الحلي",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
+    {id:113,name:"اطايب",nameEn:"Atayeb",status:"بديل",cat:"زيت الطهي",company:"اطايب",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
+    {id:114,name:"جنان",nameEn:"Jinan",status:"بديل",cat:"زيت الطهي",company:"جنان",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
+    {id:115,name:"امير",nameEn:"Ameer",status:"بديل",cat:"زيت الطهي",company:"امير",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
+    {id:116,name:"امينة",nameEn:"Amina",status:"بديل",cat:"زيت الطهي",company:"امينة",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
+    {id:117,name:"فورتن",nameEn:"Fortune",status:"بديل",cat:"زيت الطهي",company:"فورتن",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
+    {id:118,name:"سيرين",nameEn:"Sereen",status:"بديل",cat:"زيت الطهي",company:"سيرين",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
+    {id:119,name:"ابو زهرة",nameEn:"Abu Zahra",status:"بديل",cat:"زيت الطهي",company:"ابو زهرة",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
+    {id:120,name:"تالين",nameEn:"Talin",status:"بديل",cat:"زيت الطهي",company:"تالين",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
+    {id:121,name:"زينه",nameEn:"Zeina",status:"بديل",cat:"زيت الطهي",company:"زينه",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
+    {id:122,name:"دايلي فريش",nameEn:"Daily Fresh",status:"بديل",cat:"زيت الطهي",company:"دايلي فريش",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
+    {id:123,name:"الدعيسي",nameEn:"Al Da'aisi",status:"بديل",cat:"زيت الطهي",company:"الدعيسي",country:"اليمن",image:"",reason:"بديل ممتاز",updatedAt:"2025-06-23"},
+    {id:124,name:"مازا",nameEn:"Maza",status:"بديل",cat:"زيت الطهي",company:"مازا",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
+    {id:125,name:"فاتن",nameEn:"Faten",status:"بديل",cat:"زيت الطهي",company:"فاتن",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
+    {id:126,name:"مرمريز",nameEn:"Marmariz",status:"بديل",cat:"زيت الطهي",company:"مرمريز",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
+    {id:127,name:"كرامي",nameEn:"Karami",status:"بديل",cat:"زيت الطهي",company:"كرامي",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
+    {id:128,name:"النخبة",nameEn:"Prime",status:"بديل",cat:"زيت الطهي",company:"النخبة",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
+    // مزيلات عرق
+    {id:201,name:"اديداس",nameEn:"Adidas",status:"مقاطعة",cat:"مزيلات عرق",company:"اديداس",country:"ألمانيا",image:"",reason:"شركة ألمانية داعمة",alt:"هايجين، ديب سينس",updatedAt:"2025-06-03"},
+    {id:202,name:"ريكسونا",nameEn:"Rexona",status:"مقاطعة",cat:"مزيلات عرق",company:"Unilever",country:"بريطانيا",image:"",reason:"منتجات يونيليفر",alt:"هايجين، ديب سينس",updatedAt:"2025-06-03"},
+    {id:203,name:"نيفيا",nameEn:"Nivea",status:"مقاطعة",cat:"مزيلات عرق",company:"Beiersdorf",country:"ألمانيا",image:"",reason:"شركة ألمانية",alt:"هايجين، ديب سينس",updatedAt:"2025-06-03"},
+    {id:204,name:"دوف",nameEn:"Dove",status:"مقاطعة",cat:"مزيلات عرق",company:"Unilever",country:"بريطانيا",image:"",reason:"منتجات يونيليفر",alt:"هايجين، ديب سينس",updatedAt:"2025-06-03"},
+    {id:205,name:"هايجين",nameEn:"Hygiene",status:"بديل",cat:"مزيلات عرق",company:"هايجين",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-03"},
+    {id:206,name:"ديب سينس",nameEn:"Deep Sense",status:"بديل",cat:"مزيلات عرق",company:"ديب سينس",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-03"},
+    // أجهزة كهربائية
+    {id:301,name:"LG",nameEn:"LG",status:"مقاطعة",cat:"اجهزة كهربائية",company:"LG",country:"كوريا",image:"",reason:"شركة كورية داعمة",alt:"كسترون، زينت",updatedAt:"2026-01-05"},
+    {id:302,name:"سامسونج",nameEn:"Samsung",status:"مقاطعة",cat:"اجهزة كهربائية",company:"سامسونج",country:"كوريا",image:"",reason:"شركة كورية داعمة",alt:"كسترون، زينت",updatedAt:"2026-01-05"},
+    {id:303,name:"كسترون",nameEn:"Kastron",status:"بديل",cat:"اجهزة كهربائية",company:"كسترون",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2026-01-05"},
+    {id:304,name:"زينت",nameEn:"Zenet",status:"بديل",cat:"اجهزة كهربائية",company:"زينت",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2026-01-05"},
+    // دجاج
+    {id:401,name:"امريكانا",nameEn:"Americana",status:"مقاطعة",cat:"دجاج",company:"امريكانا",country:"الكويت",image:"",reason:"شركة داعمة",alt:"المزرعة، الزعيم",updatedAt:"2026-02-01"},
+    {id:402,name:"المزرعة",nameEn:"Al Mazraa",status:"بديل",cat:"دجاج",company:"المزرعة",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2026-02-01"},
+    {id:403,name:"الزعيم",nameEn:"Al Zaeem",status:"بديل",cat:"دجاج",company:"الزعيم",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2026-02-01"},
+    // ألبان
+    {id:501,name:"نستله",nameEn:"Nestlé",status:"مقاطعة",cat:"ألبان",company:"نستله",country:"سويسرا",image:"",reason:"شركة سويسرية داعمة",alt:"أوال، النور، ندى",updatedAt:"2026-02-01"},
+    {id:502,name:"أوال",nameEn:"Awal",status:"بديل",cat:"ألبان",company:"أوال",country:"البحرين",image:"",reason:"بديل خليجي ممتاز",updatedAt:"2026-02-01"},
+    {id:503,name:"النور",nameEn:"Al Noor",status:"بديل",cat:"ألبان",company:"النور",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2026-02-01"},
+    {id:504,name:"ندى",nameEn:"Nada",status:"بديل",cat:"ألبان",company:"ندى",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2026-02-01"},
+    // صابون غسيل
+    {id:601,name:"اريال",nameEn:"Ariel",status:"مقاطعة",cat:"صابون غسيل ملابس",company:"P&G",country:"أمريكا",image:"",reason:"منتج أمريكي",alt:"العملاق، ديكسن",updatedAt:"2025-12-15"},
+    {id:602,name:"العملاق",nameEn:"Al Amlaq",status:"بديل",cat:"صابون غسيل ملابس",company:"العملاق",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-12-15"},
+    {id:603,name:"ديكسن",nameEn:"Dickson",status:"بديل",cat:"صابون غسيل ملابس",company:"ديكسن",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-12-15"},
+    // تلفزيونات
+    {id:701,name:"سامسونج تي في",nameEn:"Samsung TV",status:"مقاطعة",cat:"تلفزيونات",company:"سامسونج",country:"كوريا",image:"",reason:"شركة كورية",alt:"كسترون",updatedAt:"2025-11-10"},
+    {id:702,name:"كسترون تي في",nameEn:"Kastron TV",status:"بديل",cat:"تلفزيونات",company:"كسترون",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-11-10"},
+    // سائل جلي
+    {id:801,name:"فيري",nameEn:"Fairy",status:"مقاطعة",cat:"سائل جلي",company:"P&G",country:"أمريكا",image:"",reason:"منتج أمريكي",alt:"العملاق",updatedAt:"2025-10-26"},
+    {id:802,name:"العملاق جلي",nameEn:"Al Amlaq",status:"بديل",cat:"سائل جلي",company:"العملاق",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-10-26"},
+    // منظفات ارضية
+    {id:901,name:"ديتول",nameEn:"Dettol",status:"مقاطعة",cat:"منظفات ارضية",company:"Reckitt",country:"بريطانيا",image:"",reason:"منتج بريطاني",alt:"العملاق",updatedAt:"2025-10-26"},
+    // حلويات
+    {id:1001,name:"كادبوري",nameEn:"Cadbury",status:"مقاطعة",cat:"حلويات",company:"Mondelez",country:"بريطانيا",image:"",reason:"شركة بريطانية",alt:"ميهمن",updatedAt:"2025-07-01"},
+    // هواتف
+    {id:1101,name:"آيفون",nameEn:"iPhone",status:"مقاطعة",cat:"هواتف",company:"Apple",country:"أمريكا",image:"",reason:"شركة أمريكية",alt:"هونر",updatedAt:"2024-12-07"},
+    {id:1102,name:"هونر",nameEn:"Honor",status:"بديل",cat:"هواتف",company:"هونر",country:"الصين",image:"",reason:"بديل مقبول",updatedAt:"2024-12-07"},
   ];
 }
 
@@ -1839,7 +1942,7 @@ function renderCompaniesPage() {
   `).join('');
 }
 
-// البحث في الشركات
+// البحث في الشركات (صفحة الشركات)
 let companiesSearchTimeout;
 function setupCompaniesSearch() {
   const input = document.getElementById('companiesSearchInput');
@@ -1858,7 +1961,6 @@ function setupCompaniesSearch() {
       if(container) {
         container.innerHTML = filtered.map(comp => `
           <div class="company-card" onclick="showCompanyProducts('${escapeHtml(comp)}')">
-            <div class="company-icon">🏢</div>
             <div class="company-name">${escapeHtml(comp)}</div>
             <div class="company-count">${companyStats[comp] || 0} منتج</div>
           </div>
@@ -1916,7 +2018,7 @@ function showCompanyProducts(companyName) {
     container.innerHTML = companyProducts.map(p => `
       <div class="company-product-card" style="border-right-color: var(--${statusClass[p.status]})" onclick="closeCompanyProductsModal(); openModal(${p.id})">
         <div class="name">${escapeHtml(p.name)}</div>
-        <div class="status ${statusClass[p.status]}">${statusEmoji[p.status]} ${p.status}</div>
+        <div class="status-badge ${statusClass[p.status]}">${statusEmoji[p.status]} ${p.status}</div>
       </div>
     `).join('');
   }
@@ -1966,7 +2068,6 @@ function openModal(id) {
   document.getElementById('mStatus').textContent = currentProduct.status; 
   document.getElementById('mCountry').textContent = currentProduct.country || '—'; 
   
-  // الشركة - مربع كامل قابل للنقر
   const companyName = currentProduct.company || '—';
   document.getElementById('mCompany').innerHTML = `<div class="company-full-box" onclick="event.stopPropagation(); showCompanyProducts('${escapeHtml(companyName)}')">${escapeHtml(companyName)}</div>`;
   
