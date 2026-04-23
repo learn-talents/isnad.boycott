@@ -236,7 +236,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   cursor: pointer;
 }
 
-/* نافذة منتجات الشركة */
+/* ========== نافذة منتجات الشركة ========== */
 @keyframes companyPop {
   from { transform: scale(0.95); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
@@ -279,7 +279,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
 .company-products-grid {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   margin-top: 1rem;
 }
 .company-product-card {
@@ -302,17 +302,17 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   font-weight: 700;
   font-size: 1rem;
 }
-.company-product-card .status {
-  font-size: 0.85rem;
+.company-product-card .status-badge {
+  font-size: 0.8rem;
   padding: 4px 10px;
   border-radius: 20px;
   font-weight: 500;
 }
-.company-product-card .status.red { background: var(--red-light); color: var(--red); }
-.company-product-card .status.green { background: var(--green-light); color: var(--green); }
-.company-product-card .status.yellow { background: var(--yellow-light); color: var(--yellow-dark); }
-.company-product-card .status.brown { background: var(--local-light); color: var(--local); }
-.company-product-card .status.blue { background: var(--blue-light); color: var(--blue); }
+.company-product-card .status-badge.red { background: var(--red-light); color: var(--red); }
+.company-product-card .status-badge.green { background: var(--green-light); color: var(--green); }
+.company-product-card .status-badge.yellow { background: var(--yellow-light); color: var(--yellow-dark); }
+.company-product-card .status-badge.brown { background: var(--local-light); color: var(--local); }
+.company-product-card .status-badge.blue { background: var(--blue-light); color: var(--blue); }
 .company-close {
   width: 100%;
   margin-top: 1.2rem;
@@ -366,10 +366,6 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
   border-right-color: var(--red);
 }
-.company-card .company-icon {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-}
 .company-card .company-name {
   font-size: 1.1rem;
   font-weight: 700;
@@ -380,6 +376,8 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   color: var(--muted);
   margin-top: 0.3rem;
 }
+
+
 
 /* ========== صفحة من نحن ========== */
 .aboutus-wrap {
@@ -1835,7 +1833,6 @@ function renderCompaniesPage() {
   
   container.innerHTML = sortedCompanies.map(comp => `
     <div class="company-card" onclick="showCompanyProducts('${escapeHtml(comp)}')">
-      <div class="company-icon">🏢</div>
       <div class="company-name">${escapeHtml(comp)}</div>
       <div class="company-count">${companyStats[comp] || 0} منتج</div>
     </div>
