@@ -121,6 +121,10 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   color: var(--green-dark);
   transform: translateX(-3px);
 }
+.fpill:active, .ctab:active, .stat-item:active, .admin-tab:active, .btn-primary:active, .btn-secondary:active {
+  transform: translateY(1px);
+}
+
 /* أنيميشن المودال */
 @keyframes modalFadeIn {
   from { opacity: 0; transform: translateY(50px); }
@@ -325,6 +329,89 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
 .company-close:hover {
   background: var(--red);
   transform: translateY(-2px);
+}
+
+/* ========== صفحة الشركات ========== */
+.companies-wrap {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+.companies-wrap h2 {
+  color: var(--red);
+  margin-bottom: 0.5rem;
+}
+.companies-wrap .sub {
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+.companies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+  margin-top: 1rem;
+}
+.company-card {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  border-right: 4px solid var(--blue);
+}
+.company-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  border-right-color: var(--red);
+}
+.company-card .company-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+.company-card .company-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--black);
+}
+.company-card .company-count {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 0.3rem;
+}
+
+/* ========== صفحة من نحن ========== */
+.aboutus-wrap {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+.aboutus-wrap h2 {
+  color: var(--red);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.aboutus-card {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+}
+.aboutus-card:hover {
+  transform: translateX(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+.aboutus-card h3 {
+  color: var(--red);
+  margin-bottom: 0.8rem;
+  font-size: 1.2rem;
+}
+.aboutus-card p {
+  color: #555;
+  line-height: 1.7;
 }
 
 /* ========== التنسيقات الأساسية ========== */
@@ -612,16 +699,6 @@ nav {
 .card-info { margin-top: 6px; }
 .card-info-row { display: flex; gap: 6px; font-size: 11px; color: var(--muted); margin: 4px 0; flex-wrap: wrap; }
 .card-info-row .lbl { font-weight: 600; min-width: 42px; }
-.company-link {
-  cursor: pointer;
-  color: var(--blue);
-  font-weight: 600;
-  text-decoration: none;
-}
-.company-link:hover {
-  color: var(--red);
-  text-decoration: underline;
-}
 .card-cat { display: inline-block; background: var(--bg); padding: 2px 10px; border-radius: 20px; font-size: 10px; color: var(--muted); margin-top: 6px; }
 .card-updated { font-size: 9px; color: var(--muted); margin-top: 8px; }
 .card-btn {
@@ -750,6 +827,8 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
   </div>
   <button class="dl on" id="dl-home" onclick="nav('home')"><span class="dl-icon">🏠</span> الرئيسية</button>
   <button class="dl" id="dl-legend" onclick="nav('legend')"><span class="dl-icon">🏷️</span> العلامات والمعايير</button>
+  <button class="dl" id="dl-companies" onclick="nav('companies')"><span class="dl-icon">🏢</span> الشركات</button>
+  <button class="dl" id="dl-aboutus" onclick="nav('aboutus')"><span class="dl-icon">ℹ️</span> من نحن</button>
   <button class="dl" id="dl-contact" onclick="nav('contact')"><span class="dl-icon">📞</span> تواصل معنا</button>
   <div class="drawer-footer">مبادرة مجتمعية مفتوحة المصدر</div>
 </div>
@@ -797,7 +876,7 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
     <button class="admin-tab" data-tab="keywords">🔑 الكلمات المفتاحية</button>
     <button class="admin-tab" data-tab="categories">📂 الأقسام</button>
     <button class="admin-tab" data-tab="countries">🌍 الدول</button>
-        <button class="admin-tab" data-tab="companies">🏢 الشركات</button>
+    <button class="admin-tab" data-tab="companies">🏢 الشركات</button>
   </div>
   
   <!-- قسم المنتجات -->
@@ -933,6 +1012,41 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
     <div class="legend-card legend-card-brown"><div class="legend-text"><h3 style="color:#7a5200">🟤 غير مقاطعة</h3><p>لكنها من بلد كفار والفضل شراء منتجات من بلاد المسلمين</p></div></div>
     <div class="legend-card legend-card-blue"><div class="legend-text"><h3 style="color:#0d4a9c">🔵 لا توجد معلومات كافية</h3><p>لا توجد معلومات كافية عن الشركة</p></div></div>
     <div class="legend-card legend-card-green"><div class="legend-text"><h3 style="color:var(--green)">🟢 بديل أو أصيل</h3><p>منتجات محلية أو من دول صديقة بديلة للمنتجات المقاطعة</p></div></div>
+  </div>
+</div>
+
+<!-- صفحة الشركات -->
+<div class="page" id="page-companies">
+  <div class="companies-wrap">
+    <h2>🏢 قائمة الشركات</h2>
+    <p class="sub">جميع الشركات الموجودة في قاعدة البيانات - اضغط على أي شركة لعرض منتجاتها</p>
+    <div class="search-box" style="margin-bottom:1rem;">
+      <input type="text" id="companiesSearchInput" placeholder="🔍 ابحث عن شركة...">
+    </div>
+    <div class="companies-grid" id="companiesGrid"></div>
+  </div>
+</div>
+
+<!-- صفحة من نحن -->
+<div class="page" id="page-aboutus">
+  <div class="aboutus-wrap">
+    <h2>ℹ️ من نحن</h2>
+    <div class="aboutus-card">
+      <h3>المقاطعة جبهة إسناد</h3>
+      <p>مبادرة شعبية تهدف إلى توعية المستهلك العربي بالمنتجات المرتبطة بجهات داعمة للاحتلال، وتوجيهه نحو البدائل المحلية والصديقة.</p>
+    </div>
+    <div class="aboutus-card">
+      <h3>🎯 هدفنا</h3>
+      <p>نؤمن بأن المقاطعة الاقتصادية سلاح فعّال في يد المستهلك الواعي. من خلال توفير معلومات موثوقة ومحدّثة، نساعد الجميع على اتخاذ قرارات شرائية مسؤولة.</p>
+    </div>
+    <div class="aboutus-card">
+      <h3>📋 منهجية التصنيف</h3>
+      <p>نعتمد على مصادر موثوقة وتقارير موثقة لتصنيف المنتجات. كل تصنيف قابل للمراجعة والتحديث بناءً على معلومات جديدة. يمكن لأي شخص المساهمة عبر GitHub.</p>
+    </div>
+    <div class="aboutus-card">
+      <h3>💻 مبادرة مفتوحة المصدر</h3>
+      <p>الموقع مفتوح المصدر بالكامل على GitHub. يمكنك المساهمة بإضافة منتجات جديدة، تعديل المعلومات، أو تطوير الموقع.</p>
+    </div>
   </div>
 </div>
 
@@ -1705,6 +1819,58 @@ document.getElementById('productStatus')?.addEventListener('change', function() 
   if(this.value === 'مقاطعة') { altField.style.display = 'block'; } else { altField.style.display = 'none'; } 
 });
 
+// ===================== صفحة الشركات =====================
+function renderCompaniesPage() {
+  const container = document.getElementById('companiesGrid');
+  if(!container) return;
+  
+  const companyStats = {};
+  products.forEach(p => {
+    const comp = p.company || 'غير محدد';
+    companyStats[comp] = (companyStats[comp] || 0) + 1;
+  });
+  
+  const allCompanies = [...new Set(products.map(p => p.company || 'غير محدد'))];
+  const sortedCompanies = allCompanies.sort((a,b) => a.localeCompare(b));
+  
+  container.innerHTML = sortedCompanies.map(comp => `
+    <div class="company-card" onclick="showCompanyProducts('${escapeHtml(comp)}')">
+      <div class="company-icon">🏢</div>
+      <div class="company-name">${escapeHtml(comp)}</div>
+      <div class="company-count">${companyStats[comp] || 0} منتج</div>
+    </div>
+  `).join('');
+}
+
+// البحث في الشركات
+let companiesSearchTimeout;
+function setupCompaniesSearch() {
+  const input = document.getElementById('companiesSearchInput');
+  if(!input) return;
+  input.addEventListener('input', function() {
+    clearTimeout(companiesSearchTimeout);
+    companiesSearchTimeout = setTimeout(() => {
+      const query = this.value.toLowerCase();
+      const allCompanies = [...new Set(products.map(p => p.company || 'غير محدد'))];
+      const filtered = allCompanies.filter(c => c.toLowerCase().includes(query));
+      
+      const companyStats = {};
+      products.forEach(p => { companyStats[p.company] = (companyStats[p.company] || 0) + 1; });
+      
+      const container = document.getElementById('companiesGrid');
+      if(container) {
+        container.innerHTML = filtered.map(comp => `
+          <div class="company-card" onclick="showCompanyProducts('${escapeHtml(comp)}')">
+            <div class="company-icon">🏢</div>
+            <div class="company-name">${escapeHtml(comp)}</div>
+            <div class="company-count">${companyStats[comp] || 0} منتج</div>
+          </div>
+        `).join('');
+      }
+    }, 300);
+  });
+}
+
 // ===================== نافذة المشاركة =====================
 let shareProduct = null;
 
@@ -1803,9 +1969,11 @@ function openModal(id) {
   document.getElementById('mStatus').textContent = currentProduct.status; 
   document.getElementById('mCountry').textContent = currentProduct.country || '—'; 
   
-  // خانة الشركة - كاملة قابلة للنقر مع بقاء النص يمين
+  // الشركة - مربع كامل قابل للنقر
   const companyName = currentProduct.company || '—';
-document.getElementById('mCompany').innerHTML = `<div class="company-full-box" onclick="event.stopPropagation(); showCompanyProducts('${escapeHtml(companyName)}')" style="cursor:pointer; width:100%; display:block; text-align:right; background:var(--bg); border-radius:10px; padding:8px 12px; transition:all 0.2s ease; font-weight:600; color:var(--blue);">${escapeHtml(companyName)}</div>`;  document.getElementById('mCat').textContent = currentProduct.cat || '—'; 
+  document.getElementById('mCompany').innerHTML = `<div class="company-full-box" onclick="event.stopPropagation(); showCompanyProducts('${escapeHtml(companyName)}')">${escapeHtml(companyName)}</div>`;
+  
+  document.getElementById('mCat').textContent = currentProduct.cat || '—'; 
   document.getElementById('mUpdatedAt').textContent = `📅 آخر تحديث: ${currentProduct.updatedAt || getCurrentDate()}`; 
   const reasonElement = document.getElementById('mReason'); 
   reasonElement.textContent = currentProduct.reason || 'لا يوجد سبب محدد'; 
@@ -1850,6 +2018,13 @@ function checkUrlForProduct() {
   } 
 }
 
+// تحديث صفحة الشركات عند فتحها
+function updateCompaniesPage() {
+  if(document.getElementById('page-companies').classList.contains('active')) {
+    renderCompaniesPage();
+  }
+}
+
 document.getElementById('searchInput')?.addEventListener('input', function(e) { 
   curSearch = e.target.value; 
   renderProducts(); 
@@ -1862,10 +2037,14 @@ document.getElementById('modal')?.addEventListener('click', e => { if(e.target =
 function showPage(p) { 
   document.querySelectorAll('.page').forEach(el => el.classList.remove('active')); 
   document.getElementById('page-'+p).classList.add('active'); 
-  document.querySelectorAll('.dl').forEach(a => a.classList.remove('on')); 
-  const dl = document.getElementById('dl-'+p); 
-  if(dl) dl.classList.add('on'); 
   window.scrollTo(0,0); 
+  document.querySelectorAll('.dl').forEach(a => a.classList.remove('on'));
+  const dl = document.getElementById('dl-'+p);
+  if(dl) dl.classList.add('on');
+  
+  if(p === 'companies') {
+    renderCompaniesPage();
+  }
 }
 
 function nav(p) { showPage(p); closeDrawer(); }
@@ -1946,7 +2125,7 @@ function setDefaultDate() {
 checkAdminSession();
 loadProducts();
 loadAdminData();
-setTimeout(() => { tryLoadLogo(); setDefaultDate(); checkUrlForProduct(); }, 500);
+setTimeout(() => { tryLoadLogo(); setDefaultDate(); checkUrlForProduct(); setupCompaniesSearch(); }, 500);
 </script>
 </body>
 </html>
