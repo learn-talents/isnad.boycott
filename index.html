@@ -1797,8 +1797,8 @@ function openModal(id) {
   document.getElementById('mStatus').textContent = currentProduct.status; 
   document.getElementById('mCountry').textContent = currentProduct.country || '—'; 
   // جعل اسم الشركة قابلاً للنقر
-document.getElementById('mCompany').innerHTML = `<span class="company-link" onclick="event.stopPropagation(); showCompanyProducts('${escapeHtml(currentProduct.company)}')">${escapeHtml(currentProduct.company)}</span>`;  document.getElementById('mCat').textContent = currentProduct.cat || '—'; 
-  document.getElementById('mUpdatedAt').textContent = `📅 آخر تحديث: ${currentProduct.updatedAt || getCurrentDate()}`; 
+const companyName = currentProduct.company || '—';
+document.getElementById('mCompany').innerHTML = `<button class="company-full-btn" onclick="event.stopPropagation(); showCompanyProducts('${escapeHtml(companyName)}')" style="width:100%; background:var(--bg); border:none; padding:8px 12px; border-radius:12px; cursor:pointer; font-family:inherit; font-size:13px; font-weight:600; color:var(--blue); transition:all 0.2s ease;">🏢 ${escapeHtml(companyName)}</button>`;  document.getElementById('mUpdatedAt').textContent = `📅 آخر تحديث: ${currentProduct.updatedAt || getCurrentDate()}`; 
   const reasonElement = document.getElementById('mReason'); 
   reasonElement.textContent = currentProduct.reason || 'لا يوجد سبب محدد'; 
   if(isAlt) { reasonElement.classList.add('green'); } else { reasonElement.classList.remove('green'); } 
