@@ -86,7 +86,40 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
 .card:active {
   transform: translateY(3px) scale(0.98);
 }
+/* زر مشاركة المنتج - نفس التصميم القديم */
+.share-btn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--navy);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
 
+.share-btn:hover {
+  background: var(--red);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.share-btn:active {
+  transform: translateY(1px);
+}
+
+/* أيقونة المشاركة */
+.share-btn::before {
+  content: "🔗";
+  font-size: 14px;
+}
 /* أنيميشن الأزرار */
 .fpill, .ctab, .stat-item, .admin-tab, .btn-primary, .btn-secondary, .delete-btn, .edit-btn, .share-btn, .card-btn, .company-link, .company-full-box {
   transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
