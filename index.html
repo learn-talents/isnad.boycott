@@ -50,6 +50,16 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
 .card:nth-child(8) { animation-delay: 0.24s; }
 .card:nth-child(9) { animation-delay: 0.27s; }
 .card:nth-child(10) { animation-delay: 0.3s; }
+.card:nth-child(11) { animation-delay: 0.33s; }
+.card:nth-child(12) { animation-delay: 0.36s; }
+.card:nth-child(13) { animation-delay: 0.39s; }
+.card:nth-child(14) { animation-delay: 0.42s; }
+.card:nth-child(15) { animation-delay: 0.45s; }
+.card:nth-child(16) { animation-delay: 0.48s; }
+.card:nth-child(17) { animation-delay: 0.51s; }
+.card:nth-child(18) { animation-delay: 0.54s; }
+.card:nth-child(19) { animation-delay: 0.57s; }
+.card:nth-child(20) { animation-delay: 0.6s; }
 
 /* ========== تأثير الأقسام عند المرور ========== */
 .ctab {
@@ -1786,7 +1796,8 @@ function openModal(id) {
   document.getElementById('mTitleEn').textContent = currentProduct.nameEn || ''; 
   document.getElementById('mStatus').textContent = currentProduct.status; 
   document.getElementById('mCountry').textContent = currentProduct.country || '—'; 
-  document.getElementById('mCompany').textContent = currentProduct.company || '—'; 
+  // جعل اسم الشركة قابلاً للنقر
+  document.getElementById('mCompany').innerHTML = `<span class="company-link" onclick="event.stopPropagation(); showCompanyProducts('${escapeHtml(currentProduct.company)}')">${escapeHtml(currentProduct.company)}</span>`; 
   document.getElementById('mCat').textContent = currentProduct.cat || '—'; 
   document.getElementById('mUpdatedAt').textContent = `📅 آخر تحديث: ${currentProduct.updatedAt || getCurrentDate()}`; 
   const reasonElement = document.getElementById('mReason'); 
