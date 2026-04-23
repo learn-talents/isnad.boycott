@@ -1797,8 +1797,7 @@ function openModal(id) {
   document.getElementById('mStatus').textContent = currentProduct.status; 
   document.getElementById('mCountry').textContent = currentProduct.country || '—'; 
   // جعل اسم الشركة قابلاً للنقر
-  document.getElementById('mCompany').innerHTML = `<span class="company-link" onclick="event.stopPropagation(); showCompanyProducts('${escapeHtml(currentProduct.company)}')">${escapeHtml(currentProduct.company)}</span>`; 
-  document.getElementById('mCat').textContent = currentProduct.cat || '—'; 
+document.getElementById('mCompany').innerHTML = `<span class="company-link" onclick="event.stopPropagation(); showCompanyProducts('${escapeHtml(currentProduct.company)}')">${escapeHtml(currentProduct.company)}</span>`;  document.getElementById('mCat').textContent = currentProduct.cat || '—'; 
   document.getElementById('mUpdatedAt').textContent = `📅 آخر تحديث: ${currentProduct.updatedAt || getCurrentDate()}`; 
   const reasonElement = document.getElementById('mReason'); 
   reasonElement.textContent = currentProduct.reason || 'لا يوجد سبب محدد'; 
