@@ -31,7 +31,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);min-height:100vh;}
 
-/* ========== أنيميشن ظهور البطاقات ========== */
+/* أنيميشن ظهور البطاقات */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
@@ -50,18 +50,8 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
 .card:nth-child(8) { animation-delay: 0.24s; }
 .card:nth-child(9) { animation-delay: 0.27s; }
 .card:nth-child(10) { animation-delay: 0.3s; }
-.card:nth-child(11) { animation-delay: 0.33s; }
-.card:nth-child(12) { animation-delay: 0.36s; }
-.card:nth-child(13) { animation-delay: 0.39s; }
-.card:nth-child(14) { animation-delay: 0.42s; }
-.card:nth-child(15) { animation-delay: 0.45s; }
-.card:nth-child(16) { animation-delay: 0.48s; }
-.card:nth-child(17) { animation-delay: 0.51s; }
-.card:nth-child(18) { animation-delay: 0.54s; }
-.card:nth-child(19) { animation-delay: 0.57s; }
-.card:nth-child(20) { animation-delay: 0.6s; }
 
-/* ========== تأثير الأقسام عند المرور ========== */
+/* تأثير الأقسام عند المرور */
 .ctab {
   position: relative;
 }
@@ -85,7 +75,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   background: var(--red);
 }
 
-/* ========== أنيميشن البطاقات عند hover ========== */
+/* أنيميشن البطاقات عند hover */
 .card {
   transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1), box-shadow 0.25s ease;
 }
@@ -97,11 +87,11 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   transform: translateY(3px) scale(0.98);
 }
 
-/* ========== أنيميشن الأزرار ========== */
-.fpill, .ctab, .stat-item, .admin-tab, .btn-primary, .btn-secondary, .delete-btn, .edit-btn, .share-btn, .card-btn, .company-link {
+/* أنيميشن الأزرار */
+.fpill, .ctab, .stat-item, .admin-tab, .btn-primary, .btn-secondary, .delete-btn, .edit-btn, .share-btn, .card-btn, .company-link, .company-full-box {
   transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
 }
-.fpill:hover, .ctab:hover, .stat-item:hover, .admin-tab:hover, .btn-primary:hover, .btn-secondary:hover, .delete-btn:hover, .edit-btn:hover, .share-btn:hover, .card-btn:hover, .company-link:hover {
+.fpill:hover, .ctab:hover, .stat-item:hover, .admin-tab:hover, .btn-primary:hover, .btn-secondary:hover, .delete-btn:hover, .edit-btn:hover, .share-btn:hover, .card-btn:hover, .company-link:hover, .company-full-box:hover {
   transform: translateY(-2px);
 }
 .company-link {
@@ -114,11 +104,26 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   color: var(--red);
   text-decoration: underline;
 }
+.company-full-box {
+  cursor: pointer;
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 8px 12px;
+  transition: all 0.2s ease;
+  text-align: right;
+  font-weight: 600;
+  color: var(--blue);
+}
+.company-full-box:hover {
+  background: var(--red-light);
+  color: var(--red);
+  transform: translateX(-3px);
+}
 .fpill:active, .ctab:active, .stat-item:active, .admin-tab:active, .btn-primary:active, .btn-secondary:active {
   transform: translateY(1px);
 }
 
-/* ========== أنيميشن المودال ========== */
+/* أنيميشن المودال */
 @keyframes modalFadeIn {
   from { opacity: 0; transform: translateY(50px); }
   to { opacity: 1; transform: translateY(0); }
@@ -127,7 +132,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   animation: modalFadeIn 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
 }
 
-/* ========== أنيميشن خانة البحث ========== */
+/* أنيميشن خانة البحث */
 .search-wrap input {
   transition: all 0.2s ease;
 }
@@ -137,7 +142,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   outline: none;
 }
 
-/* ========== أنيميشن الاقتراحات ========== */
+/* أنيميشن الاقتراحات */
 @keyframes slideDown {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -146,7 +151,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   animation: slideDown 0.2s ease;
 }
 
-/* ========== نافذة المشاركة ========== */
+/* نافذة المشاركة */
 @keyframes sharePop {
   from { transform: scale(0.9); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
@@ -229,7 +234,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   cursor: pointer;
 }
 
-/* ========== نافذة منتجات الشركة ========== */
+/* نافذة منتجات الشركة */
 @keyframes companyPop {
   from { transform: scale(0.95); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
@@ -794,7 +799,7 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
     <button class="admin-tab" data-tab="keywords">🔑 الكلمات المفتاحية</button>
     <button class="admin-tab" data-tab="categories">📂 الأقسام</button>
     <button class="admin-tab" data-tab="countries">🌍 الدول</button>
-    <button class="admin-tab" data-tab="companies">🏢 الشركات</button>
+        <button class="admin-tab" data-tab="companies">🏢 الشركات</button>
   </div>
   
   <!-- قسم المنتجات -->
@@ -1760,8 +1765,11 @@ function showCompanyProducts(companyName) {
 }
 
 function closeCompanyProductsModal() {
-  document.getElementById('companyProductsModal').classList.remove('open');
-  document.body.style.overflow = '';
+  const modal = document.getElementById('companyProductsModal');
+  if(modal) {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
 }
 
 // ===================== مستمعي الأحداث =====================
@@ -1796,9 +1804,13 @@ function openModal(id) {
   document.getElementById('mTitleEn').textContent = currentProduct.nameEn || ''; 
   document.getElementById('mStatus').textContent = currentProduct.status; 
   document.getElementById('mCountry').textContent = currentProduct.country || '—'; 
-  // جعل اسم الشركة قابلاً للنقر
-const companyName = currentProduct.company || '—';
-document.getElementById('mCompany').innerHTML = `<button class="company-full-btn" onclick="event.stopPropagation(); showCompanyProducts('${escapeHtml(companyName)}')" style="width:100%; background:var(--bg); border:none; padding:8px 12px; border-radius:12px; cursor:pointer; font-family:inherit; font-size:13px; font-weight:600; color:var(--blue); transition:all 0.2s ease;">🏢 ${escapeHtml(companyName)}</button>`;  document.getElementById('mUpdatedAt').textContent = `📅 آخر تحديث: ${currentProduct.updatedAt || getCurrentDate()}`; 
+  
+  // خانة الشركة - كاملة قابلة للنقر مع بقاء النص يمين
+  const companyName = currentProduct.company || '—';
+  document.getElementById('mCompany').innerHTML = `<div class="company-full-box" onclick="event.stopPropagation(); showCompanyProducts('${escapeHtml(companyName)}')">${escapeHtml(companyName)}</div>`;
+  
+  document.getElementById('mCat').textContent = currentProduct.cat || '—'; 
+  document.getElementById('mUpdatedAt').textContent = `📅 آخر تحديث: ${currentProduct.updatedAt || getCurrentDate()}`; 
   const reasonElement = document.getElementById('mReason'); 
   reasonElement.textContent = currentProduct.reason || 'لا يوجد سبب محدد'; 
   if(isAlt) { reasonElement.classList.add('green'); } else { reasonElement.classList.remove('green'); } 
