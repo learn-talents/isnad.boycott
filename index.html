@@ -31,7 +31,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);min-height:100vh;}
 
-/* ========== أنيميشن الخلفية ========== */
+/* ========== أنيميشن الخلفية فقط ========== */
 @keyframes bgPulse {
   0% { background: var(--bg); }
   50% { background: #f5f3ef; }
@@ -39,14 +39,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
 }
 body { animation: bgPulse 10s ease-in-out infinite; }
 
-/* ========== أنيميشن الهيدر ========== */
-@keyframes slideDown {
-  from { transform: translateY(-100%); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-nav { animation: slideDown 0.6s ease-out; }
-
-/* ========== أنيميشن الهيرو ========== */
+/* ========== أنيميشن الهيرو فقط ========== */
 @keyframes fadeInUp {
   from { transform: translateY(30px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
@@ -57,56 +50,13 @@ nav { animation: slideDown 0.6s ease-out; }
 .hero p { animation: fadeInUp 0.8s ease-out; }
 .search-wrap { animation: fadeInUp 0.9s ease-out; }
 
-/* ========== أنيميشن شريط الإحصائيات ========== */
-@keyframes scaleIn {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-.stats-bar { animation: scaleIn 0.5s ease-out; }
-.stat-item { transition: all 0.3s ease; position: relative; overflow: hidden; }
-.stat-item::before {
-  content: ''; position: absolute; bottom: 0; left: 0;
-  width: 0%; height: 2px; background: var(--gold); transition: width 0.3s ease;
-}
-.stat-item:hover::before { width: 100%; }
-.stat-item strong { transition: transform 0.2s ease; display: inline-block; }
-.stat-item:hover strong { transform: scale(1.05); }
-
-/* ========== أنيميشن الأزرار ========== */
-@keyframes buttonPop {
-  0% { transform: scale(0.9); opacity: 0; }
-  80% { transform: scale(1.05); }
-  100% { transform: scale(1); opacity: 1; }
-}
-.fpill {
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  animation: buttonPop 0.4s ease-out;
-  position: relative; overflow: hidden;
-}
-.fpill::after {
-  content: ''; position: absolute; top: 50%; left: 50%;
-  width: 0; height: 0; border-radius: 50%; background: rgba(255,255,255,0.3);
-  transform: translate(-50%, -50%); transition: width 0.4s, height 0.4s;
-}
-.fpill:active::after { width: 100%; height: 100%; }
-.fpill:hover { transform: translateY(-3px) scale(1.02); }
-
-/* ========== أنيميشن التصنيفات ========== */
-.ctab { transition: all 0.3s ease; position: relative; }
-.ctab::after {
-  content: ''; position: absolute; bottom: 0; right: 50%;
-  width: 0; height: 2.5px; background: var(--navy); transition: all 0.3s ease;
-}
-.ctab:hover::after { width: 100%; right: 0; }
-.ctab.on::after { width: 100%; right: 0; }
-
-/* ========== أنيميشن البطاقات ========== */
+/* ========== أنيميشن البطاقات فقط ========== */
 @keyframes cardAppear {
   from { transform: translateY(40px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 .card {
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: all 0.3s ease;
   animation: cardAppear 0.5s ease-out;
   animation-fill-mode: both;
   background: var(--surface);
@@ -116,12 +66,12 @@ nav { animation: slideDown 0.6s ease-out; }
   cursor: pointer;
 }
 .card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 .card-img { transition: all 0.3s ease; overflow: hidden; }
-.card-img img { transition: transform 0.4s ease; width: 100%; height: 100%; object-fit: contain; }
-.card:hover .card-img img { transform: scale(1.08); }
+.card-img img { transition: transform 0.3s ease; width: 100%; height: 100%; object-fit: contain; }
+.card:hover .card-img img { transform: scale(1.05); }
 .card-stripe { height: 5px; width: 100%; }
 .s-red { background: var(--red); }
 .s-yel { background: var(--yellow); }
@@ -149,18 +99,9 @@ nav { animation: slideDown 0.6s ease-out; }
   width: 100%; margin-top: 10px; padding: 9px;
   border-radius: 10px; background: var(--navy); color: #fff;
   font-size: 13px; font-weight: 600; border: none; cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative; overflow: hidden;
+  transition: background 0.3s ease;
 }
-.card-btn::before {
-  content: ''; position: absolute; top: 0; left: -100%;
-  width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transition: left 0.5s ease;
-}
-.card-btn:hover::before { left: 100%; }
 .card-btn:hover { background: var(--red); }
-.card-status-dot { transition: all 0.2s ease; }
-.card:hover .card-status-dot { transform: scale(1.2); }
 
 /* تأخير ظهور البطاقات */
 .card:nth-child(1) { animation-delay: 0.05s; }
@@ -179,18 +120,10 @@ nav { animation: slideDown 0.6s ease-out; }
   from { transform: translateY(100%); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
-.modal { animation: modalSlideUp 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
-.modal-overlay { transition: background 0.3s ease; }
+.modal { animation: modalSlideUp 0.3s ease-out; }
 
 /* ========== أنيميشن القائمة الجانبية ========== */
-.drawer { transition: right 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
-.dl { transition: all 0.25s ease; position: relative; overflow: hidden; }
-.dl::before {
-  content: ''; position: absolute; top: 0; right: -100%;
-  width: 100%; height: 100%; background: rgba(255,255,255,0.05);
-  transition: right 0.3s ease;
-}
-.dl:hover::before { right: 0; }
+.drawer { transition: right 0.3s ease; }
 
 /* ========== أنيميشن زر الترس ========== */
 .admin-secret {
@@ -200,10 +133,10 @@ nav { animation: slideDown 0.6s ease-out; }
   border: none; cursor: pointer; font-size: 24px;
   z-index: 200; box-shadow: 0 4px 12px rgba(0,0,0,.3);
   display: flex; align-items: center; justify-content: center;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: all 0.3s ease;
   animation: fadeInUp 0.6s ease-out;
 }
-.admin-secret:hover { transform: scale(1.1) rotate(15deg); background: var(--red); color: white; }
+.admin-secret:hover { background: var(--red); color: white; }
 
 /* ========== أنيميشن التوست ========== */
 @keyframes toastSlide {
@@ -212,46 +145,29 @@ nav { animation: slideDown 0.6s ease-out; }
 }
 .toast.show { animation: toastSlide 0.3s ease-out; }
 
-/* ========== أنيميشن بطاقات العلامات ========== */
+/* ========== صفحة المعايير - بدون دوائر وخلفيات ========== */
+.legend-wrap { max-width: 700px; margin: 0 auto; padding: 2rem 1rem; }
 .legend-card {
-  transition: all 0.3s ease;
-  animation: cardAppear 0.5s ease-out;
-  background: var(--surface);
-  border-radius: 14px;
-  border: 1px solid var(--border);
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  border-right: 4px solid;
   padding: 1rem;
   margin-bottom: 1rem;
-  display: flex;
-  gap: 1rem;
+  display: block;
   box-shadow: none;
 }
-.legend-card:hover { transform: translateX(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-.legend-card:nth-child(1) { animation-delay: 0.05s; }
-.legend-card:nth-child(2) { animation-delay: 0.1s; }
-.legend-card:nth-child(3) { animation-delay: 0.15s; }
-.legend-card:nth-child(4) { animation-delay: 0.2s; }
-.legend-card:nth-child(5) { animation-delay: 0.25s; }
+.legend-card-red { border-right-color: var(--red); }
+.legend-card-yellow { border-right-color: var(--yellow); }
+.legend-card-green { border-right-color: var(--green); }
+.legend-card-brown { border-right-color: var(--local); }
+.legend-card-blue { border-right-color: var(--blue); }
+.legend-text h3 { font-size: 16px; font-weight: 900; margin-bottom: 5px; }
+.legend-text p { font-size: 12px; color: #555; line-height: 1.6; }
 
-/* ========== أنيميشن بطاقات التواصل ========== */
-.contact-card {
-  transition: all 0.3s ease;
-  animation: cardAppear 0.5s ease-out;
-  background: var(--surface);
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  padding: 1rem;
-  margin-bottom: 1rem;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-.contact-card:hover { transform: translateX(-5px); background: linear-gradient(135deg, var(--surface), var(--bg)); }
-
-/* ========== أنيميشن نافذة تسجيل الدخول ========== */
-@keyframes loginPop {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
+/* ========== نافذة تسجيل الدخول ========== */
+.login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
+.login-modal.open { display: flex; }
 .login-box {
   background: var(--surface);
   border-radius: 24px;
@@ -260,7 +176,7 @@ nav { animation: slideDown 0.6s ease-out; }
   max-width: 380px;
   text-align: center;
   position: relative;
-  animation: loginPop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  animation: fadeInUp 0.3s ease-out;
 }
 .login-close {
   position: absolute;
@@ -270,38 +186,22 @@ nav { animation: slideDown 0.6s ease-out; }
   border: none;
   font-size: 20px;
   cursor: pointer;
-  color: #888;
+  color: #999;
   width: 30px;
   height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease;
 }
-.login-close:hover { transform: rotate(90deg); color: var(--red); background: rgba(0,0,0,0.05); }
+.login-close:hover { color: var(--red); }
+.login-box h3 { color: var(--red); margin-bottom: 1rem; }
+.login-box input { width: 100%; padding: 12px; margin: 1rem 0; border: 2px solid var(--border); border-radius: 12px; font-family: inherit; font-size: 16px; }
+.login-box button { background: var(--red); color: white; border: none; padding: 12px; width: 100%; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.2s ease; }
+.login-box button:hover { background: var(--red-dark); }
+.login-error { color: var(--red); font-size: 12px; margin-top: 10px; display: none; }
 
-/* ========== أنيميشن البحث ========== */
-.search-wrap input {
-  transition: all 0.3s ease;
-  width: 100%;
-  padding: 12px 16px 12px 46px;
-  font-size: 15px;
-  border: none;
-  border-radius: 12px;
-  background: #fff;
-  outline: none;
-}
-.search-wrap input:focus { transform: scale(1.02); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
-
-/* ========== أنيميشن الشعار ========== */
-.nav-logo-img { transition: transform 0.3s ease; }
-.nav-logo-img:hover { transform: rotate(5deg) scale(1.05); }
-
-/* ========== أنيميشن السكرول ========== */
-html { scroll-behavior: smooth; }
-
-/* ========== التنسيقات الأساسية ========== */
+/* ========== باقي التنسيقات ========== */
 nav {
   position: sticky; top: 0; z-index: 300;
   background: var(--red); height: 60px;
@@ -327,7 +227,7 @@ nav {
 .drawer-overlay.open { display: block; }
 .drawer {
   position: fixed; top: 0; right: -290px; width: 290px; height: 100vh;
-  background: var(--navy); z-index: 500; transition: right .28s;
+  background: var(--navy); z-index: 500; transition: right 0.3s ease;
   display: flex; flex-direction: column;
 }
 .drawer.open { right: 0; }
@@ -345,6 +245,7 @@ nav {
   color: #9aa3b5; font-size: 14px; font-weight: 500; cursor: pointer;
   background: none; width: 100%; font-family: inherit; text-align: right;
   border-right: 3px solid transparent;
+  transition: all 0.2s ease;
 }
 .dl:hover, .dl.on { color: #fff; background: rgba(255,255,255,.06); border-right-color: var(--gold); }
 .drawer-footer { margin-top: auto; padding: 1rem; font-size: 11px; color: #3a4560; text-align: center; }
@@ -355,7 +256,8 @@ nav {
   position: fixed; top: 0; right: -100%;
   width: 100%; max-width: 550px; height: 100vh;
   background: var(--surface); z-index: 1000;
-  transition: right .3s; overflow-y: auto;
+  transition: right 0.3s ease;
+  overflow-y: auto;
   box-shadow: -5px 0 30px rgba(0,0,0,.3);
 }
 .admin-panel.open { right: 0; }
@@ -364,7 +266,9 @@ nav {
   width: 35px; height: 35px; border-radius: 50%;
   background: rgba(255,255,255,.2); border: none;
   color: white; font-size: 18px; cursor: pointer;
+  transition: background 0.2s ease;
 }
+.admin-close:hover { background: rgba(255,255,255,.4); }
 .admin-content { padding: 1rem; }
 .form-group { margin-bottom: 1rem; }
 .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px; }
@@ -379,22 +283,19 @@ nav {
   padding: 12px; width: 100%; border-radius: 12px;
   font-size: 16px; font-weight: bold; cursor: pointer;
   margin-top: 10px;
+  transition: background 0.2s ease;
 }
+.btn-primary:hover { background: var(--red-dark); }
 .search-admin { margin: 15px 0; }
 .search-admin input { width: 100%; padding: 10px; border: 2px solid var(--border); border-radius: 10px; }
 .product-list-admin { margin-top: 2rem; border-top: 2px solid var(--border); padding-top: 1rem; max-height: 400px; overflow-y: auto; }
 .admin-product-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--border); }
-.delete-btn { background: var(--red-light); color: var(--red); padding: 5px 10px; border-radius: 8px; border: none; cursor: pointer; }
-.edit-btn { background: var(--blue); color: white; padding: 5px 10px; border-radius: 8px; border: none; cursor: pointer; margin-left: 5px; }
+.delete-btn { background: var(--red-light); color: var(--red); padding: 5px 10px; border-radius: 8px; border: none; cursor: pointer; transition: background 0.2s ease; }
+.delete-btn:hover { background: var(--red); color: white; }
+.edit-btn { background: var(--blue); color: white; padding: 5px 10px; border-radius: 8px; border: none; cursor: pointer; margin-left: 5px; transition: background 0.2s ease; }
+.edit-btn:hover { background: var(--blue-dark, #0d4a9c); }
 .admin-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 999; }
 .admin-overlay.open { display: block; }
-
-.login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
-.login-modal.open { display: flex; }
-.login-box h3 { color: var(--red); margin-bottom: 1rem; }
-.login-box input { width: 100%; padding: 12px; margin: 1rem 0; border: 2px solid var(--border); border-radius: 12px; font-family: inherit; font-size: 16px; }
-.login-box button { background: var(--red); color: white; border: none; padding: 12px; width: 100%; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; }
-.login-error { color: var(--red); font-size: 12px; margin-top: 10px; display: none; }
 
 .hero { background: var(--red); padding: 2rem 1.2rem 1.8rem; text-align: center; }
 .hero-logo-wrap { width: 100px; height: 100px; margin: 0 auto 1rem; }
@@ -403,14 +304,22 @@ nav {
 .hero h1 { font-size: clamp(1.6rem,6vw,2.4rem); font-weight: 900; color: #fff; margin-bottom: .4rem; }
 .hero p { font-size: 13px; color: rgba(255,255,255,.8); margin: 0 auto 1.3rem; max-width: 320px; }
 .search-wrap { position: relative; max-width: 460px; margin: 0 auto; }
+.search-wrap input {
+  width: 100%; padding: 12px 16px 12px 46px;
+  font-size: 15px; border: none; border-radius: 12px;
+  background: #fff; outline: none;
+  transition: box-shadow 0.2s ease;
+}
+.search-wrap input:focus { box-shadow: 0 0 0 2px var(--gold); }
 .s-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #aaa; }
 .results-count { font-size: 12px; color: rgba(255,255,255,.7); text-align: center; margin-top: .5rem; }
 
 .stats-bar { background: var(--navy); display: grid; grid-template-columns: repeat(6,1fr); border-bottom: 3px solid var(--gold); }
-.stat-item { text-align: center; padding: 10px 6px; border-left: 1px solid rgba(255,255,255,.08); cursor: pointer; }
+.stat-item { text-align: center; padding: 10px 6px; border-left: 1px solid rgba(255,255,255,.08); cursor: pointer; transition: background 0.2s ease; }
 .stat-item:last-child { border-left: none; }
 .stat-item strong { display: block; font-size: 20px; font-weight: 900; color: #fff; }
 .stat-item span { font-size: 9px; color: #6a7888; text-transform: uppercase; }
+.stat-item:hover { background: rgba(255,255,255,.05); }
 .stat-item.active { background: rgba(255,255,255,.1); border-bottom: 2px solid var(--gold); }
 
 .filter-row { display: flex; gap: 7px; padding: .9rem 1rem .4rem; flex-wrap: wrap; }
@@ -419,9 +328,11 @@ nav {
   padding: 6px 13px; border-radius: 99px;
   border: 1.5px solid var(--border); background: var(--surface);
   font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: all 0.2s ease;
 }
 .fpill .dot { width: 8px; height: 8px; border-radius: 50%; }
 .fpill .cnt { font-size: 10px; background: var(--navy); color: white; padding: 2px 7px; border-radius: 99px; min-width: 24px; text-align: center; }
+.fpill:hover { transform: translateY(-2px); }
 .fpill.on { background: var(--navy); color: #fff; border-color: var(--navy); }
 .fpill.on .cnt { background: rgba(255,255,255,.3); color: white; }
 
@@ -431,8 +342,10 @@ nav {
   padding: 11px 13px; font-size: 12px; font-weight: 500;
   color: var(--muted); background: none; border: none;
   border-bottom: 2.5px solid transparent; cursor: pointer;
+  transition: all 0.2s ease;
 }
 .ctab .cdot { width: 7px; height: 7px; border-radius: 50%; }
+.ctab:hover { color: var(--navy); }
 .ctab.on { color: var(--navy); border-bottom-color: var(--navy); font-weight: 700; }
 
 .grid-section { max-width: 1200px; margin: 0 auto; padding: .8rem .8rem 5rem; }
@@ -452,7 +365,8 @@ nav {
 .modal-sc { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
 .modal-title { font-size: 21px; font-weight: 900; }
 .modal-title-en { font-size: 12px; color: var(--muted); }
-.modal-close { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border); background: none; cursor: pointer; }
+.modal-close { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border); background: none; cursor: pointer; transition: all 0.2s ease; }
+.modal-close:hover { background: var(--red-light); color: var(--red); }
 .minfo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 1rem; }
 .mbox { background: var(--bg); border-radius: 10px; padding: 8px 11px; }
 .mbox label { font-size: 10px; color: var(--muted); display: block; }
@@ -463,24 +377,16 @@ nav {
 .mreason.green { background: var(--green-light); border-right-color: var(--green); color: var(--green-dark); }
 .malt { font-size: 13px; color: var(--green-dark); background: var(--green-light); border-right: 3px solid var(--green); padding: 9px 12px; border-radius: 0 8px 8px 0; margin-top: 5px; }
 .mdate { font-size: 11px; color: var(--muted); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); text-align: center; }
-.share-btn { width: 100%; margin-top: 1.1rem; padding: 12px; border-radius: 12px; background: var(--navy); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; transition: background 0.3s; }
+.share-btn { width: 100%; margin-top: 1.1rem; padding: 12px; border-radius: 12px; background: var(--navy); color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; transition: background 0.2s ease; }
 .share-btn:hover { background: var(--red); }
 
 footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 12px; color: #888; }
-.toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; padding: 9px 18px; border-radius: 99px; font-size: 13px; z-index: 999; opacity: 0; transition: all .3s; }
+.toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; padding: 9px 18px; border-radius: 99px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity 0.3s ease; }
 .toast.show { opacity: 1; }
 
-.legend-wrap { max-width: 700px; margin: 0 auto; padding: 2rem 1rem; }
-.lc { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-.lc-r { background: var(--red); }
-.lc-y { background: var(--yellow); }
-.lc-g { background: var(--green); }
-.lc-l { background: var(--local); }
-.lc-b { background: var(--blue); }
-.legend-text h3 { font-size: 16px; font-weight: 900; }
-.legend-text p { font-size: 12px; color: #555; }
-
 .contact-wrap { max-width: 500px; margin: 0 auto; padding: 2rem 1rem; }
+.contact-card { background: var(--surface); border-radius: 14px; border: 1px solid var(--border); padding: 1rem; margin-bottom: 1rem; display: flex; gap: 1rem; align-items: center; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.contact-card:hover { transform: translateX(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 .loading { text-align: center; padding: 2rem; color: var(--muted); }
 </style>
 </head>
@@ -581,11 +487,21 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
 <div class="page" id="page-legend">
   <div class="legend-wrap">
     <h2>العلامات والمعايير</h2>
-    <div class="legend-card"><div class="lc lc-r">🔴</div><div class="legend-text"><h3 style="color:var(--red)">مقاطعة</h3><p>الشركة صهيونية أو من الدول الداعمة للكيانات الصهيونية والمحاربة للإسلام (أمريكا، ألمانيا، فرنسا، بريطانيا، إيطاليا) أو إذا كانت الشركة تدعم الشذوذ أو تدعو لتقل المسلمين.</p></div></div>
-    <div class="legend-card"><div class="lc lc-y">🟡</div><div class="legend-text"><h3 style="color:var(--yellow-dark)">يُفضل اجتنابها</h3><p>الشركة عندها استثمارات مشبوهة أو مصنوعة في بلاد الكفر.</p></div></div>
-    <div class="legend-card"><div class="lc lc-l">🟤</div><div class="legend-text"><h3 style="color:#7a5200">غير مقاطعة</h3><p>لكنها من بلد كفار والفضل شراء منتجات من بلاد المسلمين في حال التوافر، والفضل أيضًا دعم المحلي.</p></div></div>
-    <div class="legend-card"><div class="lc lc-b">🔵</div><div class="legend-text"><h3 style="color:#0d4a9c">لا توجد معلومات كافية</h3><p>لا توجد معلومات كافية عن الشركة.</p></div></div>
-    <div class="legend-card"><div class="lc lc-g">🟢</div><div class="legend-text"><h3 style="color:var(--green)">بديل أو أصيل</h3><p>منتجات محلية أو من دول صديقة بديلة للمنتجات المقاطعة.</p></div></div>
+    <div class="legend-card legend-card-red">
+      <div class="legend-text"><h3 style="color:var(--red)">🔴 مقاطعة</h3><p>الشركة صهيونية أو من الدول الداعمة للكيانات الصهيونية والمحاربة للإسلام (أمريكا، ألمانيا، فرنسا، بريطانيا، إيطاليا) أو إذا كانت الشركة تدعم الشذوذ أو تدعو لتقل المسلمين.</p></div>
+    </div>
+    <div class="legend-card legend-card-yellow">
+      <div class="legend-text"><h3 style="color:var(--yellow-dark)">🟡 يُفضل اجتنابها</h3><p>الشركة عندها استثمارات مشبوهة أو مصنوعة في بلاد الكفر.</p></div>
+    </div>
+    <div class="legend-card legend-card-brown">
+      <div class="legend-text"><h3 style="color:#7a5200">🟤 غير مقاطعة</h3><p>لكنها من بلد كفار والفضل شراء منتجات من بلاد المسلمين في حال التوافر، والفضل أيضًا دعم المحلي.</p></div>
+    </div>
+    <div class="legend-card legend-card-blue">
+      <div class="legend-text"><h3 style="color:#0d4a9c">🔵 لا توجد معلومات كافية</h3><p>لا توجد معلومات كافية عن الشركة.</p></div>
+    </div>
+    <div class="legend-card legend-card-green">
+      <div class="legend-text"><h3 style="color:var(--green)">🟢 بديل أو أصيل</h3><p>منتجات محلية أو من دول صديقة بديلة للمنتجات المقاطعة.</p></div>
+    </div>
   </div>
 </div>
 
