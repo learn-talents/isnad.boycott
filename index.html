@@ -145,7 +145,7 @@ body { animation: bgPulse 10s ease-in-out infinite; }
 }
 .toast.show { animation: toastSlide 0.3s ease-out; }
 
-/* ========== صفحة المعايير - بدون دوائر وخلفيات ========== */
+/* ========== صفحة المعايير ========== */
 .legend-wrap { max-width: 700px; margin: 0 auto; padding: 2rem 1rem; }
 .legend-card {
   background: transparent;
@@ -165,7 +165,7 @@ body { animation: bgPulse 10s ease-in-out infinite; }
 .legend-text h3 { font-size: 16px; font-weight: 900; margin-bottom: 5px; }
 .legend-text p { font-size: 12px; color: #555; line-height: 1.6; }
 
-/* ========== نافذة تسجيل الدخول ========== */
+/* ========== نافذة تسجيل الدخول (بدون زر X) ========== */
 .login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
 .login-modal.open { display: flex; }
 .login-box {
@@ -178,23 +178,6 @@ body { animation: bgPulse 10s ease-in-out infinite; }
   position: relative;
   animation: fadeInUp 0.3s ease-out;
 }
-.login-close {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: transparent;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: #999;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s ease;
-}
-.login-close:hover { color: var(--red); }
 .login-box h3 { color: var(--red); margin-bottom: 1rem; }
 .login-box input { width: 100%; padding: 12px; margin: 1rem 0; border: 2px solid var(--border); border-radius: 12px; font-family: inherit; font-size: 16px; }
 .login-box button { background: var(--red); color: white; border: none; padding: 12px; width: 100%; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.2s ease; }
@@ -308,9 +291,7 @@ nav {
   width: 100%; padding: 12px 16px 12px 46px;
   font-size: 15px; border: none; border-radius: 12px;
   background: #fff; outline: none;
-  transition: box-shadow 0.2s ease;
 }
-.search-wrap input:focus { box-shadow: 0 0 0 2px var(--gold); }
 .s-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #aaa; }
 .results-count { font-size: 12px; color: rgba(255,255,255,.7); text-align: center; margin-top: .5rem; }
 
@@ -416,7 +397,6 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
 
 <div class="login-modal" id="loginModal">
   <div class="login-box">
-    <button class="login-close" onclick="closeLoginModal()">✕</button>
     <h3>🔐 دخول المشرف</h3>
     <input type="password" id="adminPassword" placeholder="كلمة المرور" onkeypress="if(event.key==='Enter') checkLogin()">
     <button onclick="checkLogin()">تسجيل الدخول</button>
@@ -665,7 +645,6 @@ let currentProduct = null;
 function openModal(id) { currentProduct = products.find(p => p.id === id); if(!currentProduct) return; const statusEmoji = {مقاطعة:'🔴',اجتناب:'🟡',بديل:'🟢','الشراء من المحلي أفضل':'🟤','لا توجد معلومات كافية':'🔵'}; const statusColors = {مقاطعة:'red',اجتناب:'yel',بديل:'grn','الشراء من المحلي أفضل':'loc','لا توجد معلومات كافية':'blu'}; const isAlt = currentProduct.status === 'بديل'; const isBoycott = currentProduct.status === 'مقاطعة'; const hasImage = currentProduct.image && currentProduct.image.trim() !== ''; document.getElementById('mStripe').style.background = `var(--${statusColors[currentProduct.status]})`; document.getElementById('mImg').innerHTML = hasImage ? `<img src="${currentProduct.image}" onerror="this.parentElement.innerHTML='<div class=no-image-modal>${statusEmoji[currentProduct.status]}</div>'">` : `<div class="no-image-modal">${statusEmoji[currentProduct.status]}</div>`; document.getElementById('mTitle').textContent = currentProduct.name; document.getElementById('mTitleEn').textContent = currentProduct.nameEn || ''; document.getElementById('mStatus').textContent = currentProduct.status; document.getElementById('mCountry').textContent = currentProduct.country || '—'; document.getElementById('mCompany').textContent = currentProduct.company || '—'; document.getElementById('mCat').textContent = currentProduct.cat || '—'; document.getElementById('mUpdatedAt').textContent = `📅 آخر تحديث: ${currentProduct.updatedAt || getCurrentDate()}`; const reasonElement = document.getElementById('mReason'); reasonElement.textContent = currentProduct.reason || 'لا يوجد سبب محدد'; if(isAlt) { reasonElement.classList.add('green'); } else { reasonElement.classList.remove('green'); } const altWrap = document.getElementById('mAltWrap'); const altElement = document.getElementById('mAlt'); if(isBoycott && currentProduct.alt) { altElement.textContent = currentProduct.alt; altWrap.style.display = 'block'; } else { altWrap.style.display = 'none'; } document.getElementById('mCircle').textContent = statusEmoji[currentProduct.status]; document.getElementById('modal').classList.add('open'); document.body.style.overflow = 'hidden'; const newUrl = `${window.location.origin}${window.location.pathname}?product=${currentProduct.id}`; window.history.pushState({ productId: currentProduct.id }, '', newUrl); }
 function closeModal() { document.getElementById('modal').classList.remove('open'); document.body.style.overflow = ''; const newUrl = `${window.location.origin}${window.location.pathname}`; window.history.pushState({}, '', newUrl); }
 function shareProduct() { if(!currentProduct) return; const shareUrl = `${window.location.origin}${window.location.pathname}?product=${currentProduct.id}`; const statusEmoji = {مقاطعة:'🔴',اجتناب:'🟡',بديل:'🟢','الشراء من المحلي أفضل':'🟤','لا توجد معلومات كافية':'🔵'}; let text = `${statusEmoji[currentProduct.status]} ${currentProduct.name}\n📂 القسم: ${currentProduct.cat}\n🏢 الشركة: ${currentProduct.company || '—'}\n📝 سبب التصنيف: ${currentProduct.reason || '—'}\n`; if(currentProduct.status === 'مقاطعة' && currentProduct.alt) { text += `🔄 البدائل: ${currentProduct.alt}\n`; } text += `\n🔗 رابط المنتج: ${shareUrl}`; navigator.clipboard.writeText(text).then(() => showToast('📋 تم نسخ رابط المنتج مع التفاصيل')); }
-function closeLoginModal() { document.getElementById('loginModal').classList.remove('open'); }
 function checkUrlForProduct() { const urlParams = new URLSearchParams(window.location.search); const productId = urlParams.get('product'); if(productId) { setTimeout(() => { const id = parseInt(productId); const product = products.find(p => p.id === id); if(product) { openModal(id); } }, 800); } }
 
 document.getElementById('searchInput')?.addEventListener('input', function(e) { curSearch = e.target.value; renderProducts(); updateStatsBar(); });
