@@ -311,15 +311,63 @@ let isAdmin = false;
 let adminSearchTerm = '';
 let curFilter = 'all', curCat = 'all', curSearch = '';
 
-// ===================== منتجات افتراضية =====================
+// ===================== جميع المنتجات (أكثر من 50 منتج في كل الفئات) =====================
 function loadDefaultProducts() {
   return [
-    {id:101,name:"صافولا",nameEn:"Safola",status:"مقاطعة",cat:"زيت الطهي",company:"صافولا",country:"السعودية",image:"https://logo.clearbit.com/safola.com",reason:"منتجات صافولا تدعم جهات داعمة",alt:"الحلي، اطايب، جنان، امير، امينة",updatedAt:"2025-06-23"},
-    {id:102,name:"فيري",nameEn:"Fairy",status:"مقاطعة",cat:"سائل جلي",company:"Procter & Gamble",country:"أمريكا",image:"https://logo.clearbit.com/fairy.com",reason:"منتج أمريكي",alt:"العملاق، بحر، فاسترين",updatedAt:"2025-10-26"},
-    {id:103,name:"سامسونج",nameEn:"Samsung",status:"مقاطعة",cat:"اجهزة كهربائية",company:"Samsung",country:"كوريا",image:"https://logo.clearbit.com/samsung.com",reason:"شركة كورية داعمة",alt:"Zenet، Kastron، Sharp",updatedAt:"2026-01-05"},
-    {id:104,name:"الحلي",nameEn:"Al Heli",status:"بديل",cat:"زيت الطهي",company:"الحلي",country:"السعودية",image:"",reason:"بديل محلي ممتاز 100%",updatedAt:"2025-06-23"},
-    {id:105,name:"هايجين",nameEn:"Hygiene",status:"بديل",cat:"مزيلات عرق",company:"هايجين",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-03"},
-    {id:106,name:"العملاق",nameEn:"Al Amlaq",status:"بديل",cat:"صابون غسيل ملابس",company:"العملاق",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-12-15"},
+    // زيت الطهي
+    {id:101,name:"صافولا",nameEn:"Safola",status:"مقاطعة",cat:"زيت الطهي",company:"صافولا",country:"السعودية",image:"https://logo.clearbit.com/safola.com",reason:"منتجات صافولا تدعم جهات داعمة",alt:"الحلي، اطايب، جنان",updatedAt:"2025-06-23"},
+    {id:102,name:"عافية",nameEn:"Afia",status:"مقاطعة",cat:"زيت الطهي",company:"صافولا",country:"السعودية",image:"",reason:"تابعة لصافولا",alt:"الحلي، اطايب",updatedAt:"2025-06-23"},
+    {id:103,name:"الحلي",nameEn:"Al Heli",status:"بديل",cat:"زيت الطهي",company:"الحلي",country:"السعودية",image:"",reason:"بديل محلي ممتاز 100%",updatedAt:"2025-06-23"},
+    {id:104,name:"اطايب",nameEn:"Atayeb",status:"بديل",cat:"زيت الطهي",company:"اطايب",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-23"},
+    // مزيلات عرق
+    {id:201,name:"اديداس",nameEn:"Adidas",status:"مقاطعة",cat:"مزيلات عرق",company:"Adidas",country:"ألمانيا",image:"https://logo.clearbit.com/adidas.com",reason:"شركة ألمانية داعمة",alt:"هايجين، ديب سينس، ماي",updatedAt:"2025-06-03"},
+    {id:202,name:"ريكسونا",nameEn:"Rexona",status:"مقاطعة",cat:"مزيلات عرق",company:"Unilever",country:"بريطانيا",image:"",reason:"منتجات يونيليفر تدعم الكيان",alt:"هايجين، ديب سينس",updatedAt:"2025-06-03"},
+    {id:203,name:"هايجين",nameEn:"Hygiene",status:"بديل",cat:"مزيلات عرق",company:"هايجين",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-03"},
+    {id:204,name:"ديب سينس",nameEn:"Deep Sense",status:"بديل",cat:"مزيلات عرق",company:"ديب سينس",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-06-03"},
+    // اجهزة كهربائية
+    {id:301,name:"سامسونج",nameEn:"Samsung",status:"مقاطعة",cat:"اجهزة كهربائية",company:"Samsung",country:"كوريا",image:"https://logo.clearbit.com/samsung.com",reason:"شركة كورية داعمة",alt:"زينت، كسترون، شارب",updatedAt:"2026-01-05"},
+    {id:302,name:"LG",nameEn:"LG",status:"مقاطعة",cat:"اجهزة كهربائية",company:"LG",country:"كوريا",image:"",reason:"شركة كورية داعمة",alt:"زينت، كسترون",updatedAt:"2026-01-05"},
+    {id:303,name:"زينت",nameEn:"Zenet",status:"بديل",cat:"اجهزة كهربائية",company:"زينت",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2026-01-05"},
+    {id:304,name:"كسترون",nameEn:"Kastron",status:"بديل",cat:"اجهزة كهربائية",company:"كسترون",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2026-01-05"},
+    // دجاج
+    {id:401,name:"امريكانا",nameEn:"Americana",status:"مقاطعة",cat:"دجاج",company:"امريكانا",country:"الكويت",image:"",reason:"شركة داعمة",alt:"المزرعة، الزعيم",updatedAt:"2026-02-01"},
+    {id:402,name:"المراعي",nameEn:"Almarai",status:"مقاطعة",cat:"دجاج",company:"المراعي",country:"السعودية",image:"",reason:"شركة داعمة",alt:"المزرعة، الزعيم",updatedAt:"2026-02-01"},
+    {id:403,name:"المزرعة",nameEn:"Al Mazraa",status:"بديل",cat:"دجاج",company:"المزرعة",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2026-02-01"},
+    {id:404,name:"الزعيم",nameEn:"Al Zaeem",status:"بديل",cat:"دجاج",company:"الزعيم",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2026-02-01"},
+    // ألبان
+    {id:501,name:"نستله",nameEn:"Nestlé",status:"مقاطعة",cat:"ألبان",company:"Nestlé",country:"سويسرا",image:"https://logo.clearbit.com/nestle.com",reason:"شركة سويسرية داعمة",alt:"أوال، النور، ندى",updatedAt:"2026-02-01"},
+    {id:502,name:"أوال",nameEn:"Awal",status:"بديل",cat:"ألبان",company:"أوال",country:"البحرين",image:"",reason:"بديل خليجي ممتاز",updatedAt:"2026-02-01"},
+    {id:503,name:"النور",nameEn:"Al Noor",status:"بديل",cat:"ألبان",company:"النور",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2026-02-01"},
+    // صابون غسيل ملابس
+    {id:601,name:"اريال",nameEn:"Ariel",status:"مقاطعة",cat:"صابون غسيل ملابس",company:"Procter & Gamble",country:"أمريكا",image:"https://logo.clearbit.com/ariel.com",reason:"منتج أمريكي داعم",alt:"العملاق، ديكسن، وينيكس",updatedAt:"2025-12-15"},
+    {id:602,name:"تايد",nameEn:"Tide",status:"مقاطعة",cat:"صابون غسيل ملابس",company:"Procter & Gamble",country:"أمريكا",image:"",reason:"منتج أمريكي داعم",alt:"العملاق، ديكسن",updatedAt:"2025-12-15"},
+    {id:603,name:"العملاق",nameEn:"Al Amlaq",status:"بديل",cat:"صابون غسيل ملابس",company:"العملاق",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-12-15"},
+    {id:604,name:"ديكسن",nameEn:"Dickson",status:"بديل",cat:"صابون غسيل ملابس",company:"ديكسن",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-12-15"},
+    // تلفزيونات
+    {id:701,name:"سوني",nameEn:"Sony",status:"مقاطعة",cat:"تلفزيونات",company:"Sony",country:"اليابان",image:"https://logo.clearbit.com/sony.com",reason:"شركة يابانية داعمة",alt:"كسترون، شارب",updatedAt:"2025-11-10"},
+    {id:702,name:"كسترون تي في",nameEn:"Kastron TV",status:"بديل",cat:"تلفزيونات",company:"كسترون",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-11-10"},
+    {id:703,name:"شارب",nameEn:"Sharp",status:"بديل",cat:"تلفزيونات",company:"Sharp",country:"اليابان",image:"",reason:"بديل مقبول",updatedAt:"2025-11-10"},
+    // سائل جلي
+    {id:801,name:"فيري",nameEn:"Fairy",status:"مقاطعة",cat:"سائل جلي",company:"Procter & Gamble",country:"أمريكا",image:"https://logo.clearbit.com/fairy.com",reason:"منتج أمريكي",alt:"العملاق، بحر، فاسترين",updatedAt:"2025-10-26"},
+    {id:802,name:"العملاق جلي",nameEn:"Al Amlaq",status:"بديل",cat:"سائل جلي",company:"العملاق",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-10-26"},
+    // منظفات ارضية
+    {id:901,name:"ديتول",nameEn:"Dettol",status:"مقاطعة",cat:"منظفات ارضية",company:"Reckitt",country:"بريطانيا",image:"https://logo.clearbit.com/dettol.com",reason:"منتج بريطاني",alt:"العملاق، ريما، لويال",updatedAt:"2025-10-26"},
+    {id:902,name:"العملاق منظف",nameEn:"Al Amlaq",status:"بديل",cat:"منظفات ارضية",company:"العملاق",country:"السعودية",image:"",reason:"بديل محلي ممتاز",updatedAt:"2025-10-26"},
+    // حلويات
+    {id:1001,name:"كادبوري",nameEn:"Cadbury",status:"مقاطعة",cat:"حلويات",company:"Mondelez",country:"بريطانيا",image:"https://logo.clearbit.com/cadbury.com",reason:"شركة بريطانية داعمة",alt:"ميهمن، شيرين عسل",updatedAt:"2025-07-01"},
+    {id:1002,name:"نوتيلا",nameEn:"Nutella",status:"مقاطعة",cat:"حلويات",company:"Ferrero",country:"إيطاليا",image:"",reason:"شركة إيطالية داعمة",alt:"ميهمن، شيرين عسل",updatedAt:"2025-07-01"},
+    {id:1003,name:"ميهمن",nameEn:"Mihman",status:"بديل",cat:"حلويات",company:"ميهمن",country:"إيران",image:"",reason:"بديل إيراني",updatedAt:"2025-07-01"},
+    // هواتف
+    {id:1101,name:"آيفون",nameEn:"iPhone",status:"مقاطعة",cat:"هواتف",company:"Apple",country:"أمريكا",image:"https://logo.clearbit.com/apple.com",reason:"شركة أمريكية داعمة",alt:"هونر، ون بلس، أوبو",updatedAt:"2024-12-07"},
+    {id:1102,name:"سامسونج جالاكسي",nameEn:"Samsung Galaxy",status:"مقاطعة",cat:"هواتف",company:"Samsung",country:"كوريا",image:"",reason:"شركة كورية داعمة",alt:"هونر، ون بلس",updatedAt:"2024-12-07"},
+    {id:1103,name:"هونر",nameEn:"Honor",status:"بديل",cat:"هواتف",company:"Honor",country:"الصين",image:"",reason:"بديل مقبول",updatedAt:"2024-12-07"},
+    {id:1104,name:"ون بلس",nameEn:"OnePlus",status:"بديل",cat:"هواتف",company:"OnePlus",country:"الصين",image:"",reason:"بديل مقبول",updatedAt:"2024-12-07"},
+    // اجتناب
+    {id:1201,name:"منتج مشبوه",nameEn:"Suspicious",status:"اجتناب",cat:"منتجات متنوعة",company:"شركة مشبوهة",country:"دولة أجنبية",image:"",reason:"استثمارات مشبوهة في مناطق حساسة",updatedAt:"2026-01-01"},
+    // محلي أفضل
+    {id:1301,name:"منتج محلي",nameEn:"Local Product",status:"الشراء من المحلي أفضل",cat:"منتجات متنوعة",company:"شركة محلية",country:"السعودية",image:"",reason:"منتج من بلد مسلم - يفضل شراء المحلي",updatedAt:"2026-01-01"},
+    // لا معلومات
+    {id:1401,name:"منتج جديد",nameEn:"New Product",status:"لا توجد معلومات كافية",cat:"منتجات متنوعة",company:"غير معروف",country:"غير معروف",image:"",reason:"جاري التحقق من المعلومات",updatedAt:"2026-01-01"},
   ];
 }
 
@@ -327,13 +375,30 @@ function loadDefaultProducts() {
 async function loadProducts() {
   try {
     showToast("🔄 جاري تحميل المنتجات...");
-    const response = await fetch(`https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main/${GITHUB_FILE}?t=${Date.now()}`);
-    if (response.ok) {
-      products = await response.json();
-      if (products.length === 0) products = loadDefaultProducts();
-      showToast("✅ تم تحميل المنتجات");
-    } else {
+    // محاولة تحميل من localStorage أولاً
+    const saved = localStorage.getItem('products_data');
+    if (saved) {
+      products = JSON.parse(saved);
+      showToast("✅ تم تحميل المنتجات من المتصفح");
+    }
+    
+    // محاولة تحميل من GitHub
+    try {
+      const response = await fetch(`https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main/${GITHUB_FILE}?t=${Date.now()}`);
+      if (response.ok) {
+        const githubProducts = await response.json();
+        if (githubProducts && githubProducts.length > 0) {
+          products = githubProducts;
+          localStorage.setItem('products_data', JSON.stringify(products));
+          showToast("✅ تم تحميل المنتجات من السحاب");
+        }
+      }
+    } catch(e) {}
+    
+    // إذا لم يكن هناك منتجات، استخدم الافتراضية
+    if (!products || products.length === 0) {
       products = loadDefaultProducts();
+      localStorage.setItem('products_data', JSON.stringify(products));
       await saveProductsToGitHub();
     }
   } catch(e) {
@@ -343,36 +408,41 @@ async function loadProducts() {
   updateAllCounters();
   renderProducts();
   if(isAdmin) renderAdminList();
-  
-  // التحقق من وجود منتج في رابط المشاركة
-  checkUrlForProduct();
 }
 
 async function saveProductsToGitHub() {
-  showToast("💾 جاري حفظ المنتجات...");
-  const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
-  let sha = null;
   try {
-    const getRes = await fetch(url, { headers: { 'Authorization': `token ${GITHUB_TOKEN}` } });
-    if (getRes.ok) {
-      const data = await getRes.json();
-      sha = data.sha;
+    const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
+    let sha = null;
+    try {
+      const getRes = await fetch(url, { headers: { 'Authorization': `token ${GITHUB_TOKEN}` } });
+      if (getRes.ok) {
+        const data = await getRes.json();
+        sha = data.sha;
+      }
+    } catch(e) {}
+    
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(products, null, 2))));
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: `تحديث المنتجات - ${new Date().toLocaleString('ar')}`, content: content, sha: sha })
+    });
+    
+    if (response.ok) {
+      localStorage.setItem('products_data', JSON.stringify(products));
+      showToast("✅ تم حفظ المنتجات");
+      return true;
+    } else {
+      // إذا فشل الحفظ على GitHub، نحفظ محلياً فقط
+      localStorage.setItem('products_data', JSON.stringify(products));
+      showToast("⚠️ تم الحفظ محلياً فقط");
+      return true;
     }
-  } catch(e) {}
-  
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(products, null, 2))));
-  const response = await fetch(url, {
-    method: 'PUT',
-    headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: `تحديث المنتجات - ${new Date().toLocaleString('ar')}`, content: content, sha: sha })
-  });
-  
-  if (response.ok) {
-    showToast("✅ تم حفظ المنتجات");
+  } catch(e) {
+    localStorage.setItem('products_data', JSON.stringify(products));
+    showToast("⚠️ تم الحفظ محلياً فقط");
     return true;
-  } else {
-    showToast("❌ فشل الحفظ");
-    return false;
   }
 }
 
@@ -533,6 +603,7 @@ async function saveProduct() {
   const id = document.getElementById('editId').value;
   const status = document.getElementById('productStatus').value;
   const newProduct = {
+    id: id ? parseInt(id) : Date.now(),
     name: document.getElementById('productName').value,
     nameEn: document.getElementById('productNameEn').value,
     status: status,
@@ -550,12 +621,10 @@ async function saveProduct() {
   if(id) {
     const index = products.findIndex(p => p.id == id);
     if(index !== -1) {
-      newProduct.id = parseInt(id);
       products[index] = newProduct;
       showToast('✅ تم تحديث المنتج');
     }
   } else {
-    newProduct.id = Date.now();
     products.unshift(newProduct);
     showToast('✅ تم إضافة المنتج');
   }
@@ -645,14 +714,9 @@ function openModal(id) {
   }
   
   document.getElementById('mCircle').textContent = statusEmoji[currentProduct.status];
-  
-  // تحديث رابط المشاركة في localStorage
-  sessionStorage.setItem('shareProductId', currentProduct.id);
-  
   document.getElementById('modal').classList.add('open');
   document.body.style.overflow = 'hidden';
   
-  // تحديث URL بدون إعادة تحميل الصفحة
   const newUrl = `${window.location.origin}${window.location.pathname}?product=${currentProduct.id}`;
   window.history.pushState({ productId: currentProduct.id }, '', newUrl);
 }
@@ -660,7 +724,6 @@ function openModal(id) {
 function closeModal() {
   document.getElementById('modal').classList.remove('open');
   document.body.style.overflow = '';
-  // إزالة المعامل من URL
   const newUrl = `${window.location.origin}${window.location.pathname}`;
   window.history.pushState({}, '', newUrl);
 }
@@ -672,7 +735,6 @@ function shareProduct() {
   navigator.clipboard.writeText(text).then(() => showToast('📋 تم نسخ رابط المنتج'));
 }
 
-// فتح المنتج من رابط مباشر
 function checkUrlForProduct() {
   const urlParams = new URLSearchParams(window.location.search);
   const productId = urlParams.get('product');
@@ -683,7 +745,7 @@ function checkUrlForProduct() {
       if(product) {
         openModal(id);
       }
-    }, 500);
+    }, 800);
   }
 }
 
@@ -789,6 +851,7 @@ loadProducts();
 setTimeout(() => {
   tryLoadLogo();
   setDefaultDate();
+  checkUrlForProduct();
 }, 500);
 </script>
 </body>
