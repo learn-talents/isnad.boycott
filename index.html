@@ -713,16 +713,9 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
   color: var(--red);
   font-size: 14px;
 }
-
 </style>
-/* ========== التنسيقات الأساسية ========== */
-nav {
-  position: sticky; top: 0; z-index: 300;
-  background: var(--red); height: 60px;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0
-  </style>
 </head>
+<body>
 
 <nav>
   <div class="nav-logo" onclick="showPage('home')">
@@ -888,8 +881,6 @@ nav {
     <div class="results-count" id="resultsCount"></div>
   </section>
   
-  <!-- شريط الإحصائيات - تم حذفه بناءً على طلبك -->
-  
   <div class="filter-row">
     <button class="fpill on" onclick="setFilter(this,'all')">الجميع <span class="cnt" id="cnt-all">0</span></button>
     <button class="fpill" onclick="setFilter(this,'مقاطعة')"><span class="dot" style="background:var(--red)"></span>مقاطعة <span class="cnt" id="cnt-r">0</span></button>
@@ -949,7 +940,7 @@ nav {
 <div class="toast" id="toast"></div>
 
 <script>
-  // ===================== التوكن وكلمة المرور =====================
+// ===================== التوكن وكلمة المرور =====================
 const GITHUB_TOKEN = "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";
 const GITHUB_USERNAME = "durazi";
 const GITHUB_REPO = "isnad.boycott";
@@ -1029,7 +1020,7 @@ let countries = [
 ];
 
 // ===================== الشركات =====================
-let companiesList = [
+let companies = [
   {id:"comp1", name:"صافولا", nameEn:"Safola", parent:""},
   {id:"comp2", name:"عافية", nameEn:"Afia", parent:"صافولا"},
   {id:"comp3", name:"افكو", nameEn:"Afco", parent:""},
@@ -1078,7 +1069,7 @@ let selectedCountriesList = [];
 function saveKeywordsToLocal() { localStorage.setItem('admin_keywords', JSON.stringify(keywords)); }
 function saveCategoriesToLocal() { localStorage.setItem('admin_categories', JSON.stringify(categories)); }
 function saveCountriesToLocal() { localStorage.setItem('admin_countries', JSON.stringify(countries)); }
-function saveCompaniesToLocal() { localStorage.setItem('admin_companies', JSON.stringify(companiesList)); }
+function saveCompaniesToLocal() { localStorage.setItem('admin_companies', JSON.stringify(companies)); }
 
 function loadAdminData() {
   const savedKeywords = localStorage.getItem('admin_keywords');
@@ -1088,7 +1079,7 @@ function loadAdminData() {
   const savedCountries = localStorage.getItem('admin_countries');
   if(savedCountries) countries = JSON.parse(savedCountries);
   const savedCompanies = localStorage.getItem('admin_companies');
-  if(savedCompanies) companiesList = JSON.parse(savedCompanies);
+  if(savedCompanies) companies = JSON.parse(savedCompanies);
   
   updateCategoriesSelect();
   renderKeywordsList();
@@ -1111,17 +1102,19 @@ function updateCatBar() {
   updateCategoryCounts();
 }
 
-function setStatFilter(el, filter) { 
-  curFilter = filter; 
-  document.querySelectorAll('.fpill').forEach(b => b.classList.remove('on')); 
-  const targetPill = Array.from(document.querySelectorAll('.fpill')).find(b => b.innerText.includes(filter === 'all' ? 'الجميع' : filter)); 
-  if(targetPill) targetPill.classList.add('on'); 
-  document.querySelectorAll('.stat-item').forEach(s => s.classList.remove('active')); 
-  el.classList.add('active'); 
-  renderProducts(); 
-  updateStatsBar(); 
-}
-  ;
+function updateCategoryCounts() {
+  categories.forEach(cat => {
+    const count = products.filter(p => p.cat === cat.name).length;
+    const btn = document.querySelector(`.ctab[onclick="setCat(this,'${cat.name}')"]`);
+    if(btn) {
+      const existingSpan = btn.querySelector('.cat-count');
+      if(existingSpan) existingSpan.remove();
+      const span = document.createElement('span');
+      span.className = 'cat-count';
+      span.textContent = count;
+      btn.appendChild(span);
+    }
+  });
   const allBtn = document.querySelector('.ctab[onclick="setCat(this,\'all\')"]');
   if(allBtn) {
     const existingSpan = allBtn.querySelector('.cat-count');
@@ -1131,7 +1124,7 @@ function setStatFilter(el, filter) {
     span.textContent = products.length;
     allBtn.appendChild(span);
   }
-
+}
 
 // ===================== البدائل الديناميكية =====================
 function getAlternativesForProduct(product) {
@@ -1207,7 +1200,7 @@ function removeCountry(nameAr) {
 function renderCompaniesList() {
   const container = document.getElementById('companiesList');
   if(!container) return;
-  container.innerHTML = companiesList.map(comp => `
+  container.innerHTML = companies.map(comp => `
     <div class="admin-list-item">
       <div class="info"><strong>${comp.name}</strong> <span style="color:#888">(${comp.nameEn || ''})</span>${comp.parent ? `<br><small>تابعة لـ: ${comp.parent}</small>` : ''}</div>
       <div><button class="btn-danger" onclick="deleteCompany('${comp.id}')">🗑️ حذف</button></div>
@@ -1221,7 +1214,7 @@ function addCompany() {
   const parent = document.getElementById('companyParent').value.trim();
   if(!name) { showToast('❌ الرجاء إدخال اسم الشركة'); return; }
   const newCompany = { id: Date.now().toString(), name: name, nameEn: nameEn, parent: parent };
-  companiesList.push(newCompany);
+  companies.push(newCompany);
   saveCompaniesToLocal();
   renderCompaniesList();
   document.getElementById('companyNameAr').value = '';
@@ -1232,7 +1225,7 @@ function addCompany() {
 
 function deleteCompany(id) {
   if(confirm('هل أنت متأكد من حذف هذه الشركة؟')) {
-    companiesList = companiesList.filter(c => c.id !== id);
+    companies = companies.filter(c => c.id !== id);
     saveCompaniesToLocal();
     renderCompaniesList();
     showToast('🗑️ تم حذف الشركة');
@@ -1242,7 +1235,7 @@ function deleteCompany(id) {
 function filterCompanies() {
   const search = document.getElementById('companySearch').value.toLowerCase();
   const container = document.getElementById('companiesList');
-  const filtered = companiesList.filter(c => c.name.toLowerCase().includes(search) || (c.nameEn || '').toLowerCase().includes(search));
+  const filtered = companies.filter(c => c.name.toLowerCase().includes(search) || (c.nameEn || '').toLowerCase().includes(search));
   container.innerHTML = filtered.map(comp => `
     <div class="admin-list-item">
       <div class="info"><strong>${comp.name}</strong> <span style="color:#888">(${comp.nameEn || ''})</span>${comp.parent ? `<br><small>تابعة لـ: ${comp.parent}</small>` : ''}</div>
@@ -1264,7 +1257,7 @@ function setupCompanySearch() {
       const suggestionsList = document.getElementById('companySuggestionsList');
       
       if(query.length > 0) {
-        const matches = companiesList.filter(c => c.name.toLowerCase().includes(query) || (c.nameEn || '').toLowerCase().includes(query));
+        const matches = companies.filter(c => c.name.toLowerCase().includes(query) || (c.nameEn || '').toLowerCase().includes(query));
         if(matches.length > 0) {
           suggestionsList.innerHTML = matches.map(c => `
             <div class="suggestion-item" onclick="selectCompany('${c.name.replace(/'/g, "\\'")}')">
@@ -1685,7 +1678,7 @@ function setFilter(btn, filter) {
 
 function setStatFilter(el, filter) { 
   curFilter = filter; 
-document.querySelectorAll('.fpill').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.fpill').forEach(b => b.classList.remove('on')); 
   const targetPill = Array.from(document.querySelectorAll('.fpill')).find(b => b.innerText.includes(filter === 'all' ? 'الجميع' : filter)); 
   if(targetPill) targetPill.classList.add('on'); 
   document.querySelectorAll('.stat-item').forEach(s => s.classList.remove('active')); 
@@ -2122,5 +2115,3 @@ setTimeout(() => { tryLoadLogo(); setDefaultDate(); checkUrlForProduct(); }, 500
 </script>
 </body>
 </html>
-
-
