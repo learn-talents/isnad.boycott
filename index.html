@@ -813,6 +813,37 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
   color: var(--red);
   font-size: 14px;
 }
+.share-buttons {
+  display: flex;
+  gap: 10px;
+  margin: 1rem 0;
+}
+.share-copy-link, .share-copy-message {
+  flex: 1;
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.share-copy-link {
+  background: var(--navy);
+  color: white;
+}
+.share-copy-link:hover {
+  background: var(--blue);
+  transform: translateY(-2px);
+}
+.share-copy-message {
+  background: var(--green);
+  color: white;
+}
+.share-copy-message:hover {
+  background: var(--green-dark);
+  transform: translateY(-2px);
+}
 </style>
 </head>
 <body>
@@ -857,7 +888,10 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
     <div class="share-product-name" id="shareProductName"></div>
     <div class="share-status" id="shareProductStatus"></div>
     <div class="share-link" id="shareProductLink"></div>
-    <button class="share-copy-btn" onclick="copyShareLink()">📋 نسخ الرابط</button>
+    <div class="share-buttons">
+      <button class="share-copy-link" onclick="copyShareLink()">📋 نسخ الرابط</button>
+      <button class="share-copy-message" onclick="copyShareMessage()">💬 نسخ الرسالة</button>
+    </div>
     <button class="share-close" onclick="closeShareModal()">إغلاق</button>
   </div>
 </div>
@@ -1999,6 +2033,24 @@ function copyShareLink() {
   const linkText = document.getElementById('shareProductLink').textContent;
   navigator.clipboard.writeText(linkText);
   showToast('📋 تم نسخ الرابط');
+  closeShareModal();
+}
+
+function copyShareMessage() {
+  if(!shareProduct) return;
+  const statusEmoji = {مقاطعة:'🔴',اجتناب:'🟡',بديل:'🟢','الشراء من المحلي أفضل':'🟤','لا توجد معلومات كافية':'🔵'};
+  const shareUrl = `${window.location.origin}${window.location.pathname}?product=${shareProduct.id}`;
+  
+  const message = `🛒 ${shareProduct.name}
+📋 الحالة: ${statusEmoji[shareProduct.status]} ${shareProduct.status}
+📂 القسم: ${shareProduct.cat}
+🏢 الشركة: ${shareProduct.company || '—'}
+📝 السبب: ${shareProduct.reason || '—'}
+
+🔗 رابط المنتج: ${shareUrl}`;
+  
+  navigator.clipboard.writeText(message);
+  showToast('💬 تم نسخ الرسالة مع الرابط');
   closeShareModal();
 }
 
