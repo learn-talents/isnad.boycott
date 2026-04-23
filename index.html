@@ -50,16 +50,30 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
 .card:nth-child(8) { animation-delay: 0.24s; }
 .card:nth-child(9) { animation-delay: 0.27s; }
 .card:nth-child(10) { animation-delay: 0.3s; }
-.card:nth-child(11) { animation-delay: 0.33s; }
-.card:nth-child(12) { animation-delay: 0.36s; }
-.card:nth-child(13) { animation-delay: 0.39s; }
-.card:nth-child(14) { animation-delay: 0.42s; }
-.card:nth-child(15) { animation-delay: 0.45s; }
-.card:nth-child(16) { animation-delay: 0.48s; }
-.card:nth-child(17) { animation-delay: 0.51s; }
-.card:nth-child(18) { animation-delay: 0.54s; }
-.card:nth-child(19) { animation-delay: 0.57s; }
-.card:nth-child(20) { animation-delay: 0.6s; }
+
+/* ========== تأثير الأقسام عند المرور ========== */
+.ctab {
+  position: relative;
+}
+.ctab::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  right: 50%;
+  width: 0;
+  height: 2.5px;
+  background: var(--navy);
+  transition: all 0.25s ease;
+}
+.ctab:hover::after {
+  width: 100%;
+  right: 0;
+}
+.ctab.on::after {
+  width: 100%;
+  right: 0;
+  background: var(--red);
+}
 
 /* ========== أنيميشن البطاقات عند hover ========== */
 .card {
@@ -99,7 +113,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   from { opacity: 0; transform: translateY(50px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.modal, .company-products-modal, .share-modal {
+.modal {
   animation: modalFadeIn 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
 }
 
@@ -206,6 +220,10 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
 }
 
 /* ========== نافذة منتجات الشركة ========== */
+@keyframes companyPop {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
 .company-products-overlay {
   display: none;
   position: fixed;
@@ -228,42 +246,72 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--black);mi
   border-radius: 24px;
   padding: 1.5rem;
   width: 100%;
-  max-width: 600px;
+  max-width: 500px;
   max-height: 80vh;
   overflow-y: auto;
+  animation: companyPop 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
 }
 .company-products-modal h3 {
   color: var(--red);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
   border-bottom: 2px solid var(--border);
-  padding-bottom: 10px;
+  padding-bottom: 12px;
+  text-align: center;
+  font-size: 1.3rem;
 }
 .company-products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   margin-top: 1rem;
 }
 .company-product-card {
   background: var(--bg);
   border-radius: 12px;
-  padding: 10px;
+  padding: 12px 16px;
   cursor: pointer;
   transition: all 0.2s ease;
-  border-right: 3px solid;
+  border-right: 4px solid;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .company-product-card:hover {
-  transform: translateX(-3px);
+  transform: translateX(-5px);
   background: var(--surface);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 .company-product-card .name {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 1rem;
 }
 .company-product-card .status {
-  font-size: 11px;
-  margin-top: 4px;
+  font-size: 0.85rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+.company-product-card .status.red { background: var(--red-light); color: var(--red); }
+.company-product-card .status.green { background: var(--green-light); color: var(--green); }
+.company-product-card .status.yellow { background: var(--yellow-light); color: var(--yellow-dark); }
+.company-product-card .status.brown { background: var(--local-light); color: var(--local); }
+.company-product-card .status.blue { background: var(--blue-light); color: var(--blue); }
+.company-close {
+  width: 100%;
+  margin-top: 1.2rem;
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--navy);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.company-close:hover {
+  background: var(--red);
+  transform: translateY(-2px);
 }
 
 /* ========== التنسيقات الأساسية ========== */
@@ -505,7 +553,8 @@ nav {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 11px 15px; font-size: 12px; font-weight: 500;
   color: var(--muted); background: none; border: none;
-  border-bottom: 2.5px solid transparent; cursor: pointer;
+  border-bottom: 2.5px solid transparent;
+  cursor: pointer;
 }
 .ctab .cdot { width: 7px; height: 7px; border-radius: 50%; }
 .ctab.on { color: var(--navy); border-bottom-color: var(--navy); font-weight: 700; }
@@ -718,9 +767,9 @@ footer { background: var(--navy); text-align: center; padding: 1rem; font-size: 
 <!-- نافذة منتجات الشركة -->
 <div class="company-products-overlay" id="companyProductsModal">
   <div class="company-products-modal">
-    <h3 id="companyProductsTitle"></h3>
+    <h3 id="companyProductsTitle">🏢 منتجات الشركة</h3>
     <div id="companyProductsList" class="company-products-grid"></div>
-    <button class="share-close" style="margin-top:1rem; width:100%;" onclick="closeCompanyProductsModal()">إغلاق</button>
+    <button class="company-close" onclick="closeCompanyProductsModal()">إغلاق</button>
   </div>
 </div>
 
@@ -1099,46 +1148,7 @@ function removeCountry(nameAr) {
   renderSelectedCountries();
 }
 
-// ===================== إدارة الشركات مع البحث =====================
-let companySearchTimeout;
-function setupCompanySearch() {
-  const input = document.getElementById('companySearchInput');
-  if(!input) return;
-  input.addEventListener('input', function() {
-    clearTimeout(companySearchTimeout);
-    companySearchTimeout = setTimeout(() => {
-      const query = this.value.toLowerCase();
-      const suggestionsDiv = document.getElementById('companySuggestions');
-      const suggestionsList = document.getElementById('companySuggestionsList');
-      
-      if(query.length > 0) {
-        const matches = companies.filter(c => 
-          c.name.toLowerCase().includes(query) || 
-          (c.nameEn || '').toLowerCase().includes(query)
-        );
-        if(matches.length > 0) {
-          suggestionsList.innerHTML = matches.map(c => `
-            <div class="suggestion-item" onclick="selectCompany('${c.name.replace(/'/g, "\\'")}')">
-              <strong>${c.name}</strong> <span style="color:#888">${c.nameEn ? `(${c.nameEn})` : ''}</span>
-            </div>
-          `).join('');
-          suggestionsDiv.style.display = 'block';
-        } else {
-          suggestionsDiv.style.display = 'none';
-        }
-      } else {
-        suggestionsDiv.style.display = 'none';
-      }
-    }, 300);
-  });
-}
-
-function selectCompany(name) {
-  document.getElementById('companySearchInput').value = name;
-  document.getElementById('productCompany').value = name;
-  document.getElementById('companySuggestions').style.display = 'none';
-}
-
+// ===================== إدارة الشركات =====================
 function renderCompaniesList() {
   const container = document.getElementById('companiesList');
   if(!container) return;
@@ -1184,6 +1194,46 @@ function filterCompanies() {
       <div><button class="btn-danger" onclick="deleteCompany('${comp.id}')">🗑️ حذف</button></div>
     </div>
   `).join('');
+}
+
+// ===================== البحث عن الشركات مع اقتراحات =====================
+let companySearchTimeout;
+function setupCompanySearch() {
+  const input = document.getElementById('companySearchInput');
+  if(!input) return;
+  input.addEventListener('input', function() {
+    clearTimeout(companySearchTimeout);
+    companySearchTimeout = setTimeout(() => {
+      const query = this.value.toLowerCase();
+      const suggestionsDiv = document.getElementById('companySuggestions');
+      const suggestionsList = document.getElementById('companySuggestionsList');
+      
+      if(query.length > 0) {
+        const matches = companies.filter(c => 
+          c.name.toLowerCase().includes(query) || 
+          (c.nameEn || '').toLowerCase().includes(query)
+        );
+        if(matches.length > 0) {
+          suggestionsList.innerHTML = matches.map(c => `
+            <div class="suggestion-item" onclick="selectCompany('${c.name.replace(/'/g, "\\'")}')">
+              <strong>${c.name}</strong> <span style="color:#888">${c.nameEn ? `(${c.nameEn})` : ''}</span>
+            </div>
+          `).join('');
+          suggestionsDiv.style.display = 'block';
+        } else {
+          suggestionsDiv.style.display = 'none';
+        }
+      } else {
+        suggestionsDiv.style.display = 'none';
+      }
+    }, 300);
+  });
+}
+
+function selectCompany(name) {
+  document.getElementById('companySearchInput').value = name;
+  document.getElementById('productCompany').value = name;
+  document.getElementById('companySuggestions').style.display = 'none';
 }
 
 // ===================== إدارة الكلمات المفتاحية =====================
@@ -1682,17 +1732,17 @@ function showCompanyProducts(companyName) {
   
   const container = document.getElementById('companyProductsList');
   const statusEmoji = {مقاطعة:'🔴',اجتناب:'🟡',بديل:'🟢','الشراء من المحلي أفضل':'🟤','لا توجد معلومات كافية':'🔵'};
-  const statusColors = {مقاطعة:'red',اجتناب:'yel',بديل:'grn','الشراء من المحلي أفضل':'loc','لا توجد معلومات كافية':'blu'};
-  
-  container.innerHTML = companyProducts.map(p => `
-    <div class="company-product-card" style="border-right-color: var(--${statusColors[p.status]})" onclick="closeCompanyProductsModal(); openModal(${p.id})">
-      <div class="name">${escapeHtml(p.name)}</div>
-      <div class="status">${statusEmoji[p.status]} ${p.status}</div>
-    </div>
-  `).join('');
+  const statusClass = {مقاطعة:'red',اجتناب:'yellow',بديل:'green','الشراء من المحلي أفضل':'brown','لا توجد معلومات كافية':'blue'};
   
   if(companyProducts.length === 0) {
-    container.innerHTML = '<div style="text-align:center;padding:1rem;">لا توجد منتجات أخرى لهذه الشركة</div>';
+    container.innerHTML = '<div style="text-align:center;padding:2rem;color:#888;">📭 لا توجد منتجات لهذه الشركة</div>';
+  } else {
+    container.innerHTML = companyProducts.map(p => `
+      <div class="company-product-card" style="border-right-color: var(--${statusClass[p.status]})" onclick="closeCompanyProductsModal(); openModal(${p.id})">
+        <div class="name">${escapeHtml(p.name)}</div>
+        <div class="status ${statusClass[p.status]}">${statusEmoji[p.status]} ${p.status}</div>
+      </div>
+    `).join('');
   }
   
   document.getElementById('companyProductsModal').classList.add('open');
