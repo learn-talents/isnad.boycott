@@ -1959,14 +1959,23 @@ function renderCompaniesPage() {
   const container = document.getElementById('companiesGrid');
   if(!container) return;
   
+  // حساب عدد المنتجات لكل شركة
   const companyStats = {};
   products.forEach(p => {
     const comp = p.company || 'غير محدد';
     companyStats[comp] = (companyStats[comp] || 0) + 1;
   });
   
+  // تحويل إلى مصفوفة وترتيبها: حسب العدد (تنازلي) ثم أبجدياً
   const allCompanies = [...new Set(products.map(p => p.company || 'غير محدد'))];
-  const sortedCompanies = allCompanies.sort((a,b) => a.localeCompare(b));
+  const sortedCompanies = allCompanies.sort((a, b) => {
+    // مقارنة حسب عدد المنتجات (تنازلي)
+    if (companyStats[a] !== companyStats[b]) {
+      return companyStats[b] - companyStats[a];
+    }
+    // إذا كان العدد متساوياً، رتب أبجدياً
+    return a.localeCompare(b);
+  });
   
   container.innerHTML = sortedCompanies.map(comp => `
     <div class="company-card" onclick="showCompanyProducts('${escapeHtml(comp)}')">
@@ -1975,7 +1984,6 @@ function renderCompaniesPage() {
     </div>
   `).join('');
 }
-
 // البحث في الشركات (صفحة الشركات)
 let companiesSearchTimeout;
 function setupCompaniesSearch() {
@@ -1986,10 +1994,21 @@ function setupCompaniesSearch() {
     companiesSearchTimeout = setTimeout(() => {
       const query = this.value.toLowerCase();
       const allCompanies = [...new Set(products.map(p => p.company || 'غير محدد'))];
-      const filtered = allCompanies.filter(c => c.toLowerCase().includes(query));
+      let filtered = allCompanies.filter(c => c.toLowerCase().includes(query));
       
+      // حساب عدد المنتجات لكل شركة
       const companyStats = {};
-      products.forEach(p => { companyStats[p.company] = (companyStats[p.company] || 0) + 1; });
+      products.forEach(p => { 
+        companyStats[p.company] = (companyStats[p.company] || 0) + 1; 
+      });
+      
+      // ترتيب النتائج حسب الأكثر منتجات ثم أبجدياً
+      filtered = filtered.sort((a, b) => {
+        if (companyStats[a] !== companyStats[b]) {
+          return companyStats[b] - companyStats[a];
+        }
+        return a.localeCompare(b);
+      });
       
       const container = document.getElementById('companiesGrid');
       if(container) {
