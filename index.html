@@ -1111,19 +1111,17 @@ function updateCatBar() {
   updateCategoryCounts();
 }
 
-function updateCategoryCounts() {
-  categories.forEach(cat => {
-    const count = products.filter(p => p.cat === cat.name).length;
-    const btn = document.querySelector(`.ctab[onclick="setCat(this,'${cat.name}')"]`);
-    if(btn) {
-      const existingSpan = btn.querySelector('.cat-count');
-      if(existingSpan) existingSpan.remove();
-      const span = document.createElement('span');
-      span.className = 'cat-count';
-      span.textContent = count;
-      btn.appendChild(span);
-    }
-  });
+function setStatFilter(el, filter) { 
+  curFilter = filter; 
+  document.querySelectorAll('.fpill').forEach(b => b.classList.remove('on')); 
+  const targetPill = Array.from(document.querySelectorAll('.fpill')).find(b => b.innerText.includes(filter === 'all' ? 'الجميع' : filter)); 
+  if(targetPill) targetPill.classList.add('on'); 
+  document.querySelectorAll('.stat-item').forEach(s => s.classList.remove('active')); 
+  el.classList.add('active'); 
+  renderProducts(); 
+  updateStatsBar(); 
+}
+  ;
   const allBtn = document.querySelector('.ctab[onclick="setCat(this,\'all\')"]');
   if(allBtn) {
     const existingSpan = allBtn.querySelector('.cat-count');
@@ -1133,7 +1131,7 @@ function updateCategoryCounts() {
     span.textContent = products.length;
     allBtn.appendChild(span);
   }
-}
+
 
 // ===================== البدائل الديناميكية =====================
 function getAlternativesForProduct(product) {
