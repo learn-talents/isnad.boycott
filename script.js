@@ -5,7 +5,7 @@ const GITHUB_REPO = "isnad.boycott";
 const GITHUB_FILE = "products_data.json";
 const ADMIN_PASSWORD = "isnad313";
 // const BACKEND_SERVER = 'http://localhost:3000'
-const BACKEND_SERVER = 'http://ec2-108-129-147-239.eu-west-1.compute.amazonaws.com:3000'
+const BACKEND_SERVER = 'https://62z5zux2di.execute-api.eu-west-1.amazonaws.com/prod'
 
 let products = [];
 let isAdmin = false;
