@@ -1,287 +1,429 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>المقاطعة جبهة إسناد - دليل المقاطعة الشامل</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
-<link href="styles.css?v=<%= Date.now() %>" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المقاطعة جبهة إسناد - دليل المقاطعة الشامل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="styles.css?v=<%= Date.now() %>" rel="stylesheet">
+    <script src="jquery-4.0.0.min.js"></script>
 
-<style>
-
-</style>
 </head>
+
 <body>
 
-<nav>
-  <div class="nav-logo" onclick="showPage('home')">
-    <div class="nav-logo-img"><img src="LOGO.png" onerror="this.style.display='none'" id="navLogoImg"></div>
-    <div class="nav-logo-text">المقاطعة جبهة إسناد</div>
-  </div>
-  <button class="burger" onclick="openDrawer()"><span></span><span></span><span></span></button>
-</nav>
+    <nav>
+        <div class="nav-logo" onclick="showPage('home')">
+            <div class="nav-logo-img"><img src="LOGO.png" onerror="this.style.display='none'" id="navLogoImg"></div>
+            <div class="nav-logo-text">المقاطعة جبهة إسناد</div>
+        </div>
+        <button class="burger" onclick="openDrawer()"><span></span><span></span><span></span></button>
+    </nav>
 
-<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
-<div class="drawer" id="drawer">
-  <div class="drawer-head">
-    <div class="drawer-head-logo"><div style="width:34px;height:34px;border-radius:50%;overflow:hidden;"><img src="LOGO.png" onerror="this.style.display='none'" id="drawerLogoImg" style="width:100%;height:100%;object-fit:cover;"></div><span class="drawer-head-name">المقاطعة جبهة إسناد</span></div>
-    <button class="drawer-close" onclick="closeDrawer()">✕</button>
-  </div>
-  <button class="dl on" id="dl-home" onclick="nav('home')"><span class="dl-icon">🏠</span> الرئيسية</button>
-  <button class="dl" id="dl-legend" onclick="nav('legend')"><span class="dl-icon">🏷️</span> العلامات والمعايير</button>
-  <button class="dl" id="dl-companies" onclick="nav('companies')"><span class="dl-icon">🏢</span> الشركات</button>
-  <button class="dl" id="dl-aboutus" onclick="nav('aboutus')"><span class="dl-icon">ℹ️</span> من نحن</button>
-  <button class="dl" id="dl-contact" onclick="nav('contact')"><span class="dl-icon">📞</span> تواصل معنا</button>
-  <div class="drawer-footer">مبادرة مجتمعية مفتوحة المصدر</div>
-</div>
-<a href="https://api.whatsapp.com/send/?phone=%2B97338282371">
-
-<button  class="floatingWhatsappBtn">
-
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
-  <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
-</svg>
-
-</button>
-</a>
-
-<button class="admin-secret" id="adminBtn" onclick="showLoginModal()">⚙️</button>
-
-<div class="login-modal" id="loginModal" onclick="closeLoginModalOnOutside(event)">
-  <div class="login-box" onclick="event.stopPropagation()">
-    <h3>🔐 دخول المشرف</h3>
-    <input type="password" id="adminPassword" placeholder="كلمة المرور" onkeypress="if(event.key==='Enter') checkLogin()">
-    <button onclick="checkLogin()">تسجيل الدخول</button>
-    <div class="login-error" id="loginError">كلمة المرور غير صحيحة</div>
-  </div>
-</div>
-
-<!-- نافذة المشاركة المنبثقة -->
-<div class="share-modal-overlay" id="shareModal">
-  <div class="share-modal">
-    <h3>🔗 شارك المنتج</h3>
-    <div class="share-product-name" id="shareProductName"></div>
-    <div class="share-status" id="shareProductStatus"></div>
-    <div class="share-link" id="shareProductLink"></div>
-    <div class="share-buttons">
-      <button class="share-copy-link" onclick="copyShareLink()">📋 نسخ الرابط</button>
-      <button class="share-copy-message" onclick="copyShareMessage()">💬 نسخ الرسالة</button>
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+    <div class="drawer" id="drawer">
+        <div class="drawer-head">
+            <div class="drawer-head-logo">
+                <div style="width:34px;height:34px;border-radius:50%;overflow:hidden;"><img src="LOGO.png"
+                        onerror="this.style.display='none'" id="drawerLogoImg"
+                        style="width:100%;height:100%;object-fit:cover;"></div><span class="drawer-head-name">المقاطعة
+                    جبهة إسناد</span>
+            </div>
+            <button class="drawer-close" onclick="closeDrawer()">✕</button>
+        </div>
+        <button class="dl on" id="dl-home" onclick="nav('home')"><span class="dl-icon">🏠</span> الرئيسية</button>
+        <button class="dl" id="dl-legend" onclick="nav('legend')"><span class="dl-icon">🏷️</span> العلامات
+            والمعايير</button>
+        <button class="dl" id="dl-companies" onclick="nav('companies')"><span class="dl-icon">🏢</span> الشركات</button>
+        <button class="dl" id="dl-aboutus" onclick="nav('aboutus')"><span class="dl-icon">ℹ️</span> من نحن</button>
+        <button class="dl" id="dl-contact" onclick="nav('contact')"><span class="dl-icon">📞</span> تواصل معنا</button>
+        <div class="drawer-footer">مبادرة مجتمعية مفتوحة المصدر</div>
     </div>
-    <button class="share-close" onclick="closeShareModal()">إغلاق</button>
-  </div>
-</div>
+    <a href="https://api.whatsapp.com/send/?phone=%2B97338282371">
 
-<!-- نافذة منتجات الشركة -->
-<div class="company-products-overlay" id="companyProductsModal">
-  <div class="company-products-modal">
-    <h3 id="companyProductsTitle">🏢 منتجات الشركة</h3>
-    <div id="companyProductsList" class="company-products-grid"></div>
-    <button class="company-close" onclick="closeCompanyProductsModal()">إغلاق</button>
-  </div>
-</div>
+        <button class="floatingWhatsappBtn">
 
-<div class="admin-overlay" id="adminOverlay" onclick="closeAdminPanel()"></div>
-<div class="admin-panel" id="adminPanel">
-  <div class="admin-panel-header">
-    <h3>⚙️ لوحة الإدارة المتقدمة</h3>
-    <button class="admin-close" onclick="closeAdminPanel()">✕</button>
-  </div>
-  <div class="admin-tabs">
-    <button class="admin-tab active" data-tab="products">📦 المنتجات</button>
-    <button class="admin-tab" data-tab="keywords">🔑 الكلمات المفتاحية</button>
-    <button class="admin-tab" data-tab="categories">📂 الأقسام</button>
-    <button class="admin-tab" data-tab="countries">🌍 الدول</button>
-    <button class="admin-tab" data-tab="companies">🏢 الشركات</button>
-  </div>
-  
-  <!-- قسم المنتجات -->
-  <div class="admin-section active" id="section-products">
-    <h3>➕ إضافة/تعديل منتج</h3>
-    <input type="hidden" id="editId" value="">
-    <div class="form-group"><label>اسم المنتج</label><input type="text" id="productName" placeholder="مثال: صافولا"></div>
-    <div class="form-group"><label>الاسم بالإنجليزي</label><input type="text" id="productNameEn" placeholder="Safola"></div>
-    <div class="form-row">
-      <div class="form-group"><label>الحالة</label><select id="productStatus"><option value="مقاطعة">🔴 مقاطعة</option><option value="اجتناب">🟡 اجتناب</option><option value="بديل">🟢 بديل</option><option value="الشراء من المحلي أفضل">🟤 محلي أفضل</option><option value="لا توجد معلومات كافية">🔵 لا معلومات</option></select></div>
-      <div class="form-group"><label>الفئة</label><select id="productCat"></select></div>
-    </div>
-    <div class="form-group"><label>🏢 الشركة</label>
-      <input type="text" id="companySearchInput" placeholder="ابحث عن شركة... (اكتب اسم الشركة)">
-      <div class="company-suggestions" id="companySuggestions" style="display:none;">
-        <div class="suggestions-list" id="companySuggestionsList"></div>
-      </div>
-      <input type="hidden" id="productCompany" value="">
-    </div>
-    <div class="form-group"><label>الدولة</label>
-      <input type="text" id="countrySearchInput" placeholder="ابحث عن دولة... (اكتب اسم الدولة)">
-      <div class="country-suggestions" id="countrySuggestions" style="display:none;">
-        <div class="suggestions-list" id="countrySuggestionsList"></div>
-      </div>
-      <div id="selectedCountries"></div>
-    </div>
-    <div class="form-group">
-      <label>🖼️ رفع صورة من الجهاز</label>
-      <input type="file" id="productImageFile" accept="image/*" onchange="previewImageAndConvert()">
-      <div id="imagePreview" style="margin-top: 10px; display: none;">
-        <img id="previewImg" style="max-width: 100px; max-height: 100px; border-radius: 10px; border: 2px solid var(--border); padding: 4px; background: white;">
-      </div>
-      <small style="color: #888;">يمكنك رفع صورة من جهازك أو إدخال رابط أدناه</small>
-    </div>
-    <div class="form-group"><label>رابط الصورة (بديل)</label><input type="text" id="productImage" placeholder="https://example.com/image.jpg"></div>
-    <div class="form-group"><label>سبب التصنيف</label>
-      <textarea id="productReason" rows="2" placeholder="سبب المقاطعة أو الاجتناب... (اكتب / متبوعاً بكلمة مفتاحية لاقتراحات)"></textarea>
-      <div class="keyword-suggestions" id="keywordSuggestions" style="display:none;">
-        <div class="suggestions-list" id="suggestionsList"></div>
-      </div>
-    </div>
-    <div class="form-group" id="altField"><label>البديل المقترح (للمقاطعة فقط)</label><textarea id="productAlt" rows="2" placeholder="البدائل المتاحة..."></textarea></div>
-    <div class="form-group"><label>تاريخ التحديث</label><input type="date" id="productDate" value=""></div>
-    <button class="btn-primary" onclick="saveProduct()">💾 حفظ المنتج</button>
-    
-    <div class="search-box"><input type="text" id="adminSearch" placeholder="🔍 بحث في المنتجات..." onkeyup="filterAdminList()"></div>
-    <div class="admin-list"><h4>📋 قائمة المنتجات</h4><div id="adminProducts"></div></div>
-  </div>
-  
-  <!-- قسم الكلمات المفتاحية -->
-  <div class="admin-section" id="section-keywords">
-    <h3>🔑 إدارة الكلمات المفتاحية وأسباب المقاطعة</h3>
-    <div class="form-group"><label>الكلمة المفتاحية</label><input type="text" id="keywordName" placeholder="مثال: كوشير"></div>
-    <div class="form-group"><label>الشرح / الوصف</label><textarea id="keywordDesc" rows="3" placeholder="شرح مفصل عن هذه الكلمة المفتاحية..."></textarea></div>
-    <button class="btn-primary" onclick="addKeyword()">➕ إضافة كلمة مفتاحية</button>
-    
-    <div class="search-box"><input type="text" id="keywordSearch" placeholder="🔍 بحث في الكلمات المفتاحية..." onkeyup="filterKeywords()"></div>
-    <div class="admin-list"><h4>📋 الكلمات المفتاحية الحالية</h4><div id="keywordsList"></div></div>
-  </div>
-  
-  <!-- قسم الأقسام -->
-  <div class="admin-section" id="section-categories">
-    <h3>📂 إدارة الأقسام</h3>
-    <div class="form-group"><label>اسم القسم</label><input type="text" id="categoryName" placeholder="مثال: مشروبات"></div>
-    <div class="form-group"><label>لون القسم (اختياري)</label><input type="color" id="categoryColor" value="#4a90d9"></div>
-    <button class="btn-primary" onclick="addCategory()">➕ إضافة قسم</button>
-    
-    <div class="search-box"><input type="text" id="categorySearch" placeholder="🔍 بحث في الأقسام..." onkeyup="filterCategories()"></div>
-    <div class="admin-list"><h4>📋 الأقسام الحالية</h4><div id="categoriesList"></div></div>
-  </div>
-  
-  <!-- قسم الدول -->
-  <div class="admin-section" id="section-countries">
-    <h3>🌍 إدارة الدول</h3>
-    <div class="form-group"><label>اسم الدولة (عربي)</label><input type="text" id="countryNameAr" placeholder="مثال: السعودية"></div>
-    <div class="form-group"><label>اسم الدولة (إنجليزي)</label><input type="text" id="countryNameEn" placeholder="مثال: Saudi Arabia"></div>
-    <button class="btn-primary" onclick="addCountry()">➕ إضافة دولة</button>
-    
-    <div class="search-box"><input type="text" id="countrySearch" placeholder="🔍 بحث في الدول..." onkeyup="filterCountries()"></div>
-    <div class="admin-list"><h4>📋 قائمة الدول</h4><div id="countriesList"></div></div>
-  </div>
-  
-  <!-- قسم الشركات -->
-  <div class="admin-section" id="section-companies">
-    <h3>🏢 إدارة الشركات والتفرعات</h3>
-    <div class="form-group"><label>اسم الشركة (عربي)</label><input type="text" id="companyNameAr" placeholder="مثال: صافولا"></div>
-    <div class="form-group"><label>اسم الشركة (إنجليزي)</label><input type="text" id="companyNameEn" placeholder="مثال: Safola"></div>
-    <div class="form-group"><label>الشركة الأم (تابعة لـ)</label><input type="text" id="companyParent" placeholder="الشركة الأم إن وجدت"></div>
-    <button class="btn-primary" onclick="addCompany()">➕ إضافة شركة</button>
-    
-    <div class="search-box"><input type="text" id="companySearch" placeholder="🔍 بحث في الشركات..." onkeyup="filterCompanies()"></div>
-    <div class="admin-list"><h4>📋 قائمة الشركات</h4><div id="companiesList"></div></div>
-  </div>
-</div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-whatsapp"
+                viewBox="0 0 16 16">
+                <path
+                    d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
+            </svg>
 
-<div class="page active" id="page-home">
-  <section class="hero">
-    <div class="hero-logo-wrap"><img src="LOGO.png" onerror="this.style.display='none'" id="heroLogoImg"></div>
-    <h1>المقاطعة جبهة إسناد</h1>
-    <p>دليل المقاطعة الشامل — اعرف ما تشتري وقاطع بوعي</p>
-    <div class="search-wrap"><input type="text" id="searchInput" placeholder="ابحث عن منتج..."><span class="s-icon">🔍</span></div>
-    <div class="results-count" id="resultsCount"></div>
-  </section>
-  
-  <div class="stats-bar">
-    <div class="stat-item total" onclick="setStatFilter(this,'all')"><strong id="sc-total">0</strong><span>الكل</span></div>
-    <div class="stat-item boycott" onclick="setStatFilter(this,'مقاطعة')"><strong id="sc-boycott">0</strong><span>مقاطعة</span></div>
-    <div class="stat-item avoid" onclick="setStatFilter(this,'اجتناب')"><strong id="sc-avoid">0</strong><span>اجتناب</span></div>
-    <div class="stat-item alt" onclick="setStatFilter(this,'بديل')"><strong id="sc-alt">0</strong><span>بديل</span></div>
-    <div class="stat-item local" onclick="setStatFilter(this,'الشراء من المحلي أفضل')"><strong id="sc-local">0</strong><span>محلي أفضل</span></div>
-    <div class="stat-item info" onclick="setStatFilter(this,'لا توجد معلومات كافية')"><strong id="sc-info">0</strong><span>لا معلومات</span></div>
-  </div>
-
-  <div class="filter-row">
-    <button class="fpill on" onclick="setFilter(this,'all')">الجميع <span class="cnt" id="cnt-all">0</span></button>
-    <button class="fpill" onclick="setFilter(this,'مقاطعة')"><span class="dot" style="background:var(--red)"></span>مقاطعة <span class="cnt" id="cnt-r">0</span></button>
-    <button class="fpill" onclick="setFilter(this,'اجتناب')"><span class="dot" style="background:var(--yellow)"></span>اجتناب <span class="cnt" id="cnt-y">0</span></button>
-    <button class="fpill" onclick="setFilter(this,'بديل')"><span class="dot" style="background:var(--green)"></span>بديل <span class="cnt" id="cnt-g">0</span></button>
-    <button class="fpill" onclick="setFilter(this,'الشراء من المحلي أفضل')"><span class="dot" style="background:var(--local)"></span>محلي أفضل <span class="cnt" id="cnt-l">0</span></button>
-    <button class="fpill" onclick="setFilter(this,'لا توجد معلومات كافية')"><span class="dot" style="background:var(--blue)"></span>لا معلومات <span class="cnt" id="cnt-b">0</span></button>
-  </div>
-  
-  <div class="cat-bar" id="catBar"></div>
-  
-  <section class="grid-section"><div class="products-grid" id="productsGrid"><div class="loading">جاري تحميل المنتجات...</div></div></section>
-</div>
-
-<div class="page" id="page-legend">
-  <div class="legend-wrap">
-    <h2>العلامات والمعايير</h2>
-    <div class="legend-card legend-card-red"><div class="legend-text"><h3 style="color:var(--red)">🔴 مقاطعة</h3><p>الشركة صهيونية أو من الدول الداعمة للكيانات الصهيونية والمحاربة للإسلام</p></div></div>
-    <div class="legend-card legend-card-yellow"><div class="legend-text"><h3 style="color:var(--yellow-dark)">🟡 يُفضل اجتنابها</h3><p>الشركة عندها استثمارات مشبوهة أو مصنوعة في بلاد الكفر</p></div></div>
-    <div class="legend-card legend-card-brown"><div class="legend-text"><h3 style="color:#7a5200">🟤 غير مقاطعة</h3><p>لكنها من بلد كفار والفضل شراء منتجات من بلاد المسلمين</p></div></div>
-    <div class="legend-card legend-card-blue"><div class="legend-text"><h3 style="color:#0d4a9c">🔵 لا توجد معلومات كافية</h3><p>لا توجد معلومات كافية عن الشركة</p></div></div>
-    <div class="legend-card legend-card-green"><div class="legend-text"><h3 style="color:var(--green)">🟢 بديل أو أصيل</h3><p>منتجات محلية أو من دول صديقة بديلة للمنتجات المقاطعة</p></div></div>
-  </div>
-</div>
-
-<!-- صفحة الشركات -->
-<div class="page" id="page-companies">
-  <div class="companies-wrap">
-    <h2>🏢 قائمة الشركات</h2>
-    <p class="sub">جميع الشركات الموجودة في قاعدة البيانات - اضغط على أي شركة لعرض منتجاتها</p>
-    <div class="search-box" style="margin-bottom:1rem;">
-      <input type="text" id="companiesSearchInput" placeholder="🔍 ابحث عن شركة...">
-    </div>
-    <div class="companies-grid" id="companiesGrid"></div>
-  </div>
-</div>
-
-<!-- صفحة من نحن -->
-<div class="page" id="page-aboutus">
-  <div class="aboutus-wrap">
-    <h2>ℹ️ من نحن</h2>
-    <div class="aboutus-card">
-      <h3>المقاطعة جبهة إسناد</h3>
-      <p>مبادرة شعبية تهدف إلى توعية المستهلك العربي بالمنتجات المرتبطة بجهات داعمة للاحتلال، وتوجيهه نحو البدائل المحلية والصديقة.</p>
-    </div>
-    <div class="aboutus-card">
-      <h3>🎯 هدفنا</h3>
-      <p>نؤمن بأن المقاطعة الاقتصادية سلاح فعّال في يد المستهلك الواعي. من خلال توفير معلومات موثوقة ومحدّثة، نساعد الجميع على اتخاذ قرارات شرائية مسؤولة.</p>
-    </div>
-    <div class="aboutus-card">
-      <h3>📋 منهجية التصنيف</h3>
-      <p>نعتمد على مصادر موثوقة وتقارير موثقة لتصنيف المنتجات. كل تصنيف قابل للمراجعة والتحديث بناءً على معلومات جديدة. يمكن لأي شخص المساهمة عبر GitHub.</p>
-    </div>
-    <div class="aboutus-card">
-      <h3>💻 مبادرة مفتوحة المصدر</h3>
-      <p>الموقع مفتوح المصدر بالكامل على GitHub. يمكنك المساهمة بإضافة منتجات جديدة، تعديل المعلومات، أو تطوير الموقع.</p>
-    </div>
-  </div>
-</div>
-
-<div class="page" id="page-contact">
-  <div class="contact-wrap">
-    <h2>تواصل معنا</h2>
-    <a class="contact-card" href="https://wa.me/97338282371" target="_blank" style="text-decoration:none; display:flex; gap:1rem; align-items:center; background:var(--surface); border-radius:14px; border:1px solid var(--border); padding:1rem; margin-bottom:1rem;">
-      <div style="font-size:28px;">📞</div>
-      <div><h3>واتساب / اتصال</h3><p style="direction:ltr;font-size:18px;font-weight:bold;color:var(--red)">+973 3828 2371</p></div>
+        </button>
     </a>
-  </div>
-</div>
 
-<div class="modal-overlay" id="modal"><div class="modal"><div class="modal-handle"></div><div class="modal-stripe" id="mStripe"></div><div class="modal-img" id="mImg"></div><div class="modal-body"><div class="modal-header"><div class="mtw"><div class="modal-sc" id="mCircle"></div><div><div class="modal-title" id="mTitle"></div><div id="mTitleEn"></div></div></div><button class="modal-close" id="mClose">✕</button></div><div class="minfo-grid"><div class="mbox"><label>الحالة</label><span id="mStatus"></span></div><div class="mbox"><label>الدولة</label><span id="mCountry"></span></div><div class="mbox full"><label>الشركة</label><span id="mCompany"></span></div><div class="mbox full"><label>الفئة</label><span id="mCat"></span></div></div><div class="mst">سبب التصنيف</div><div class="mreason" id="mReason"></div><div id="mAltWrap" style="display:none"><div class="mst">البديل المقترح</div><div class="alternatives-list" id="mAlt"></div></div><div class="mdate" id="mUpdatedAt"></div><button class="share-btn" id="shareBtn" onclick="showShareModal()">🔗 شارك المنتج</button></div></div></div>
+    <button class="admin-secret" id="adminBtn" onclick="showLoginModal()">⚙️</button>
 
-<footer><p>🇵🇸 المقاطعة جبهة إسناد — دليل المقاطعة الشامل</p></footer>
-<div class="toast" id="toast"></div>
+    <div class="login-modal" id="loginModal" onclick="closeLoginModalOnOutside(event)">
+        <div class="login-box" onclick="event.stopPropagation()">
+            <h3>🔐 دخول المشرف</h3>
+            <input type="password" id="adminPassword" placeholder="كلمة المرور"
+                onkeypress="if(event.key==='Enter') checkLogin()">
+            <button onclick="checkLogin()">تسجيل الدخول</button>
+            <div class="login-error" id="loginError">كلمة المرور غير صحيحة</div>
+        </div>
+    </div>
 
-<script src="helpers.js?v=<%= Date.now() %>"></script>
-<script src="script.js?v=<%= Date.now() %>"></script>
+    <!-- نافذة المشاركة المنبثقة -->
+    <div class="share-modal-overlay" id="shareModal">
+        <div class="share-modal">
+            <h3>🔗 شارك المنتج</h3>
+            <div class="share-product-name" id="shareProductName"></div>
+            <div class="share-status" id="shareProductStatus"></div>
+            <div class="share-link" id="shareProductLink"></div>
+            <div class="share-buttons">
+                <button class="share-copy-link" onclick="copyShareLink()">📋 نسخ الرابط</button>
+                <button class="share-copy-message" onclick="copyShareMessage()">💬 نسخ الرسالة</button>
+            </div>
+            <button class="share-close" onclick="closeShareModal()">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- نافذة منتجات الشركة -->
+    <div class="company-products-overlay" id="companyProductsModal">
+        <div class="company-products-modal">
+            <h3 id="companyProductsTitle">🏢 منتجات الشركة</h3>
+            <div id="companyProductsList" class="company-products-grid"></div>
+            <button class="company-close" onclick="closeCompanyProductsModal()">إغلاق</button>
+        </div>
+    </div>
+
+    <div class="admin-overlay" id="adminOverlay" onclick="closeAdminPanel()"></div>
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-panel-header">
+            <h3>⚙️ لوحة الإدارة المتقدمة</h3>
+            <button class="admin-close" onclick="closeAdminPanel()">✕</button>
+        </div>
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="products">📦 المنتجات</button>
+            <button class="admin-tab" data-tab="keywords">🔑 الكلمات المفتاحية</button>
+            <button class="admin-tab" data-tab="categories">📂 الأقسام</button>
+            <button class="admin-tab" data-tab="countries">🌍 الدول</button>
+            <button class="admin-tab" data-tab="companies">🏢 الشركات</button>
+        </div>
+
+        <!-- قسم المنتجات -->
+        <div class="admin-section active" id="section-products">
+            <h3>➕ إضافة/تعديل منتج</h3>
+            <input type="hidden" id="editId" value="">
+            <div class="form-group"><label>اسم المنتج</label><input type="text" id="productName"
+                    placeholder="مثال: صافولا"></div>
+            <div class="form-group"><label>الاسم بالإنجليزي</label><input type="text" id="productNameEn"
+                    placeholder="Safola"></div>
+            <div class="form-row">
+                <div class="form-group"><label>الحالة</label>
+                    <select id="productStatus">
+                        <!-- <option value="مقاطعة">🔴 مقاطعة</option>
+                        <option value="اجتناب">🟡 اجتناب</option>
+                        <option value="بديل">🟢 بديل</option>
+                        <option value="الشراء من المحلي أفضل">🟤 محلي أفضل</option>
+                        <option value="لا توجد معلومات كافية">🔵 لا معلومات</option> -->
+                    </select>
+                </div>
+                <div class="form-group"><label>الفئة</label><select id="productCat"></select></div>
+            </div>
+            <div class="form-group"><label>🏢 الشركة</label>
+                <select id="companyDropdown"></select>
+                <!-- <input type="text" id="companySearchInput" placeholder="ابحث عن شركة... (اكتب اسم الشركة)">
+                <div class="company-suggestions" id="companySuggestions" style="display:none;">
+                    <div class="suggestions-list" id="companySuggestionsList"></div>
+                </div>
+                <input type="hidden" id="productCompany" value=""> -->
+            </div>
+            <div class="form-group"><label>الدولة</label>
+
+                
+                <select id="countryDropdown"></select>
+
+                <!--
+                
+                <div class="country-suggestions" id="countrySuggestions" style="display:none;">
+                    <div class="suggestions-list" id="countrySuggestionsList"></div>
+                </div>
+                <div id="selectedCountries"></div> -->
+            </div>
+            <div class="form-group">
+                <label>🖼️ رفع صورة من الجهاز</label>
+                <input type="file" id="productImageFile" accept="image/*" onchange="previewImageAndConvert()">
+                <div id="imagePreview" style="margin-top: 10px; display: none;">
+                    <img id="previewImg"
+                        style="max-width: 100px; max-height: 100px; border-radius: 10px; border: 2px solid var(--border); padding: 4px; background: white;">
+                </div>
+                <small style="color: #888;">يمكنك رفع صورة من جهازك أو إدخال رابط أدناه</small>
+            </div>
+            <div class="form-group"><label>رابط الصورة (بديل)</label><input type="text" id="productImage"
+                    placeholder="https://example.com/image.jpg"></div>
+            <div class="form-group"><label>سبب التصنيف</label>
+                <textarea id="productReason" rows="2"
+                    placeholder="سبب المقاطعة أو الاجتناب... (اكتب / متبوعاً بكلمة مفتاحية لاقتراحات)"></textarea>
+                <div class="keyword-suggestions" id="keywordSuggestions" style="display:none;">
+                    <div class="suggestions-list" id="suggestionsList"></div>
+                </div>
+            </div>
+            <div class="form-group" id="altField"><label>البديل المقترح (للمقاطعة فقط)</label><textarea id="productAlt"
+                    rows="2" placeholder="البدائل المتاحة..."></textarea></div>
+            <div class="form-group"><label>تاريخ التحديث</label><input type="date" id="productDate" value=""></div>
+            <button class="btn-primary" onclick="saveProduct()">💾 حفظ المنتج</button>
+
+            <div class="search-box"><input type="text" id="adminSearch" placeholder="🔍 بحث في المنتجات..."
+                    onkeyup="filterAdminList()"></div>
+            <div class="admin-list">
+                <h4>📋 قائمة المنتجات</h4>
+                <div id="adminProducts"></div>
+            </div>
+        </div>
+
+        <!-- قسم الكلمات المفتاحية -->
+        <div class="admin-section" id="section-keywords">
+            <h3>🔑 إدارة الكلمات المفتاحية وأسباب المقاطعة</h3>
+            <div class="form-group"><label>الكلمة المفتاحية</label><input type="text" id="keywordName"
+                    placeholder="مثال: كوشير"></div>
+            <div class="form-group"><label>الشرح / الوصف</label><textarea id="keywordDesc" rows="3"
+                    placeholder="شرح مفصل عن هذه الكلمة المفتاحية..."></textarea></div>
+            <button class="btn-primary" onclick="addKeyword()">➕ إضافة كلمة مفتاحية</button>
+
+            <div class="search-box"><input type="text" id="keywordSearch" placeholder="🔍 بحث في الكلمات المفتاحية..."
+                    onkeyup="filterKeywords()"></div>
+            <div class="admin-list">
+                <h4>📋 الكلمات المفتاحية الحالية</h4>
+                <div id="keywordsList"></div>
+            </div>
+        </div>
+
+        <!-- قسم الأقسام -->
+        <div class="admin-section" id="section-categories">
+            <h3>📂 إدارة الأقسام</h3>
+            <div class="form-group"><label>اسم القسم</label><input type="text" id="categoryName"
+                    placeholder="مثال: مشروبات"></div>
+            <div class="form-group"><label>لون القسم (اختياري)</label><input type="color" id="categoryColor"
+                    value="#4a90d9"></div>
+            <button class="btn-primary" onclick="addCategory()">➕ إضافة قسم</button>
+
+            <div class="search-box"><input type="text" id="categorySearch" placeholder="🔍 بحث في الأقسام..."
+                    onkeyup="filterCategories()"></div>
+            <div class="admin-list">
+                <h4>📋 الأقسام الحالية</h4>
+                <div id="categoriesList"></div>
+            </div>
+        </div>
+
+        <!-- قسم الدول -->
+        <div class="admin-section" id="section-countries">
+            <h3>🌍 إدارة الدول</h3>
+            <div class="form-group"><label>اسم الدولة (عربي)</label><input type="text" id="countryNameAr"
+                    placeholder="مثال: السعودية"></div>
+            <div class="form-group"><label>اسم الدولة (إنجليزي)</label><input type="text" id="countryNameEn"
+                    placeholder="مثال: Saudi Arabia"></div>
+            <button class="btn-primary" onclick="addCountry()">➕ إضافة دولة</button>
+
+            <div class="search-box"><input type="text" id="countrySearch" placeholder="🔍 بحث في الدول..."
+                    onkeyup="filterCountries()"></div>
+            <div class="admin-list">
+                <h4>📋 قائمة الدول</h4>
+                <div id="countriesList"></div>
+            </div>
+        </div>
+
+        <!-- قسم الشركات -->
+        <div class="admin-section" id="section-companies">
+            <h3>🏢 إدارة الشركات والتفرعات</h3>
+            <div class="form-group"><label>اسم الشركة (عربي)</label><input type="text" id="companyNameAr"
+                    placeholder="مثال: صافولا"></div>
+            <div class="form-group"><label>اسم الشركة (إنجليزي)</label><input type="text" id="companyNameEn"
+                    placeholder="مثال: Safola"></div>
+            <div class="form-group"><label>الشركة الأم (تابعة لـ)</label><input type="text" id="companyParent"
+                    placeholder="الشركة الأم إن وجدت"></div>
+            <button class="btn-primary" onclick="addCompany()">➕ إضافة شركة</button>
+
+            <div class="search-box"><input type="text" id="companySearch" placeholder="🔍 بحث في الشركات..."
+                    onkeyup="filterCompanies()"></div>
+            <div class="admin-list">
+                <h4>📋 قائمة الشركات</h4>
+                <div id="companiesList"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page active" id="page-home">
+        <section class="hero">
+            <div class="hero-logo-wrap"><img src="LOGO.png" onerror="this.style.display='none'" id="heroLogoImg"></div>
+            <h1>المقاطعة جبهة إسناد</h1>
+            <p>دليل المقاطعة الشامل — اعرف ما تشتري وقاطع بوعي</p>
+            <div class="search-wrap"><input type="text" id="searchInput" placeholder="ابحث عن منتج..."><span
+                    class="s-icon">🔍</span></div>
+            <div class="results-count" id="resultsCount"></div>
+        </section>
+
+        <div class="stats-bar">
+            <div class="stat-item total" onclick="setStatFilter(this,'all')"><strong
+                    id="sc-total">0</strong><span>الكل</span></div>
+            <div class="stat-item boycott" onclick="setStatFilter(this,'مقاطعة')"><strong
+                    id="sc-boycott">0</strong><span>مقاطعة</span></div>
+            <div class="stat-item avoid" onclick="setStatFilter(this,'اجتناب')"><strong
+                    id="sc-avoid">0</strong><span>اجتناب</span></div>
+            <div class="stat-item alt" onclick="setStatFilter(this,'بديل')"><strong
+                    id="sc-alt">0</strong><span>بديل</span></div>
+            <div class="stat-item local" onclick="setStatFilter(this,'الشراء من المحلي أفضل')"><strong
+                    id="sc-local">0</strong><span>محلي أفضل</span></div>
+            <div class="stat-item info" onclick="setStatFilter(this,'لا توجد معلومات كافية')"><strong
+                    id="sc-info">0</strong><span>لا معلومات</span></div>
+        </div>
+
+        <div class="filter-row">
+            <button class="fpill on" onclick="setFilter(this,'all')">الجميع <span class="cnt"
+                    id="cnt-all">0</span></button>
+            <button class="fpill" onclick="setFilter(this,'مقاطعة')"><span class="dot"
+                    style="background:var(--red)"></span>مقاطعة <span class="cnt" id="cnt-r">0</span></button>
+            <button class="fpill" onclick="setFilter(this,'اجتناب')"><span class="dot"
+                    style="background:var(--yellow)"></span>اجتناب <span class="cnt" id="cnt-y">0</span></button>
+            <button class="fpill" onclick="setFilter(this,'بديل')"><span class="dot"
+                    style="background:var(--green)"></span>بديل <span class="cnt" id="cnt-g">0</span></button>
+            <button class="fpill" onclick="setFilter(this,'الشراء من المحلي أفضل')"><span class="dot"
+                    style="background:var(--local)"></span>محلي أفضل <span class="cnt" id="cnt-l">0</span></button>
+            <button class="fpill" onclick="setFilter(this,'لا توجد معلومات كافية')"><span class="dot"
+                    style="background:var(--blue)"></span>لا معلومات <span class="cnt" id="cnt-b">0</span></button>
+        </div>
+
+        <div class="cat-bar" id="catBar"></div>
+
+        <section class="grid-section">
+            <div class="products-grid" id="productsGrid">
+                <div class="loading">جاري تحميل المنتجات...</div>
+            </div>
+        </section>
+    </div>
+
+    <div class="page" id="page-legend">
+        <div class="legend-wrap">
+            <h2>العلامات والمعايير</h2>
+            <div class="legend-card legend-card-red">
+                <div class="legend-text">
+                    <h3 style="color:var(--red)">🔴 مقاطعة</h3>
+                    <p>الشركة صهيونية أو من الدول الداعمة للكيانات الصهيونية والمحاربة للإسلام</p>
+                </div>
+            </div>
+            <div class="legend-card legend-card-yellow">
+                <div class="legend-text">
+                    <h3 style="color:var(--yellow-dark)">🟡 يُفضل اجتنابها</h3>
+                    <p>الشركة عندها استثمارات مشبوهة أو مصنوعة في بلاد الكفر</p>
+                </div>
+            </div>
+            <div class="legend-card legend-card-brown">
+                <div class="legend-text">
+                    <h3 style="color:#7a5200">🟤 غير مقاطعة</h3>
+                    <p>لكنها من بلد كفار والفضل شراء منتجات من بلاد المسلمين</p>
+                </div>
+            </div>
+            <div class="legend-card legend-card-blue">
+                <div class="legend-text">
+                    <h3 style="color:#0d4a9c">🔵 لا توجد معلومات كافية</h3>
+                    <p>لا توجد معلومات كافية عن الشركة</p>
+                </div>
+            </div>
+            <div class="legend-card legend-card-green">
+                <div class="legend-text">
+                    <h3 style="color:var(--green)">🟢 بديل أو أصيل</h3>
+                    <p>منتجات محلية أو من دول صديقة بديلة للمنتجات المقاطعة</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- صفحة الشركات -->
+    <div class="page" id="page-companies">
+        <div class="companies-wrap">
+            <h2>🏢 قائمة الشركات</h2>
+            <p class="sub">جميع الشركات الموجودة في قاعدة البيانات - اضغط على أي شركة لعرض منتجاتها</p>
+            <div class="search-box" style="margin-bottom:1rem;">
+                <input type="text" id="companiesSearchInput" placeholder="🔍 ابحث عن شركة...">
+            </div>
+            <div class="companies-grid" id="companiesGrid"></div>
+        </div>
+    </div>
+
+    <!-- صفحة من نحن -->
+    <div class="page" id="page-aboutus">
+        <div class="aboutus-wrap">
+            <h2>ℹ️ من نحن</h2>
+            <div class="aboutus-card">
+                <h3>المقاطعة جبهة إسناد</h3>
+                <p>مبادرة شعبية تهدف إلى توعية المستهلك العربي بالمنتجات المرتبطة بجهات داعمة للاحتلال، وتوجيهه نحو
+                    البدائل المحلية والصديقة.</p>
+            </div>
+            <div class="aboutus-card">
+                <h3>🎯 هدفنا</h3>
+                <p>نؤمن بأن المقاطعة الاقتصادية سلاح فعّال في يد المستهلك الواعي. من خلال توفير معلومات موثوقة ومحدّثة،
+                    نساعد الجميع على اتخاذ قرارات شرائية مسؤولة.</p>
+            </div>
+            <div class="aboutus-card">
+                <h3>📋 منهجية التصنيف</h3>
+                <p>نعتمد على مصادر موثوقة وتقارير موثقة لتصنيف المنتجات. كل تصنيف قابل للمراجعة والتحديث بناءً على
+                    معلومات جديدة. يمكن لأي شخص المساهمة عبر GitHub.</p>
+            </div>
+            <div class="aboutus-card">
+                <h3>💻 مبادرة مفتوحة المصدر</h3>
+                <p>الموقع مفتوح المصدر بالكامل على GitHub. يمكنك المساهمة بإضافة منتجات جديدة، تعديل المعلومات، أو تطوير
+                    الموقع.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="page" id="page-contact">
+        <div class="contact-wrap">
+            <h2>تواصل معنا</h2>
+            <a class="contact-card" href="https://wa.me/97338282371" target="_blank"
+                style="text-decoration:none; display:flex; gap:1rem; align-items:center; background:var(--surface); border-radius:14px; border:1px solid var(--border); padding:1rem; margin-bottom:1rem;">
+                <div style="font-size:28px;">📞</div>
+                <div>
+                    <h3>واتساب / اتصال</h3>
+                    <p style="direction:ltr;font-size:18px;font-weight:bold;color:var(--red)">+973 3828 2371</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <div class="modal-handle"></div>
+            <div class="modal-stripe" id="mStripe"></div>
+            <div class="modal-img" id="mImg"></div>
+            <div class="modal-body">
+                <div class="modal-header">
+                    <div class="mtw">
+                        <div class="modal-sc" id="mCircle"></div>
+                        <div>
+                            <div class="modal-title" id="mTitle"></div>
+                            <div id="mTitleEn"></div>
+                        </div>
+                    </div><button class="modal-close" id="mClose">✕</button>
+                </div>
+                <div class="minfo-grid">
+                    <div class="mbox"><label>الحالة</label><span id="mStatus"></span></div>
+                    <div class="mbox"><label>الدولة</label><span id="mCountry"></span></div>
+                    <div class="mbox full"><label>الشركة</label><span id="mCompany"></span></div>
+                    <div class="mbox full"><label>الفئة</label><span id="mCat"></span></div>
+                </div>
+                <div class="mst">سبب التصنيف</div>
+                <div class="mreason" id="mReason"></div>
+                <div id="mAltWrap" style="display:none">
+                    <div class="mst">البديل المقترح</div>
+                    <div class="alternatives-list" id="mAlt"></div>
+                </div>
+                <div class="mdate" id="mUpdatedAt"></div><button class="share-btn" id="shareBtn"
+                    onclick="showShareModal()">🔗 شارك المنتج</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>🇵🇸 المقاطعة جبهة إسناد — دليل المقاطعة الشامل</p>
+    </footer>
+    <div class="toast" id="toast"></div>
+
+    <script src="helpers.js?v=<%= Date.now() %>"></script>
+    <script src="script.js?v=<%= Date.now() %>"></script>
 
 </body>
+
 </html>
