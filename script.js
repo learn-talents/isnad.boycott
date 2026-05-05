@@ -75,7 +75,7 @@ function updateCatBar() {
 
 function updateCategoryCounts() {
     categories.forEach(cat => {
-        console.log({products})
+        console.log({ products })
         const count = products.filter(p => p.cat === cat.name).length;
         const btn = document.querySelector(`.ctab[onclick="setCat(this,'${cat.name}')"]`);
         if (btn) {
@@ -450,20 +450,21 @@ function insertKeyword(keyword, description) {
 //#region  images
 // ===================== معاينة الصورة =====================
 function previewImageAndConvert() {
-    const file = document.getElementById('productImageFile').files[0];
+    let file = document.getElementById('productImageFile').files[0];
     if (file) {
-        if (file.size > 2 * 1024 * 1024) {
+        if (file.size > 3 * 1024 * 1024) {
             showToast('❌ حجم الصورة كبير جداً (الحد الأقصى 2 ميجابايت)');
             document.getElementById('productImageFile').value = '';
             return;
         }
-        const reader = new FileReader();
+
+        let reader = new FileReader();
         reader.onload = function (e) {
             const previewDiv = document.getElementById('imagePreview');
             const previewImg = document.getElementById('previewImg');
             previewImg.src = e.target.result;
             previewDiv.style.display = 'block';
-            document.getElementById('productImage').value = e.target.result;
+            // document.getElementById('productImage').value = e.target.result;
         };
         reader.readAsDataURL(file);
     }
@@ -665,7 +666,7 @@ function getFiltered() {
 
 function updateAllCounters() {
 
-    console.log({products});
+    console.log({ products });
     document.getElementById('cnt-all').textContent = products.length;
     document.getElementById('cnt-r').textContent = products.filter(p => p.status === 'مقاطعة').length;
     document.getElementById('cnt-y').textContent = products.filter(p => p.status === 'اجتناب').length;
@@ -703,7 +704,7 @@ function renderProducts() {
         return `
     <div class="card" onclick="openModal(${p.id})">
       <div class="card-stripe s-${statusColors[p.status]}"></div>
-      <div class="card-img">${hasImage ? `<img src="${imgSrc}" onerror="this.parentElement.innerHTML='<div class=no-image>${statusEmoji[p.status]}</div>'">` : `<div class="no-image">${statusEmoji[p.status]}</div>`}</div>
+      <div class="card-img">${p.uuid ? `<img src="${p.image_url}" onerror="this.parentElement.innerHTML='<div class=no-image>${statusEmoji[p.status]}</div>'">` : `<div class="no-image">${statusEmoji[p.status]}</div>`}</div>
       <div class="card-body">
         <div class="card-name-row"><div class="card-name">${escapeHtml(p.name)}</div><div class="card-status-dot ${statusColors[p.status]}"></div></div>
         <div class="card-name-en">${escapeHtml(p.nameEn || '')}</div>
@@ -751,17 +752,17 @@ async function deleteProduct(id) {
 }
 
 async function saveProduct() {
-        console.log('saveProduct is triggered 2')
+    console.log('saveProduct is triggered 2')
 
     if (!isAdmin) { showToast('❌ يجب تسجيل الدخول أولاً'); return; }
-    const id = document.getElementById('editId').value;
+    let id = document.getElementById('editId').value;
     // const status = document.getElementById('productStatus').value;
     // const countriesStr = selectedCountriesList.map(c => c.nameAr).join(', ');
     // const companyName = document.getElementById('productCompany').value;
 
 
 
-    const newProduct = {
+    let newProduct = {
         id: -1,
         product_name_ar: $('.admin-section #productName').val(),
         product_name_en: $('.admin-section #productNameEn').val(),
@@ -857,13 +858,58 @@ function setCat(btn, cat) {
     updateStatsBar();
 }
 
+// function renderAdminList() {
+//     if (!isAdmin) return;
+//     const container = document.getElementById('adminProducts');
+//     if (!container) return;
+//     let filtered = products;
+//     if (adminSearchTerm) filtered = products.filter(p => p.name.includes(adminSearchTerm));
+//     container.innerHTML = filtered.map(p => `<div class="admin-list-item"><div class="info"><span class="admin-product-name">${escapeHtml(p.name)}</span><br><small>${p.status} | ${p.cat}</small><br><small>📅 ${p.updatedAt || getCurrentDate()}</small></div><div><button class="btn-secondary" style="background:var(--blue);color:white;margin-left:5px;" onclick="editProduct(${p.id})">✏️ تعديل</button><button class="btn-danger" onclick="deleteProduct(${p.id})">🗑️ حذف</button></div></div>`).join('');
+// }
+
 function renderAdminList() {
     if (!isAdmin) return;
-    const container = document.getElementById('adminProducts');
-    if (!container) return;
+
+    let $container = $('#adminProducts');
+    if (!$container.length) return;
+
     let filtered = products;
-    if (adminSearchTerm) filtered = products.filter(p => p.name.includes(adminSearchTerm));
-    container.innerHTML = filtered.map(p => `<div class="admin-list-item"><div class="info"><span class="admin-product-name">${escapeHtml(p.name)}</span><br><small>${p.status} | ${p.cat}</small><br><small>📅 ${p.updatedAt || getCurrentDate()}</small></div><div><button class="btn-secondary" style="background:var(--blue);color:white;margin-left:5px;" onclick="editProduct(${p.id})">✏️ تعديل</button><button class="btn-danger" onclick="deleteProduct(${p.id})">🗑️ حذف</button></div></div>`).join('');
+
+    if (adminSearchTerm) {
+        filtered = products.filter(p =>
+            p.name.includes(adminSearchTerm)
+        );
+    }
+
+    $.each(filtered, function (index, p){
+        let name = escapeHtml(p.name);
+        let date = p.updatedAt || getCurrentDate();
+
+        let productItem =  $(`
+            <div class="admin-list-item" data-product-id="${p.id}">
+                <div class="info">
+                    <span class="admin-product-name">${name}</span><br>
+                    <small>${p.status} | ${p.cat}</small><br>
+                    <small>📅 ${date}</small>
+                </div>
+
+                <div>
+                    <button class="btn-secondary"
+                        style="background:var(--blue);color:white;margin-left:5px;"
+                        onclick="editProduct(${p.id})">
+                        ✏️ تعديل
+                    </button>
+
+                    <button class="btn-danger" onclick="deleteProduct(${p.id})">
+                        🗑️ حذف
+                    </button>
+                </div>
+            </div>
+        `);
+
+        productItem.appendTo($container);
+    });
+
 }
 
 function filterAdminList() {
@@ -1072,19 +1118,52 @@ function openModal(id) {
     document.getElementById('mTitle').textContent = currentProduct.name;
     document.getElementById('mTitleEn').textContent = currentProduct.nameEn || '';
     document.getElementById('mStatus').textContent = currentProduct.status;
-    document.getElementById('mCountry').textContent = currentProduct.country || '—';
+    document.getElementById('mCountry').textContent = currentProduct.country_name_ar || '—';
 
     const companyName = currentProduct.company || '—';
     document.getElementById('mCompany').innerHTML = `<div class="company-full-box" onclick="event.stopPropagation(); showCompanyProducts('${escapeHtml(companyName)}')">${escapeHtml(companyName)}</div>`;
 
-    document.getElementById('mCat').textContent = currentProduct.cat || '—';
+    document.getElementById('mCat').textContent = currentProduct?.categories[0]?.categoy_name_ar || '—';
     document.getElementById('mUpdatedAt').textContent = `📅 آخر تحديث: ${currentProduct.updatedAt || getCurrentDate()}`;
-    const reasonElement = document.getElementById('mReason');
-    reasonElement.textContent = currentProduct.reason || 'لا يوجد سبب محدد';
-    if (isAlt) { reasonElement.classList.add('green'); } else { reasonElement.classList.remove('green'); }
+
+    function makeLinksClickable(text) {
+        let urlPattern = /(https?:\/\/[^\s]+)/g;
+
+        return text.replace(urlPattern, function (url) {
+            return '<a href="' + url + '" target="_blank">' + url + '</a>';
+        });
+    }
+
+    let $reason = $('#mReason');
+
+    if (currentProduct.reason) {
+        let clickableReason = makeLinksClickable(currentProduct.reason);
+        $reason.html(clickableReason);
+    } else {
+        // $reason.text('لا يوجد سبب محدد');
+        $reason.text('-');
+    }
+
+    let $alt = $('#mAlt');
+
+    if (currentProduct.alt) {
+        let clickableAlt = makeLinksClickable(currentProduct.reason);
+        $alt.html(clickableAlt);
+    } else {
+        $alt.text('-');
+    }
+
+    if (isAlt) {
+        $reason.addClass('green');
+        $alt.addClass('green');
+    } else {
+        reasonElement.removeClass('green');
+        $alt.removeClass('green');
+    }
 
     const altWrap = document.getElementById('mAltWrap');
     const altElement = document.getElementById('mAlt');
+
     if (isBoycott) {
         const alternativesHtml = getAlternativesHtml(currentProduct);
         if (alternativesHtml) {
@@ -1135,6 +1214,7 @@ function checkUrlForProduct() {
         }, 800);
     }
 }
+
 function editProduct(id) {
     const p = products.find(p => p.id === id);
     if (!p) return;
@@ -1158,15 +1238,30 @@ function editProduct(id) {
 async function deleteProduct(id) {
     if (!isAdmin) return;
     if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
-        products = products.filter(p => p.id !== id);
-        const saved = await saveProductsToGitHub();
-        if (saved) {
+
+        apiHelper.post({
+            url: '/products/deleteProduct',
+            args: {
+                product_id: id
+            }
+        }).then(function () {
+            let productItem = $(`.admin-list-item[data-product-id="${id}"]`);
+
+            productItem.slideUp(300, function () {
+                $(this).remove();
+            });
+
             updateAllCounters();
             renderProducts();
             renderAdminList();
             updateCatBar();
             showToast('🗑️ تم حذف المنتج');
-        }
+        });
+        // products = products.filter(p => p.id !== id);
+        // const saved = await saveProductsToGitHub();
+        // if (saved) {
+
+        // }
     }
 }
 
@@ -1179,35 +1274,57 @@ async function saveProduct() {
     // const countriesStr = selectedCountriesList.map(c => c.nameAr).join(', ');
     // const companyName = document.getElementById('productCompany').value;
 
+    let contryDropdown = $('.admin-section #countryDropdown');
+    let country_id = contryDropdown.val() ? parseInt(contryDropdown.val()) : null;
 
-    const newProduct = {
-        product_id: -1,
-        product_name_ar: $('.admin-section #productName').val(),
-        product_name_en: $('.admin-section #productNameEn').val(),
-        status_id: $('.admin-section #productStatus').val(),
-        // cat: document.getElementById('productCat').value, 
-        categories_id: [parseInt($('.admin-section #productCat').val())], 
-        company_id: $('.admin-section #companyDropdown').val(),
-        country_id: $('.admin-section #countryDropdown').val(),
-        // image_file: document.getElementById('productImage').value,
-        product_reason: $('.admin-section #productReason').val(),
-        // updatedAt: document.getElementById('productDate').value || getCurrentDate() 
-    };
+    let companyDropdown = $('.admin-section #companyDropdown');
+    let company_id = companyDropdown.val() ? parseInt(companyDropdown.val()) : null;
 
-    console.log({ newProduct });
+    let statusDropdown = $('.admin-section #productStatus');
+    let status_id = statusDropdown.val() ? parseInt(statusDropdown.val()) : null;
 
+    let product_alt_input = $('.admin-section #productAlt');
+    let product_alt = product_alt_input.val();
+
+    let productReasonInput = $('.admin-section #productReason');
+    let product_reason = productReasonInput.val();
+
+    let productImage = $('#productImageFile')[0].files.length > 0 ? $('#productImageFile')[0].files[0] : null;
+
+    let formData = new FormData();
+
+    formData.append("product_id", -1);
+    formData.append("product_name_ar", $('.admin-section #productName').val());
+    formData.append("product_name_en", $('.admin-section #productNameEn').val());
+
+    let categories = [parseInt($('.admin-section #productCat').val())];
+
+    categories.forEach((id, index) => {
+        formData.append(`categories_id[${index}]`, id);
+    });
+
+    formData.append("company_id", company_id);
+    formData.append("country_id", country_id);
+    formData.append("product_alt", product_alt);
+    formData.append("status_id", status_id);
+    formData.append("product_reason", product_reason);
+
+    if(productImage){
+        formData.append("image_file", productImage);
+    }
 
     apiHelper.post({
-        url:'/products/setProduct',
-        args:newProduct
-    }).then(function(res){
+        url: '/products/setProduct',
+        isFormData:true,
+        args: formData
+    }).then(function (res) {
         console.log(res);
     });
 
-    if (!newProduct.product_name_ar || !newProduct.product_name_en) {
-        showToast('❌ الرجاء إدخال اسم المنتج');
-        return;
-    }
+    // if (!newProduct.product_name_ar || !newProduct.product_name_en) {
+    //     showToast('❌ الرجاء إدخال اسم المنتج');
+    //     return;
+    // }
 
 
     return;
@@ -1303,14 +1420,14 @@ function toggleAdminPanel() {
     document.getElementById('adminPanel').classList.toggle('open');
     document.getElementById('adminOverlay').classList.toggle('open');
 
-    apiHelper.post({url:'/products/getAddProductComboBoxes'}).then(function (result) {
+    apiHelper.post({ url: '/products/getAddProductComboBoxes' }).then(function (result) {
         let productStatuses = result.data.statuses;
         let productCountries = result.data.countries;
         let productCategories = result.data.categories;
         let productCompanies = result.data.companies;
 
         let productStatusDropDown = $('.admin-section #productStatus');
-        
+
         for (let i = 0; i < productStatuses.length; i++) {
             let option = $('<option></option>').appendTo(productStatusDropDown);
 
@@ -1339,11 +1456,11 @@ function toggleAdminPanel() {
 
             let companyName = '';
 
-            if(productCompanies[i].company_name_ar && productCompanies[i].company_name_en) {
+            if (productCompanies[i].company_name_ar && productCompanies[i].company_name_en) {
                 companyName = productCompanies[i].company_name_ar + " - " + productCompanies[i].company_name_en;
-            } else if (productCompanies[i].company_name_ar){
+            } else if (productCompanies[i].company_name_ar) {
                 companyName = productCompanies[i].company_name_ar;
-            }else if(productCompanies[i].company_name_en){
+            } else if (productCompanies[i].company_name_en) {
                 companyName = productCompanies[i].company_name_en;
             }
 
@@ -1373,7 +1490,7 @@ function toggleAdminPanel() {
 
 
 
-        console.log({result});
+        console.log({ result });
     });
 
     if (isAdmin) renderAdminList();

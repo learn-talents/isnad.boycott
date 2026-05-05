@@ -1,18 +1,27 @@
 let apiHelper = {
-    post: function ({ url, args }) {
+    post: function ({ url, args, isFormData = false }) {
         let options = {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            }
+            headers: {}
         };
 
-        if (args !== undefined && args !== null) {
+        if (isFormData) {
+            // Send FormData directly
+            options.body = args;
+            // IMPORTANT: do NOT set Content-Type
+        } else {
+            // Default: JSON
+            options.headers["Content-Type"] = "application/json";
             options.body = JSON.stringify(args);
         }
 
         return fetch(BACKEND_SERVER + url, options)
-            .then(response => response.json());
+            .then(async (response) => {
+                if (!response.ok) {
+                    throw await response.text();
+                }
+                return response.json();
+            });
     }
 };
 

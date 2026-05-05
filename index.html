@@ -152,22 +152,33 @@
                 </div>
                 <small style="color: #888;">يمكنك رفع صورة من جهازك أو إدخال رابط أدناه</small>
             </div>
-            <div class="form-group"><label>رابط الصورة (بديل)</label><input type="text" id="productImage"
-                    placeholder="https://example.com/image.jpg"></div>
+            <!-- <div class="form-group">
+                <label>رابط الصورة (بديل)</label>
+                <input type="text" id="productImage" placeholder="https://example.com/image.jpg">
+                
+            </div> -->
             <div class="form-group"><label>سبب التصنيف</label>
-                <textarea id="productReason" rows="2"
+                <textarea id="productReason" rows="10"
                     placeholder="سبب المقاطعة أو الاجتناب... (اكتب / متبوعاً بكلمة مفتاحية لاقتراحات)"></textarea>
                 <div class="keyword-suggestions" id="keywordSuggestions" style="display:none;">
                     <div class="suggestions-list" id="suggestionsList"></div>
                 </div>
             </div>
-            <div class="form-group" id="altField"><label>البديل المقترح (للمقاطعة فقط)</label><textarea id="productAlt"
-                    rows="2" placeholder="البدائل المتاحة..."></textarea></div>
-            <div class="form-group"><label>تاريخ التحديث</label><input type="date" id="productDate" value=""></div>
+
+            <div class="form-group" id="altField">
+                <label>البديل المقترح (للمقاطعة فقط)</label>
+                <textarea id="productAlt" rows="10" placeholder="البدائل المتاحة..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>تاريخ التحديث</label>
+                <input type="date" id="productDate" value="">
+            </div>
+
             <button class="btn-primary" onclick="saveProduct()">💾 حفظ المنتج</button>
 
-            <div class="search-box"><input type="text" id="adminSearch" placeholder="🔍 بحث في المنتجات..."
-                    onkeyup="filterAdminList()"></div>
+            <div class="search-box"><input type="text" id="adminSearch" placeholder="🔍 بحث في المنتجات..." onkeyup="filterAdminList()"></div>
+                    
             <div class="admin-list">
                 <h4>📋 قائمة المنتجات</h4>
                 <div id="adminProducts"></div>
@@ -406,6 +417,11 @@
                 </div>
                 <div class="mst">سبب التصنيف</div>
                 <div class="mreason" id="mReason"></div>
+
+                <div class="mst">البديل</div>
+                <div class="mreason" id="mAlt"></div>
+
+
                 <div id="mAltWrap" style="display:none">
                     <div class="mst">البديل المقترح</div>
                     <div class="alternatives-list" id="mAlt"></div>
