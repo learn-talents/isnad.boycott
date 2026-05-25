@@ -114,36 +114,47 @@
             <div class="form-group"><label>الاسم بالإنجليزي</label><input type="text" id="productNameEn"
                     placeholder="Safola"></div>
             <div class="form-row">
-                <div class="form-group"><label>الحالة</label>
-                    <select id="productStatus">
-                        <!-- <option value="مقاطعة">🔴 مقاطعة</option>
-                        <option value="اجتناب">🟡 اجتناب</option>
-                        <option value="بديل">🟢 بديل</option>
-                        <option value="الشراء من المحلي أفضل">🟤 محلي أفضل</option>
-                        <option value="لا توجد معلومات كافية">🔵 لا معلومات</option> -->
-                    </select>
+                <div class="form-group">
+                    <label>الحالة</label>
+                    <div class="ss-wrap" id="ss-status"></div>
+                    <input type="hidden" id="productStatus">
                 </div>
-                <div class="form-group"><label>الفئة</label><select id="productCat"></select></div>
+                <div class="form-group">
+                    <label>الفئة</label>
+                    <div class="ss-wrap" id="ss-cat"></div>
+                    <input type="hidden" id="productCat">
+                    <button type="button" class="btn-inline-add" onclick="toggleInlineAdd('cat')">➕ إضافة فئة جديدة</button>
+                    <div class="inline-add-form" id="inline-cat" style="display:none;">
+                        <input type="text" id="inlineCatName" placeholder="اسم الفئة">
+                        <input type="color" id="inlineCatColor" value="#4a90d9">
+                        <button type="button" class="btn-primary" onclick="submitInlineCategory()">إضافة</button>
+                        <button type="button" class="btn-secondary" onclick="toggleInlineAdd('cat')">إلغاء</button>
+                    </div>
+                </div>
             </div>
-            <div class="form-group"><label>🏢 الشركة</label>
-                <select id="companyDropdown"></select>
-                <!-- <input type="text" id="companySearchInput" placeholder="ابحث عن شركة... (اكتب اسم الشركة)">
-                <div class="company-suggestions" id="companySuggestions" style="display:none;">
-                    <div class="suggestions-list" id="companySuggestionsList"></div>
+            <div class="form-group">
+                <label>🏢 الشركة</label>
+                <div class="ss-wrap" id="ss-company"></div>
+                <input type="hidden" id="companyDropdown">
+                <button type="button" class="btn-inline-add" onclick="toggleInlineAdd('company')">➕ إضافة شركة جديدة</button>
+                <div class="inline-add-form" id="inline-company" style="display:none;">
+                    <input type="text" id="inlineCompanyAr" placeholder="الاسم بالعربي">
+                    <input type="text" id="inlineCompanyEn" placeholder="English Name">
+                    <button type="button" class="btn-primary" onclick="submitInlineCompany()">إضافة</button>
+                    <button type="button" class="btn-secondary" onclick="toggleInlineAdd('company')">إلغاء</button>
                 </div>
-                <input type="hidden" id="productCompany" value=""> -->
             </div>
-            <div class="form-group"><label>الدولة</label>
-
-                
-                <select id="countryDropdown"></select>
-
-                <!--
-                
-                <div class="country-suggestions" id="countrySuggestions" style="display:none;">
-                    <div class="suggestions-list" id="countrySuggestionsList"></div>
+            <div class="form-group">
+                <label>الدولة</label>
+                <div class="ss-wrap" id="ss-country"></div>
+                <input type="hidden" id="countryDropdown">
+                <button type="button" class="btn-inline-add" onclick="toggleInlineAdd('country')">➕ إضافة دولة جديدة</button>
+                <div class="inline-add-form" id="inline-country" style="display:none;">
+                    <input type="text" id="inlineCountryAr" placeholder="اسم الدولة بالعربي">
+                    <input type="text" id="inlineCountryEn" placeholder="Country Name">
+                    <button type="button" class="btn-primary" onclick="submitInlineCountry()">إضافة</button>
+                    <button type="button" class="btn-secondary" onclick="toggleInlineAdd('country')">إلغاء</button>
                 </div>
-                <div id="selectedCountries"></div> -->
             </div>
             <div class="form-group">
                 <label>🖼️ رفع صورة من الجهاز</label>

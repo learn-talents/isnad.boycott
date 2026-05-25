@@ -1925,3 +1925,141 @@ footer {
     max-height: 220px;
     overflow-y: auto;
 }
+
+/* ===== Searchable Select (ss-*) ===== */
+.ss-wrap {
+    position: relative;
+}
+
+.ss-box {
+    display: flex;
+    align-items: center;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    transition: border-color 0.2s;
+    overflow: hidden;
+}
+
+.ss-box:focus-within {
+    border-color: var(--blue);
+}
+
+.ss-input {
+    flex: 1;
+    padding: 10px 12px;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    cursor: pointer;
+    min-width: 0;
+}
+
+.ss-clear {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 10px;
+    color: #aaa;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.ss-clear:hover { color: var(--red); }
+
+.ss-list {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    left: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    z-index: 300;
+    max-height: 210px;
+    overflow-y: auto;
+}
+
+.ss-option {
+    padding: 9px 14px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.15s;
+}
+
+.ss-option:hover,
+.ss-option.selected {
+    background: var(--blue);
+    color: #fff;
+}
+
+.ss-empty {
+    padding: 10px 14px;
+    color: #888;
+    text-align: center;
+    font-size: 13px;
+}
+
+/* ===== Inline add form ===== */
+.btn-inline-add {
+    margin-top: 6px;
+    display: inline-block;
+    background: none;
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--blue);
+    font-family: inherit;
+    transition: background 0.15s, color 0.15s;
+}
+
+.btn-inline-add:hover {
+    background: var(--blue);
+    color: #fff;
+    border-style: solid;
+}
+
+.inline-add-form {
+    margin-top: 8px;
+    padding: 10px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.inline-add-form input[type="text"] {
+    flex: 1;
+    min-width: 100px;
+    padding: 7px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    background: var(--bg);
+    color: var(--text);
+}
+
+.inline-add-form input[type="color"] {
+    width: 36px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    padding: 0;
+}
+
+.inline-add-form .btn-primary,
+.inline-add-form .btn-secondary {
+    padding: 6px 12px;
+    font-size: 13px;
+}

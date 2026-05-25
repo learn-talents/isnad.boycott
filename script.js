@@ -27,6 +27,9 @@ let keywords = [],
 
 let editingCategoryId = null;
 let editingCountryId = null;
+let statuses = [];
+let adminComboBoxesLoaded = false;
+let ssStatus = null, ssCat = null, ssCompany = null, ssCountry = null;
 //#endregion
 
 
@@ -322,23 +325,92 @@ function filterCompanies() {
 }
 
 function refreshProductsCompanyDropdown() {
-    const dropdown = document.querySelector('.admin-section #companyDropdown');
-    if (!dropdown) return;
-    const currentVal = dropdown.value;
-    dropdown.innerHTML = '';
-    companiesList
-        .filter(function (c) { return !c.isArchived; })
-        .forEach(function (c) {
-            const option = document.createElement('option');
-            option.value = c.id;
-            if (c.nameAr && c.nameEn) {
-                option.textContent = c.nameAr + ' - ' + c.nameEn;
-            } else {
-                option.textContent = c.nameAr || c.nameEn || '';
-            }
-            dropdown.appendChild(option);
-        });
-    if (currentVal) dropdown.value = currentVal;
+    if (!ssCompany) return;
+    const currentVal = ssCompany.getValue();
+    ssCompany.setOptions(
+        companiesList
+            .filter(function(c) { return !c.isArchived; })
+            .map(function(c) {
+                const label = c.nameAr && c.nameEn ? c.nameAr + ' - ' + c.nameEn : (c.nameAr || c.nameEn || '');
+                return { value: c.id, label: label };
+            })
+    );
+    if (currentVal) ssCompany.selectValue(currentVal);
+}
+
+// ===================== إضافة سريعة من قسم المنتجات =====================
+function toggleInlineAdd(type) {
+    const form = document.getElementById('inline-' + type);
+    if (!form) return;
+    form.style.display = form.style.display === 'none' ? '' : 'none';
+}
+
+function submitInlineCategory() {
+    const name = document.getElementById('inlineCatName').value.trim();
+    const color = document.getElementById('inlineCatColor').value;
+    if (!name) { showToast('❌ الرجاء إدخال اسم الفئة'); return; }
+    apiHelper.post({
+        url: '/categories/setCategory',
+        args: { category_id: -1, category_name_ar: name, category_color: color }
+    }).then(function(result) {
+        categories.push(result);
+        saveCategoriesToLocal();
+        renderCategoriesList();
+        updateCategoriesSelect();
+        updateCatBar();
+        if (ssCat) {
+            ssCat.addOption({ value: result.id, label: result.name });
+            ssCat.selectValue(result.id);
+        }
+        document.getElementById('inlineCatName').value = '';
+        toggleInlineAdd('cat');
+        showToast('✅ تم إضافة الفئة واختيارها');
+    }).catch(function() { showToast('❌ حدث خطأ أثناء إضافة الفئة'); });
+}
+
+function submitInlineCompany() {
+    const nameAr = document.getElementById('inlineCompanyAr').value.trim();
+    const nameEn = document.getElementById('inlineCompanyEn').value.trim();
+    if (!nameAr) { showToast('❌ الرجاء إدخال اسم الشركة'); return; }
+    apiHelper.post({
+        url: '/companies/setCompany',
+        args: { company_id: -1, company_name_ar: nameAr, company_name_en: nameEn }
+    }).then(function(result) {
+        companiesList.push(result);
+        saveCompaniesToLocal();
+        renderCompaniesList();
+        const label = nameAr && nameEn ? nameAr + ' - ' + nameEn : nameAr;
+        if (ssCompany) {
+            ssCompany.addOption({ value: result.id, label: label });
+            ssCompany.selectValue(result.id);
+        }
+        document.getElementById('inlineCompanyAr').value = '';
+        document.getElementById('inlineCompanyEn').value = '';
+        toggleInlineAdd('company');
+        showToast('✅ تم إضافة الشركة واختيارها');
+    }).catch(function() { showToast('❌ حدث خطأ أثناء إضافة الشركة'); });
+}
+
+function submitInlineCountry() {
+    const nameAr = document.getElementById('inlineCountryAr').value.trim();
+    const nameEn = document.getElementById('inlineCountryEn').value.trim();
+    if (!nameAr) { showToast('❌ الرجاء إدخال اسم الدولة'); return; }
+    apiHelper.post({
+        url: '/countries/setCountry',
+        args: { country_id: -1, country_name_ar: nameAr, country_name_en: nameEn }
+    }).then(function(result) {
+        countries.push(result);
+        saveCountriesToLocal();
+        renderCountriesList();
+        if (ssCountry) {
+            ssCountry.addOption({ value: result.id, label: result.nameAr });
+            ssCountry.selectValue(result.id);
+        }
+        document.getElementById('inlineCountryAr').value = '';
+        document.getElementById('inlineCountryEn').value = '';
+        toggleInlineAdd('country');
+        showToast('✅ تم إضافة الدولة واختيارها');
+    }).catch(function() { showToast('❌ حدث خطأ أثناء إضافة الدولة'); });
 }
 
 // Parent company searchable dropdown (backend search)
@@ -1011,26 +1083,6 @@ function renderProducts() {
     </div>`}).join('');
 }
 
-function editProduct(id) {
-    const p = products.find(p => p.id === id);
-    if (!p) return;
-    document.getElementById('editId').value = p.id;
-    document.getElementById('productName').value = p.name;
-    document.getElementById('productNameEn').value = p.nameEn || '';
-    document.getElementById('productStatus').value = p.status;
-    document.getElementById('productCat').value = p.cat;
-    document.getElementById('companySearchInput').value = p.company || '';
-    document.getElementById('productCompany').value = p.company || '';
-    document.getElementById('productImage').value = p.image || '';
-    document.getElementById('productReason').value = p.reason || '';
-    document.getElementById('productAlt').value = p.alt || '';
-    document.getElementById('productDate').value = p.updatedAt || getCurrentDate();
-    const altField = document.getElementById('altField');
-    if (p.status === 'مقاطعة') { altField.style.display = 'block'; } else { altField.style.display = 'none'; }
-    clearImageUpload();
-    showToast('✏️ قم بالتعديل ثم اضغط حفظ');
-}
-
 async function deleteProduct(id) {
     if (!isAdmin) return;
     if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
@@ -1219,7 +1271,9 @@ function closeAdminPanel() {
 
 document.getElementById('productStatus')?.addEventListener('change', function () {
     const altField = document.getElementById('altField');
-    if (this.value === 'مقاطعة') { altField.style.display = 'block'; } else { altField.style.display = 'none'; }
+    const s = statuses.find(function(st) { return String(st.id) === String(this.value); }, this);
+    const name = s ? s.status_name_ar : '';
+    altField.style.display = name === 'مقاطعة' ? 'block' : 'none';
 });
 
 // ===================== صفحة الشركات =====================
@@ -1514,21 +1568,28 @@ function checkUrlForProduct() {
 }
 
 function editProduct(id) {
-    const p = products.find(p => p.id === id);
+    const p = products.find(function(pr) { return pr.id === id; });
     if (!p) return;
     document.getElementById('editId').value = p.id;
     document.getElementById('productName').value = p.name;
     document.getElementById('productNameEn').value = p.nameEn || '';
-    document.getElementById('productStatus').value = p.status_id;
-    document.getElementById('productCat').value = p.cat;
-    document.getElementById('companySearchInput').value = p.company || '';
-    document.getElementById('productCompany').value = p.company || '';
-    document.getElementById('productImage').value = p.image || '';
     document.getElementById('productReason').value = p.reason || '';
     document.getElementById('productAlt').value = p.alt || '';
     document.getElementById('productDate').value = p.updatedAt || getCurrentDate();
-    const altField = document.getElementById('altField');
-    if (p.status === 'مقاطعة') { altField.style.display = 'block'; } else { altField.style.display = 'none'; }
+
+    const statusObj = statuses.find(function(s) { return s.status_name_ar === p.status; });
+    if (statusObj && ssStatus) ssStatus.selectValue(statusObj.id);
+
+    const catObj = categories.find(function(c) { return c.name === p.cat; });
+    if (catObj && ssCat) ssCat.selectValue(catObj.id);
+
+    const compObj = companiesList.find(function(c) { return c.nameAr === p.company; });
+    if (compObj && ssCompany) ssCompany.selectValue(compObj.id);
+
+    const countryObj = countries.find(function(c) { return c.nameAr === p.country_name_ar; });
+    if (countryObj && ssCountry) ssCountry.selectValue(countryObj.id);
+
+    document.getElementById('altField').style.display = p.status === 'مقاطعة' ? 'block' : 'none';
     clearImageUpload();
     showToast('✏️ قم بالتعديل ثم اضغط حفظ');
 }
@@ -1718,78 +1779,35 @@ function toggleAdminPanel() {
     document.getElementById('adminPanel').classList.toggle('open');
     document.getElementById('adminOverlay').classList.toggle('open');
 
-    apiHelper.post({ url: '/products/getAddProductComboBoxes' }).then(function (result) {
-        let productStatuses = result.data.statuses;
-        let productCountries = result.data.countries;
-        let productCategories = result.data.categories;
-        let productCompanies = result.data.companies;
+    if (!adminComboBoxesLoaded) {
+        apiHelper.post({ url: '/products/getAddProductComboBoxes' }).then(function (result) {
+            adminComboBoxesLoaded = true;
+            statuses = result.data.statuses;
 
-        let productStatusDropDown = $('.admin-section #productStatus');
+            ssStatus = createSearchableSelect('ss-status', 'productStatus', 'اختر الحالة...');
+            ssStatus.setOptions(statuses.map(function(s) {
+                return { value: s.id, label: s.status_name_ar };
+            }));
 
-        for (let i = 0; i < productStatuses.length; i++) {
-            let option = $('<option></option>').appendTo(productStatusDropDown);
+            ssCat = createSearchableSelect('ss-cat', 'productCat', 'اختر الفئة...');
+            ssCat.setOptions(result.data.categories.map(function(c) {
+                return { value: c.id, label: c.category_name_ar };
+            }));
 
-            option.attr('value', productStatuses[i].id);
-            option.text(productStatuses[i].status_name_ar);
-        }
+            ssCompany = createSearchableSelect('ss-company', 'companyDropdown', 'اختر الشركة...');
+            ssCompany.setOptions(result.data.companies.map(function(c) {
+                const label = c.company_name_ar && c.company_name_en
+                    ? c.company_name_ar + ' - ' + c.company_name_en
+                    : (c.company_name_ar || c.company_name_en || '');
+                return { value: c.id, label: label };
+            }));
 
-        let productCategoriesDropDown = $('.admin-section #productCat');
-
-        for (let i = 0; i < productCategories.length; i++) {
-
-            let option = $('<option></option>').appendTo(productCategoriesDropDown);
-
-            option.attr('value', productCategories[i].id)
-            option.text(productCategories[i].category_name_ar)
-
-        }
-
-
-        let companyDropdown = $('.admin-section #companyDropdown');
-
-        for (let i = 0; i < productCompanies.length; i++) {
-
-            let option = $('<option></option>').appendTo(companyDropdown);
-
-
-            let companyName = '';
-
-            if (productCompanies[i].company_name_ar && productCompanies[i].company_name_en) {
-                companyName = productCompanies[i].company_name_ar + " - " + productCompanies[i].company_name_en;
-            } else if (productCompanies[i].company_name_ar) {
-                companyName = productCompanies[i].company_name_ar;
-            } else if (productCompanies[i].company_name_en) {
-                companyName = productCompanies[i].company_name_en;
-            }
-
-            option.attr('value', productCompanies[i].id);
-            option.text(companyName);
-
-        }
-
-        let countryDropdown = $('.admin-section #countryDropdown');
-
-        for (let i = 0; i < productCountries.length; i++) {
-
-            let option = $('<option></option>').appendTo(countryDropdown);
-
-            option.attr('value', productCountries[i].id);
-            option.text(productCountries[i].country_name_ar);
-
-        }
-        // let productStatusDropDown = document.querySelector('.admin-section #productCat');
-
-        // for (let i = 0; i < productCategories.length; i++) {
-        //     let opt = document.createElement('option');
-        //     opt.value = productCategories[i].id;
-        //     opt.textContent = productCategories[i].category_name_ar;
-        //     productStatusDropDown.appendChild(opt);
-        // }
-
-
-
-        console.log({ result });
-    });
+            ssCountry = createSearchableSelect('ss-country', 'countryDropdown', 'اختر الدولة...');
+            ssCountry.setOptions(result.data.countries.map(function(c) {
+                return { value: c.id, label: c.country_name_ar };
+            }));
+        });
+    }
 
     if (isAdmin) renderAdminList();
 }
