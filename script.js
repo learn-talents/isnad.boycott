@@ -4,7 +4,7 @@ const GITHUB_USERNAME = "durazi";
 const GITHUB_REPO = "isnad.boycott";
 const GITHUB_FILE = "products_data.json";
 const ADMIN_PASSWORD = "isnad313";
-const ENV = 'prod'
+const ENV = 'dev'
 const BACKEND_SERVER_DEV = 'http://localhost:3000'
 const BACKEND_SERVER_PROD = 'https://62z5zux2di.execute-api.eu-west-1.amazonaws.com/prod'
 
@@ -24,6 +24,9 @@ let keywords = [],
     countries = [],
     companiesList = [],
     selectedCountriesList = [];
+
+let editingCategoryId = null;
+let editingCountryId = null;
 //#endregion
 
 
@@ -176,54 +179,221 @@ function removeCountry(nameAr) {
 }
 
 // ===================== إدارة الشركات =====================
+let editingCompanyId = null;
+let parentCompanySearchTimeout = null;
+
+function companyItemHtml(comp) {
+    const archived = comp.isArchived;
+    const parentInfo = comp.parentNameAr
+        ? `<br><small>تابعة لـ: ${escapeHtml(comp.parentNameAr)}${comp.parentNameEn ? ' (' + escapeHtml(comp.parentNameEn) + ')' : ''}</small>`
+        : '';
+    return `
+    <div class="admin-list-item${archived ? ' archived-item' : ''}" data-company-id="${comp.id}">
+      <div class="info">
+        <strong style="${archived ? 'text-decoration:line-through;color:#aaa;' : ''}">${escapeHtml(comp.nameAr)}</strong>
+        <span style="color:#888"> (${escapeHtml(comp.nameEn || '')})</span>
+        ${archived ? '<span style="margin-right:6px;font-size:11px;background:#f0ad4e;color:#fff;padding:2px 6px;border-radius:8px;">مؤرشف</span>' : ''}
+        ${parentInfo}
+      </div>
+      <div>
+        ${!archived ? `<button class="btn-secondary" style="background:var(--blue);color:white;margin-left:5px;" onclick="editCompany(${comp.id})">✏️ تعديل</button>` : ''}
+        <button class="btn-secondary" style="background:${archived ? '#28a745' : '#f0ad4e'};color:white;margin-left:5px;" onclick="archiveCompany(${comp.id}, ${!archived})">
+          ${archived ? '📤 استعادة' : '🗄️ أرشفة'}
+        </button>
+        <button class="btn-danger" onclick="deleteCompany(${comp.id})">🗑️ حذف</button>
+      </div>
+    </div>`;
+}
+
 function renderCompaniesList() {
     const container = document.getElementById('companiesList');
     if (!container) return;
-    container.innerHTML = companiesList.map(comp => `
-    <div class="admin-list-item">
-      <div class="info"><strong>${comp.name}</strong> <span style="color:#888">(${comp.nameEn || ''})</span>${comp.parent ? `<br><small>تابعة لـ: ${comp.parent}</small>` : ''}</div>
-      <div><button class="btn-danger" onclick="deleteCompany('${comp.id}')">🗑️ حذف</button></div>
-    </div>
-  `).join('');
+    container.innerHTML = companiesList.map(companyItemHtml).join('');
 }
 
-function addCompany() {
-    const name = document.getElementById('companyNameAr').value.trim();
-    const nameEn = document.getElementById('companyNameEn').value.trim();
-    const parent = document.getElementById('companyParent').value.trim();
-    if (!name) { showToast('❌ الرجاء إدخال اسم الشركة'); return; }
-    const newCompany = { id: Date.now().toString(), name: name, nameEn: nameEn, parent: parent };
-    companiesList.push(newCompany);
-    saveCompaniesToLocal();
-    renderCompaniesList();
+function editCompany(id) {
+    const comp = companiesList.find(c => String(c.id) === String(id));
+    if (!comp) return;
+    editingCompanyId = comp.id;
+    document.getElementById('companyNameAr').value = comp.nameAr;
+    document.getElementById('companyNameEn').value = comp.nameEn || '';
+    document.getElementById('parentCompanyId').value = comp.parentId || '';
+    document.getElementById('parentCompanySearch').value = comp.parentNameAr || '';
+    const btn = document.getElementById('saveCompanyBtn');
+    if (btn) btn.textContent = '💾 تحديث الشركة';
+    const cancelBtn = document.getElementById('cancelEditCompanyBtn');
+    if (cancelBtn) cancelBtn.style.display = '';
+    showToast('✏️ قم بالتعديل ثم اضغط تحديث الشركة');
+}
+
+function cancelEditCompany() {
+    editingCompanyId = null;
     document.getElementById('companyNameAr').value = '';
     document.getElementById('companyNameEn').value = '';
-    document.getElementById('companyParent').value = '';
-    showToast('✅ تم إضافة الشركة');
+    document.getElementById('parentCompanyId').value = '';
+    document.getElementById('parentCompanySearch').value = '';
+    const btn = document.getElementById('saveCompanyBtn');
+    if (btn) btn.textContent = '➕ إضافة شركة';
+    const cancelBtn = document.getElementById('cancelEditCompanyBtn');
+    if (cancelBtn) cancelBtn.style.display = 'none';
+}
+
+function saveCompany() {
+    const nameAr = document.getElementById('companyNameAr').value.trim();
+    const nameEn = document.getElementById('companyNameEn').value.trim();
+    const parentId = document.getElementById('parentCompanyId').value;
+
+    if (!nameAr) { showToast('❌ الرجاء إدخال اسم الشركة'); return; }
+
+    const companyId = editingCompanyId || -1;
+
+    apiHelper.post({
+        url: '/companies/setCompany',
+        args: {
+            company_id: companyId,
+            company_name_ar: nameAr,
+            company_name_en: nameEn,
+            parent_company_id: parentId || null
+        }
+    }).then(function (result) {
+        if (companyId == -1) {
+            companiesList.push(result);
+        } else {
+            const idx = companiesList.findIndex(c => String(c.id) === String(companyId));
+            if (idx !== -1) companiesList[idx] = result;
+        }
+        saveCompaniesToLocal();
+        renderCompaniesList();
+        refreshProductsCompanyDropdown();
+        cancelEditCompany();
+        showToast(companyId == -1 ? '✅ تم إضافة الشركة' : '✏️ تم تعديل الشركة');
+    }).catch(function () {
+        showToast('❌ حدث خطأ أثناء حفظ الشركة');
+    });
+}
+
+function archiveCompany(id, archive) {
+    apiHelper.post({
+        url: '/companies/archiveCompany',
+        args: { company_id: id, is_archived: archive }
+    }).then(function (result) {
+        const idx = companiesList.findIndex(c => String(c.id) === String(id));
+        if (idx !== -1) companiesList[idx] = result;
+        if (!archive && String(editingCompanyId) === String(id)) {
+            cancelEditCompany();
+        }
+        saveCompaniesToLocal();
+        renderCompaniesList();
+        refreshProductsCompanyDropdown();
+        showToast(archive ? '🗄️ تم أرشفة الشركة' : '📤 تم استعادة الشركة');
+    }).catch(function () {
+        showToast('❌ حدث خطأ أثناء تحديث حالة الشركة');
+    });
 }
 
 function deleteCompany(id) {
     if (confirm('هل أنت متأكد من حذف هذه الشركة؟')) {
-        companiesList = companiesList.filter(c => c.id !== id);
-        saveCompaniesToLocal();
-        renderCompaniesList();
-        showToast('🗑️ تم حذف الشركة');
+        apiHelper.post({
+            url: '/companies/deleteCompany',
+            args: { company_id: id }
+        }).then(function () {
+            companiesList = companiesList.filter(c => String(c.id) !== String(id));
+            if (String(editingCompanyId) === String(id)) {
+                cancelEditCompany();
+            }
+            saveCompaniesToLocal();
+            renderCompaniesList();
+            refreshProductsCompanyDropdown();
+            showToast('🗑️ تم حذف الشركة');
+        }).catch(function () {
+            showToast('❌ حدث خطأ أثناء حذف الشركة');
+        });
     }
 }
 
 function filterCompanies() {
     const search = document.getElementById('companySearch').value.toLowerCase();
     const container = document.getElementById('companiesList');
-    const filtered = companiesList.filter(c => c.name.toLowerCase().includes(search) || (c.nameEn || '').toLowerCase().includes(search));
-    container.innerHTML = filtered.map(comp => `
-    <div class="admin-list-item">
-      <div class="info"><strong>${comp.name}</strong> <span style="color:#888">(${comp.nameEn || ''})</span>${comp.parent ? `<br><small>تابعة لـ: ${comp.parent}</small>` : ''}</div>
-      <div><button class="btn-danger" onclick="deleteCompany('${comp.id}')">🗑️ حذف</button></div>
-    </div>
-  `).join('');
+    const filtered = companiesList.filter(c =>
+        (c.nameAr || '').toLowerCase().includes(search) ||
+        (c.nameEn || '').toLowerCase().includes(search)
+    );
+    container.innerHTML = filtered.map(companyItemHtml).join('');
 }
 
-// ===================== البحث عن الشركات مع اقتراحات =====================
+function refreshProductsCompanyDropdown() {
+    const dropdown = document.querySelector('.admin-section #companyDropdown');
+    if (!dropdown) return;
+    const currentVal = dropdown.value;
+    dropdown.innerHTML = '';
+    companiesList
+        .filter(function (c) { return !c.isArchived; })
+        .forEach(function (c) {
+            const option = document.createElement('option');
+            option.value = c.id;
+            if (c.nameAr && c.nameEn) {
+                option.textContent = c.nameAr + ' - ' + c.nameEn;
+            } else {
+                option.textContent = c.nameAr || c.nameEn || '';
+            }
+            dropdown.appendChild(option);
+        });
+    if (currentVal) dropdown.value = currentVal;
+}
+
+// Parent company searchable dropdown (backend search)
+function setupParentCompanySearch() {
+    const input = document.getElementById('parentCompanySearch');
+    if (!input) return;
+
+    input.addEventListener('input', function () {
+        clearTimeout(parentCompanySearchTimeout);
+        const query = this.value.trim();
+        const suggestionsDiv = document.getElementById('parentCompanySuggestions');
+
+        if (query.length === 0) {
+            document.getElementById('parentCompanyId').value = '';
+            suggestionsDiv.style.display = 'none';
+            return;
+        }
+
+        parentCompanySearchTimeout = setTimeout(function () {
+            apiHelper.post({
+                url: '/companies/searchCompanies',
+                args: { q: query, exclude_id: editingCompanyId || null }
+            }).then(function (results) {
+                if (results.length > 0) {
+                    suggestionsDiv.innerHTML = results.map(function (c) {
+                        const nameAr = escapeHtml(c.nameAr);
+                        const nameEn = c.nameEn ? ` <span style="color:#888">(${escapeHtml(c.nameEn)})</span>` : '';
+                        return `<div class="suggestion-item" onclick="selectParentCompany(${c.id}, '${c.nameAr.replace(/'/g, "\\'")}')">
+                            <strong>${nameAr}</strong>${nameEn}
+                        </div>`;
+                    }).join('');
+                } else {
+                    suggestionsDiv.innerHTML = '<div style="padding:8px;color:#888;text-align:center;">لا توجد نتائج</div>';
+                }
+                suggestionsDiv.style.display = 'block';
+            }).catch(function () {
+                suggestionsDiv.style.display = 'none';
+            });
+        }, 300);
+    });
+
+    input.addEventListener('blur', function () {
+        setTimeout(function () {
+            document.getElementById('parentCompanySuggestions').style.display = 'none';
+        }, 200);
+    });
+}
+
+function selectParentCompany(id, nameAr) {
+    document.getElementById('parentCompanyId').value = id;
+    document.getElementById('parentCompanySearch').value = nameAr;
+    document.getElementById('parentCompanySuggestions').style.display = 'none';
+}
+
+// ===================== البحث عن الشركات مع اقتراحات (قسم المنتجات) =====================
 let companySearchTimeout;
 function setupCompanySearch() {
     const input = document.getElementById('companySearchInput');
@@ -237,13 +407,13 @@ function setupCompanySearch() {
 
             if (query.length > 0) {
                 const matches = companiesList.filter(c =>
-                    c.name.toLowerCase().includes(query) ||
+                    (c.nameAr || '').toLowerCase().includes(query) ||
                     (c.nameEn || '').toLowerCase().includes(query)
                 );
                 if (matches.length > 0) {
                     suggestionsList.innerHTML = matches.map(c => `
-            <div class="suggestion-item" onclick="selectCompany('${c.name.replace(/'/g, "\\'")}')">
-              <strong>${c.name}</strong> <span style="color:#888">${c.nameEn ? `(${c.nameEn})` : ''}</span>
+            <div class="suggestion-item" onclick="selectCompany('${(c.nameAr || '').replace(/'/g, "\\'")}')">
+              <strong>${escapeHtml(c.nameAr || '')}</strong> <span style="color:#888">${c.nameEn ? `(${escapeHtml(c.nameEn)})` : ''}</span>
             </div>
           `).join('');
                     suggestionsDiv.style.display = 'block';
@@ -320,33 +490,79 @@ function renderCategoriesList() {
     container.innerHTML = categories.map(cat => `
     <div class="admin-list-item">
       <div class="info"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${cat.color};margin-left:8px;"></span><strong>${cat.name}</strong></div>
-      <div><button class="btn-danger" onclick="deleteCategory('${cat.id}')">🗑️ حذف</button></div>
+      <div>
+        <button class="btn-secondary" style="background:var(--blue);color:white;margin-left:5px;" onclick="editCategory('${cat.id}')">✏️ تعديل</button>
+        <button class="btn-danger" onclick="deleteCategory('${cat.id}')">🗑️ حذف</button>
+      </div>
     </div>
   `).join('');
+}
+
+function editCategory(id) {
+    const cat = categories.find(c => String(c.id) === String(id));
+    if (!cat) return;
+    editingCategoryId = cat.id;
+    document.getElementById('categoryName').value = cat.name;
+    document.getElementById('categoryColor').value = cat.color || '#4a90d9';
+    const btn = document.getElementById('addCategoryBtn');
+    if (btn) btn.textContent = '💾 تحديث القسم';
+    showToast('✏️ قم بالتعديل ثم اضغط تحديث القسم');
 }
 
 function addCategory() {
     const name = document.getElementById('categoryName').value.trim();
     const color = document.getElementById('categoryColor').value;
     if (!name) { showToast('❌ الرجاء إدخال اسم القسم'); return; }
-    const newCategory = { id: Date.now().toString(), name: name, color: color };
-    categories.push(newCategory);
-    saveCategoriesToLocal();
-    renderCategoriesList();
-    updateCategoriesSelect();
-    updateCatBar();
-    document.getElementById('categoryName').value = '';
-    showToast('✅ تم إضافة القسم');
-}
 
-function deleteCategory(id) {
-    if (confirm('هل أنت متأكد من حذف هذا القسم؟')) {
-        categories = categories.filter(c => c.id !== id);
+    const catId = editingCategoryId || -1;
+
+    apiHelper.post({
+        url: '/categories/setCategory',
+        args: { category_id: catId, category_name_ar: name, category_color: color }
+    }).then(function (result) {
+        if (catId == -1) {
+            categories.push(result);
+        } else {
+            const idx = categories.findIndex(c => String(c.id) === String(catId));
+            if (idx !== -1) categories[idx] = result;
+        }
+        editingCategoryId = null;
         saveCategoriesToLocal();
         renderCategoriesList();
         updateCategoriesSelect();
         updateCatBar();
-        showToast('🗑️ تم حذف القسم');
+        document.getElementById('categoryName').value = '';
+        document.getElementById('categoryColor').value = '#4a90d9';
+        const btn = document.getElementById('addCategoryBtn');
+        if (btn) btn.textContent = '➕ إضافة قسم';
+        showToast(catId == -1 ? '✅ تم إضافة القسم' : '✏️ تم تعديل القسم');
+    }).catch(function () {
+        showToast('❌ حدث خطأ أثناء حفظ القسم');
+    });
+}
+
+function deleteCategory(id) {
+    if (confirm('هل أنت متأكد من حذف هذا القسم؟')) {
+        apiHelper.post({
+            url: '/categories/deleteCategory',
+            args: { category_id: id }
+        }).then(function () {
+            categories = categories.filter(c => String(c.id) !== String(id));
+            if (String(editingCategoryId) === String(id)) {
+                editingCategoryId = null;
+                document.getElementById('categoryName').value = '';
+                document.getElementById('categoryColor').value = '#4a90d9';
+                const btn = document.getElementById('addCategoryBtn');
+                if (btn) btn.textContent = '➕ إضافة قسم';
+            }
+            saveCategoriesToLocal();
+            renderCategoriesList();
+            updateCategoriesSelect();
+            updateCatBar();
+            showToast('🗑️ تم حذف القسم');
+        }).catch(function () {
+            showToast('❌ حدث خطأ أثناء حذف القسم');
+        });
     }
 }
 
@@ -357,43 +573,124 @@ function filterCategories() {
     container.innerHTML = filtered.map(cat => `
     <div class="admin-list-item">
       <div class="info"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${cat.color};margin-left:8px;"></span><strong>${cat.name}</strong></div>
-      <div><button class="btn-danger" onclick="deleteCategory('${cat.id}')">🗑️ حذف</button></div>
+      <div>
+        <button class="btn-secondary" style="background:var(--blue);color:white;margin-left:5px;" onclick="editCategory('${cat.id}')">✏️ تعديل</button>
+        <button class="btn-danger" onclick="deleteCategory('${cat.id}')">🗑️ حذف</button>
+      </div>
     </div>
   `).join('');
 }
 //#endregion  categories
 
 //#region countries (main menu)
+function countryItemHtml(cnt) {
+    const archived = cnt.isArchived;
+    return `
+    <div class="admin-list-item${archived ? ' archived-item' : ''}">
+      <div class="info">
+        <strong style="${archived ? 'text-decoration:line-through;color:#aaa;' : ''}">${cnt.nameAr}</strong>
+        <span style="color:#888"> (${cnt.nameEn})</span>
+        ${archived ? '<span style="margin-right:6px;font-size:11px;background:#f0ad4e;color:#fff;padding:2px 6px;border-radius:8px;">مؤرشف</span>' : ''}
+      </div>
+      <div>
+        ${!archived ? `<button class="btn-secondary" style="background:var(--blue);color:white;margin-left:5px;" onclick="editCountry('${cnt.id}')">✏️ تعديل</button>` : ''}
+        <button class="btn-secondary" style="background:${archived ? '#28a745' : '#f0ad4e'};color:white;margin-left:5px;" onclick="archiveCountry('${cnt.id}', ${!archived})">
+          ${archived ? '📤 استعادة' : '🗄️ أرشفة'}
+        </button>
+        <button class="btn-danger" onclick="deleteCountry('${cnt.id}')">🗑️ حذف</button>
+      </div>
+    </div>`;
+}
+
 function renderCountriesList() {
     const container = document.getElementById('countriesList');
     if (!container) return;
-    container.innerHTML = countries.map(cnt => `
-    <div class="admin-list-item">
-      <div class="info"><strong>${cnt.nameAr}</strong> <span style="color:#888">(${cnt.nameEn})</span></div>
-      <div><button class="btn-danger" onclick="deleteCountry('${cnt.id}')">🗑️ حذف</button></div>
-    </div>
-  `).join('');
+    container.innerHTML = countries.map(countryItemHtml).join('');
+}
+
+function archiveCountry(id, archive) {
+    apiHelper.post({
+        url: '/countries/archiveCountry',
+        args: { country_id: id, is_archived: archive }
+    }).then(function (result) {
+        const idx = countries.findIndex(c => String(c.id) === String(id));
+        if (idx !== -1) countries[idx] = result;
+        if (!archive && String(editingCountryId) === String(id)) {
+            editingCountryId = null;
+            document.getElementById('countryNameAr').value = '';
+            document.getElementById('countryNameEn').value = '';
+            const btn = document.getElementById('addCountryBtn');
+            if (btn) btn.textContent = '➕ إضافة دولة';
+        }
+        saveCountriesToLocal();
+        renderCountriesList();
+        showToast(archive ? '🗄️ تم أرشفة الدولة' : '📤 تم استعادة الدولة');
+    }).catch(function () {
+        showToast('❌ حدث خطأ أثناء تحديث حالة الدولة');
+    });
+}
+
+function editCountry(id) {
+    const cnt = countries.find(c => String(c.id) === String(id));
+    if (!cnt) return;
+    editingCountryId = cnt.id;
+    document.getElementById('countryNameAr').value = cnt.nameAr;
+    document.getElementById('countryNameEn').value = cnt.nameEn || '';
+    const btn = document.getElementById('addCountryBtn');
+    if (btn) btn.textContent = '💾 تحديث الدولة';
+    showToast('✏️ قم بالتعديل ثم اضغط تحديث الدولة');
 }
 
 function addCountry() {
     const nameAr = document.getElementById('countryNameAr').value.trim();
     const nameEn = document.getElementById('countryNameEn').value.trim();
     if (!nameAr) { showToast('❌ الرجاء إدخال اسم الدولة'); return; }
-    const newCountry = { id: Date.now().toString(), nameAr: nameAr, nameEn: nameEn || nameAr };
-    countries.push(newCountry);
-    saveCountriesToLocal();
-    renderCountriesList();
-    document.getElementById('countryNameAr').value = '';
-    document.getElementById('countryNameEn').value = '';
-    showToast('✅ تم إضافة الدولة');
+
+    const countryId = editingCountryId || -1;
+
+    apiHelper.post({
+        url: '/countries/setCountry',
+        args: { country_id: countryId, country_name_ar: nameAr, country_name_en: nameEn }
+    }).then(function (result) {
+        if (countryId == -1) {
+            countries.push(result);
+        } else {
+            const idx = countries.findIndex(c => String(c.id) === String(countryId));
+            if (idx !== -1) countries[idx] = result;
+        }
+        editingCountryId = null;
+        saveCountriesToLocal();
+        renderCountriesList();
+        document.getElementById('countryNameAr').value = '';
+        document.getElementById('countryNameEn').value = '';
+        const btn = document.getElementById('addCountryBtn');
+        if (btn) btn.textContent = '➕ إضافة دولة';
+        showToast(countryId == -1 ? '✅ تم إضافة الدولة' : '✏️ تم تعديل الدولة');
+    }).catch(function () {
+        showToast('❌ حدث خطأ أثناء حفظ الدولة');
+    });
 }
 
 function deleteCountry(id) {
     if (confirm('هل أنت متأكد من حذف هذه الدولة؟')) {
-        countries = countries.filter(c => c.id !== id);
-        saveCountriesToLocal();
-        renderCountriesList();
-        showToast('🗑️ تم حذف الدولة');
+        apiHelper.post({
+            url: '/countries/deleteCountry',
+            args: { country_id: id }
+        }).then(function () {
+            countries = countries.filter(c => String(c.id) !== String(id));
+            if (String(editingCountryId) === String(id)) {
+                editingCountryId = null;
+                document.getElementById('countryNameAr').value = '';
+                document.getElementById('countryNameEn').value = '';
+                const btn = document.getElementById('addCountryBtn');
+                if (btn) btn.textContent = '➕ إضافة دولة';
+            }
+            saveCountriesToLocal();
+            renderCountriesList();
+            showToast('🗑️ تم حذف الدولة');
+        }).catch(function () {
+            showToast('❌ حدث خطأ أثناء حذف الدولة');
+        });
     }
 }
 
@@ -401,12 +698,7 @@ function filterCountries() {
     const search = document.getElementById('countrySearch').value.toLowerCase();
     const container = document.getElementById('countriesList');
     const filtered = countries.filter(c => c.nameAr.toLowerCase().includes(search) || c.nameEn.toLowerCase().includes(search));
-    container.innerHTML = filtered.map(cnt => `
-    <div class="admin-list-item">
-      <div class="info"><strong>${cnt.nameAr}</strong> <span style="color:#888">(${cnt.nameEn})</span></div>
-      <div><button class="btn-danger" onclick="deleteCountry('${cnt.id}')">🗑️ حذف</button></div>
-    </div>
-  `).join('');
+    container.innerHTML = filtered.map(countryItemHtml).join('');
 }
 //#endregion
 
@@ -594,13 +886,16 @@ async function loadProducts() {
         categories = categoriesResult;
         countries = countriesResult;
         companiesList = getCompaniesResult;
-        //   {id:"comp1", name:"صافولا", nameEn:"Safola", parent:""},
-        // return;
+
         updateAllCounters();
         renderProducts();
         updateCatBar();
+        renderCategoriesList();
+        updateCategoriesSelect();
+        renderCountriesList();
+        renderCompaniesList();
         if (isAdmin) {
-            renderAdminList()
+            renderAdminList();
         };
     })
 
@@ -1097,6 +1392,9 @@ document.querySelectorAll('.admin-tab').forEach(tab => {
         document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
         this.classList.add('active');
         document.getElementById(`section-${this.dataset.tab}`).classList.add('active');
+        if (this.dataset.tab === 'products') {
+            refreshProductsCompanyDropdown();
+        }
     });
 });
 
@@ -1157,7 +1455,7 @@ function openModal(id) {
         $reason.addClass('green');
         $alt.addClass('green');
     } else {
-        reasonElement.removeClass('green');
+        $reason.removeClass('green');
         $alt.removeClass('green');
     }
 
@@ -1506,24 +1804,53 @@ function showToast(msg) {
 
 
 function checkLogin() {
-    const password = document.getElementById('adminPassword').value;
-    if (password === ADMIN_PASSWORD) {
-        isAdmin = true;
-        sessionStorage.setItem('isAdmin', 'true');
-        document.getElementById('loginModal').classList.remove('open');
-        showToast('✅ تم تسجيل الدخول بنجاح');
-        renderAdminList();
-        setTimeout(() => toggleAdminPanel(), 500);
-    } else {
-        document.getElementById('loginError').style.display = 'block';
-        setTimeout(() => { document.getElementById('loginError').style.display = 'none'; }, 2000);
-    }
+
+    let loginModal = $('#loginModal');
+
+    let email = loginModal.find('#adminEmail').val();
+    let password = loginModal.find('#adminPassword').val();
+
+    apiHelper.post({
+        url:'/user/login',
+        args: {
+            email,password
+        }
+    }).then(function(result){
+
+        if(result.message == 'Login successful'){
+            isAdmin = true;
+            sessionStorage.setItem('isAdmin', 'true');
+            sessionStorage.setItem('adminToken', result.token);
+            document.getElementById('loginModal').classList.remove('open');
+            showToast('✅ تم تسجيل الدخول بنجاح');
+            renderAdminList();
+            setTimeout(() => toggleAdminPanel(), 500);
+        } else {
+            let loginError = loginModal.find('#loginError');
+            loginError.show();
+            setTimeout(() => loginError.hide(), 2000);
+        }
+    }).catch(function(){
+        let loginError = loginModal.find('#loginError');
+        loginError.show();
+        setTimeout(() => loginError.hide(), 2000);
+    });
 }
 
 function checkAdminSession() {
-    if (sessionStorage.getItem('isAdmin') === 'true') {
-        isAdmin = true;
-    }
+    const token = sessionStorage.getItem('adminToken');
+    if (!token) return;
+
+    apiHelper.post({ url: '/user/verifyToken' }).then(function (result) {
+        if (result.valid) {
+            isAdmin = true;
+            sessionStorage.setItem('isAdmin', 'true');
+            showToast('✅ تم تسجيل الدخول تلقائياً');
+        }
+    }).catch(function () {
+        sessionStorage.removeItem('isAdmin');
+        sessionStorage.removeItem('adminToken');
+    });
 }
 
 function setDefaultDate() {
@@ -1536,4 +1863,4 @@ function setDefaultDate() {
 checkAdminSession();
 loadProducts();
 loadAdminData();
-setTimeout(() => { tryLoadLogo(); setDefaultDate(); checkUrlForProduct(); setupCompaniesSearch(); }, 500);
+setTimeout(() => { tryLoadLogo(); setDefaultDate(); checkUrlForProduct(); setupCompaniesSearch(); setupParentCompanySearch(); }, 500);

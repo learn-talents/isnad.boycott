@@ -53,13 +53,15 @@
         </button>
     </a>
 
-    <button class="admin-secret" id="adminBtn" onclick="showLoginModal()">⚙️</button>
+    <button class="admin-secret" id="adminBtn" onclick="isAdmin ? toggleAdminPanel() : showLoginModal()">⚙️</button>
 
     <div class="login-modal" id="loginModal" onclick="closeLoginModalOnOutside(event)">
         <div class="login-box" onclick="event.stopPropagation()">
             <h3>🔐 دخول المشرف</h3>
-            <input type="password" id="adminPassword" placeholder="كلمة المرور"
-                onkeypress="if(event.key==='Enter') checkLogin()">
+            <input type="email" id="adminEmail" placeholder="البريد الإلكتروني" onkeypress="if(event.key==='Enter') checkLogin()">
+
+            <input type="password" id="adminPassword" placeholder="كلمة المرور" onkeypress="if(event.key==='Enter') checkLogin()">
+                
             <button onclick="checkLogin()">تسجيل الدخول</button>
             <div class="login-error" id="loginError">كلمة المرور غير صحيحة</div>
         </div>
@@ -209,7 +211,7 @@
                     placeholder="مثال: مشروبات"></div>
             <div class="form-group"><label>لون القسم (اختياري)</label><input type="color" id="categoryColor"
                     value="#4a90d9"></div>
-            <button class="btn-primary" onclick="addCategory()">➕ إضافة قسم</button>
+            <button class="btn-primary" id="addCategoryBtn" onclick="addCategory()">➕ إضافة قسم</button>
 
             <div class="search-box"><input type="text" id="categorySearch" placeholder="🔍 بحث في الأقسام..."
                     onkeyup="filterCategories()"></div>
@@ -226,7 +228,7 @@
                     placeholder="مثال: السعودية"></div>
             <div class="form-group"><label>اسم الدولة (إنجليزي)</label><input type="text" id="countryNameEn"
                     placeholder="مثال: Saudi Arabia"></div>
-            <button class="btn-primary" onclick="addCountry()">➕ إضافة دولة</button>
+            <button class="btn-primary" id="addCountryBtn" onclick="addCountry()">➕ إضافة دولة</button>
 
             <div class="search-box"><input type="text" id="countrySearch" placeholder="🔍 بحث في الدول..."
                     onkeyup="filterCountries()"></div>
@@ -239,16 +241,26 @@
         <!-- قسم الشركات -->
         <div class="admin-section" id="section-companies">
             <h3>🏢 إدارة الشركات والتفرعات</h3>
+            <input type="hidden" id="editingCompanyId" value="">
             <div class="form-group"><label>اسم الشركة (عربي)</label><input type="text" id="companyNameAr"
                     placeholder="مثال: صافولا"></div>
             <div class="form-group"><label>اسم الشركة (إنجليزي)</label><input type="text" id="companyNameEn"
                     placeholder="مثال: Safola"></div>
-            <div class="form-group"><label>الشركة الأم (تابعة لـ)</label><input type="text" id="companyParent"
-                    placeholder="الشركة الأم إن وجدت"></div>
-            <button class="btn-primary" onclick="addCompany()">➕ إضافة شركة</button>
+            <div class="form-group">
+                <label>الشركة الأم (اختياري)</label>
+                <div class="parent-company-dropdown">
+                    <input type="text" id="parentCompanySearch" placeholder="ابحث عن شركة أم..." autocomplete="off">
+                    <div class="parent-company-suggestions" id="parentCompanySuggestions" style="display:none;"></div>
+                </div>
+                <input type="hidden" id="parentCompanyId" value="">
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn-primary" id="saveCompanyBtn" onclick="saveCompany()">➕ إضافة شركة</button>
+                <button class="btn-secondary" id="cancelEditCompanyBtn" style="display:none;" onclick="cancelEditCompany()">إلغاء التعديل</button>
+            </div>
 
             <div class="search-box"><input type="text" id="companySearch" placeholder="🔍 بحث في الشركات..."
-                    onkeyup="filterCompanies()"></div>
+                    oninput="filterCompanies()"></div>
             <div class="admin-list">
                 <h4>📋 قائمة الشركات</h4>
                 <div id="companiesList"></div>

@@ -928,6 +928,9 @@ nav {
     max-width: 380px;
     text-align: center;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .login-box h3 {
@@ -938,7 +941,6 @@ nav {
 .login-box input {
     width: 100%;
     padding: 12px;
-    margin: 1rem 0;
     border: 2px solid var(--border);
     border-radius: 12px;
     font-family: inherit;
@@ -1886,4 +1888,40 @@ footer {
 .floatingWhatsappBtn svg {
     width: 21px;
     height: 21px;
+}
+/* archived items */
+.archived-item {
+    opacity: 0.75;
+    background: rgba(240, 173, 78, 0.06);
+}
+
+/* parent company searchable dropdown */
+.parent-company-dropdown {
+    position: relative;
+}
+
+.parent-company-dropdown input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    background: var(--surface);
+    color: var(--text);
+    box-sizing: border-box;
+}
+
+.parent-company-suggestions {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    z-index: 100;
+    max-height: 220px;
+    overflow-y: auto;
 }

@@ -6,13 +6,15 @@ let apiHelper = {
         };
 
         if (isFormData) {
-            // Send FormData directly
             options.body = args;
-            // IMPORTANT: do NOT set Content-Type
         } else {
-            // Default: JSON
             options.headers["Content-Type"] = "application/json";
             options.body = JSON.stringify(args);
+        }
+
+        const token = sessionStorage.getItem('adminToken');
+        if (token) {
+            options.headers["Authorization"] = `Bearer ${token}`;
         }
 
         return fetch(BACKEND_SERVER + url, options)
@@ -25,8 +27,3 @@ let apiHelper = {
     }
 };
 
-function saveCompany(companyData) {
-    apiHelper.post().then(function(data){
-
-    })
-}
