@@ -4,7 +4,7 @@ const GITHUB_USERNAME = "durazi";
 const GITHUB_REPO = "isnad.boycott";
 const GITHUB_FILE = "products_data.json";
 const ADMIN_PASSWORD = "isnad313";
-const ENV = 'dev'
+const ENV = 'prod'
 const BACKEND_SERVER_DEV = 'http://localhost:3000'
 const BACKEND_SERVER_PROD = 'https://62z5zux2di.execute-api.eu-west-1.amazonaws.com/prod'
 
